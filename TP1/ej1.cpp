@@ -9,3 +9,15 @@ using namespace std;
 int main(int argc, char const *argv[]) {
   return 0;
 }
+
+/*
+10 4
+3 3 3 3
+
+9
+
+12 5
+1 2 3 4 5
+
+12
+*/

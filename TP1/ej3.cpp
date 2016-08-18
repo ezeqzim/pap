@@ -21,3 +21,21 @@ int main(int argc, char const *argv[]) {
   cout << maximum << endl;
   return 0;
 }
+
+/*
+3
+2 -1 2
+
+3
+
+4
+-1 -1 -1 -1
+
+0
+
+14
+1 2 3 4 5 -1 -2 -3 -4 -5 1 2 3 4
+
+15
+
+*/
