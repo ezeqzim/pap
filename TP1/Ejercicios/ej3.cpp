@@ -10,8 +10,8 @@ int main(int argc, char const *argv[]) {
   int N, val;
   cin >> N >> val;
 
-  int maximum = 0, tmp = max(0, val);
-  forr(i, 1, N){
+  int maximum = 0, tmp = 0;
+  forn(i, N){
     cin >> val;
     tmp = max(0, max(val, tmp + val));
     if(maximum < tmp)

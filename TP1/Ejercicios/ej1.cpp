@@ -7,6 +7,12 @@ typedef long long ll;
 using namespace std;
 
 int main(int argc, char const *argv[]) {
+  int P, N;
+  cin >> P >> N;
+  vector<int> packs(N);
+  forn(i, N)
+    cin >> packs[i];
+
   return 0;
 }
 
