@@ -27,30 +27,31 @@ void linearSave(vector<Matriz>& memo, vector<Matriz>& matrices, int init, int en
   }
 }
 
-pair<bool, vector<Matriz> > divideAndConquer(vector<Matriz>& matrices, int L, Matriz& M, int init, int end, int dir){
+bool divideAndConquer(vector<Matriz>& matrices, int L, Matriz& M, int init, int end, int dir, vector<Matriz>& memo){
   if((end-init)+1 <= L){
-    vector<Matriz> memo;
     linearSave(memo, matrices, init, end, dir);
     if((end-init)+1 == L)
       if(M == memo[L-1])
-        return pair<bool, vector<Matriz> >(true, memo);
-    return pair<bool, vector<Matriz> >(false, memo);
+        return true;
+    return false;
   }
   int half = (init+end)/2;
-  pair<bool, vector<Matriz> > firstHalf = divideAndConquer(matrices, L, M, init, half, LEFT);
-  if(firstHalf.first)
+  vector<Matriz> firstHalfMemo;
+  bool firstHalf = divideAndConquer(matrices, L, M, init, half, LEFT, firstHalfMemo);
+  if(firstHalf)
     return firstHalf;
-  pair<bool, vector<Matriz> > secondHalf = divideAndConquer(matrices, L, M, half+1, end, RIGHT);
-  if(secondHalf.first)
+  vector<Matriz> secondHalfMemo;
+  bool secondHalf = divideAndConquer(matrices, L, M, half+1, end, RIGHT, secondHalfMemo);
+  if(secondHalf)
     return secondHalf;
-  int size = min(firstHalf.second.size(), secondHalf.second.size());
+  int size = min(firstHalfMemo.size(), secondHalfMemo.size());
   int i = 0, j = size-1;
   while(i+j+2 < L)
     i++;
   for(; i<size; ++i, --j)
-    if(M == firstHalf.second[i] * secondHalf.second[i])
-      return pair<bool, vector<Matriz> >(true, firstHalf.second);
-  return firstHalf;
+    if(M == firstHalfMemo[i] * secondHalfMemo[i])
+      return true;
+  return false;
 }
 
 int main(int argc, char const *argv[]) {
@@ -61,7 +62,8 @@ int main(int argc, char const *argv[]) {
   vector<Matriz> matrices(N);
   forn(i, N)
     cin >> matrices[i];
-  if(divideAndConquer(matrices, L, M, 0, N-1, RIGHT).first)
+  vector<Matriz> memo;
+  if(divideAndConquer(matrices, L, M, 0, N-1, RIGHT, memo))
     cout << "SI" << endl;
   else
     cout << "NO" << endl;
