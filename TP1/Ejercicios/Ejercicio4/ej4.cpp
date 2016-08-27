@@ -46,9 +46,10 @@ bool divideAndConquer(vector<Matriz>& matrices, int L, Matriz& M, int init, int 
     return secondHalf;
   int size = min(firstHalfMemo.size(), secondHalfMemo.size());
   int i = 0, j = size-1;
+  //Por que un while? No es mejor poner un if(i+j+2 < L) i = L-j-2 ??
   while(i+j+2 < L)
     i++;
-  for(; i<size; ++i, --j)
+  for(; i<size; ++i, --j) //Para que haces --j si ni lo usas?
     if(M == firstHalfMemo[i] * secondHalfMemo[i])
       return true;
   return false;
