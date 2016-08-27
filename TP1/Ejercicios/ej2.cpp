@@ -22,9 +22,10 @@ int setToScore(int N, int mask){
 int funScore(int N, int mask){
   if(fun[mask].first)
     return fun[mask].second;
-  int res = 0;
+  int res = 0, mask_score = setToScore(N, mask);
   for(int i = mask&(mask-1); i != 0; i = mask&(i-1))
-    res = max(res, max(funScore(N, mask^i) + funScore(N, i), setToScore(N, mask)));
+    res = max(res, funScore(N, mask^i) + funScore(N, i));
+  res = max(res, mask_score);
   fun[mask] = pair<bool, int>(true, res);
   return res;
 }

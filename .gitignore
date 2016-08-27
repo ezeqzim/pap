@@ -32,3 +32,11 @@ ej1
 ej2
 ej3
 ej4
+
+# Latex
+*.aux
+*.log
+*.out
+*.toc
+*.synctex.gz
+*.pdf

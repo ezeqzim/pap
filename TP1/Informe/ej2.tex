@@ -1,5 +1,79 @@
 \section{Ejercicio 2}
+
 \subsection{El Problema}
+
+El problema toma como entrada un conjunto P de $N$ personas y una matriz M de $N \times N$, tal que $M_{ij}$ almacena que tal se llevan $P_i$ con $P_j$. Un valor negativo implica que se llevan mal, cero que les es indistinto y positivo que se llevan bien. $M_{ii} = 0$ $\forall i \in \{1..N\}$ y $M_{ij} = M_{ji}$  $\forall i, j \in \{1..N\}$. Es decir que M es sim\'etrica y con diagonal nula. 
+
+Interesa construir una partici\'on de $P = \cup_{i \in N} A_i$, para cada par $i \neq j$, $A_i \cap A_j = \emptyset$, \textbf{sin} la condici\'on $A_i \neq \emptyset$
+
+Si $P_i, P_j \in A_k$ entonces aportan un valor de $M_{ij}$ al mismo.
+
+El objetivo del problema es maximizar $\sum_{k \in N} valor(A_k)$
+
 \subsection{Desarrollo}
+
+La funci\'on funScore calcula, dado un conjunto, el m\'aximo de la sumatoria de los scores de sus particiones posibles. Esto es, el m\'aximo entre 0 (N particiones), score(conjunto) (1 particion) y ($\forall subconjunto \in conjunto$) score(subconjunto) + score(complemento(subconjunto)) ($2$ a $N-1$ particiones)
+
 \subsubsection{Implementación}
+
+\begin{verbatim}
+vector<vector<int> > matrix; // Guardar los datos de entrada
+vector<pair<bool, int> > fun; // bool = calculado?, int = score
+\end{verbatim}
+
+\begin{verbatim}
+int setToScore(int N, int mask){
+  int sum = 0; // O(1)
+  forn(i, N) // O(N)
+    if((1<<i) == (mask&(1<<i))) // O(1)
+      forr(j, i+1, N) // O(N)
+        if((1<<j) == (mask&(1<<j))) // O(1)
+          sum += matrix[i][j]; // O(1)
+  return sum; // O(1)
+}
+\end{verbatim}
+
+\begin{verbatim}
+int funScore(int N, int mask){
+  if(fun[mask].first)
+    return fun[mask].second;
+  int res = 0, mask_score = setToScore(N, mask);
+  for(int i = mask&(mask-1); i != 0; i = mask&(i-1))
+    res = max(res, funScore(N, mask^i) + funScore(N, i));
+  res = max(res, mask_score);
+  fun[mask] = pair<bool, int>(true, res);
+  return res;
+}
+\end{verbatim}
+
+\begin{verbatim}
+int main(int argc, char const *argv[]) {
+  int N; // O(1)
+  cin >> N; // O(1)
+  matrix.resize(N, vector<int>(N)); // O(N^2)
+  forn(i, N) // O(N)
+    forn(j, N) // O(N)
+      cin >> matrix[i][j]; // O(1)
+
+  fun.resize(1<<N, pair<bool, int>(false, 0)); // O(2^N)
+  fun[0] = pair<bool, int>(true, 0); // O(1)
+  cout << funScore(N, (1<<N) - 1) << endl; // O(3^N)
+  return 0;
+}
+\end{verbatim}
+
 \subsubsection{Complejidad}
+
+Complejidad main: $O(3^N)$
+
+La funci\'on lee la entrada, el entero $N$, luego $N^2$ enteros, complejidad que es absorbida por la inicializaci\'on del memo \textit{fun}, que tiene $O(2^N)$ posiciones. Luego esta es absorbida por la complejidad de funScore que veremos a continuaci\'on. \\
+
+Complejidad funScore: $O(3^N)$
+
+La funci\'on es igual a la de las diapositivas presentadas en clase, salvo por el hecho de que maximizamos en vez de minimizar (indistinto en el c\'alculo de complejidad) y adem\'as no iteramos todos los posibles conjuntos, sino que directamente iteramos sobre los subconjuntos del pasado como par\'ametro. Por otro lado, tenemos 2 llamados recursivos, pero al estar utilizando el memo \textit{fun}, los llamados con conjuntos repetidos, no es necesario recalcularlos. Por lo tanto, vale el mismo an\'alisis de complejidad que se encuentra en las diapositivas.\\
+
+Complejidad setToScore: $O(N^2)$
+
+La funci\'on hace un for de 0 a N que realiza un for de i+1 a N. Las dem\'as operaciones son $O(1)$. Se puede ver el detalle en la secci\'on implementaci\'on.
+
+\textcolor{red}{CREO QUE HAY QUE HABLAR ALGO SOBRE QUE LLAMAMOS $2^N$ VECES A LA FUNCI\'ON setToScore PARA CERRAR EL AN\'ALISIS. EN LAS DIAPOS NO HABLA NADA SOBRE UN PROCESO DE ESTE ESTILO}
