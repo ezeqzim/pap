@@ -8,12 +8,12 @@ using namespace std;
 
 int main(int argc, char const *argv[]) {
   int N, val;
-  cin >> N >> val;
+  cin >> N;
 
   int maximum = 0, tmp = 0;
   forn(i, N){
     cin >> val;
-    tmp = max(0, max(val, tmp + val));
+    tmp = max(val, tmp + val);
     if(maximum < tmp)
       maximum = tmp;
   }
