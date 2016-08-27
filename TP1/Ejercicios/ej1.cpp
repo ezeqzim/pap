@@ -6,7 +6,7 @@ typedef long long ll;
 
 using namespace std;
 
-void generateParts(vector<int>& v, int num){
+void generateParts(vector<ll>& v, int num){
   int size = v.size();
   v.push_back(num);
   forn(i, size){
@@ -14,7 +14,7 @@ void generateParts(vector<int>& v, int num){
   }
 }
 
-int getMax(vector<int>& first, vector<int>& second, int limit){
+int getMax(vector<ll>& first, vector<ll>& second, int limit){
   int max = 0, sum;
   int j = second.size()-1;
   forn(i, first.size()){
@@ -30,8 +30,8 @@ int main() {
   int P, N;
   cin >> P >> N;
   int half = N/2;
-  vector<int> fpacks;
-  vector<int> spacks;
+  vector<ll> fpacks;
+  vector<ll> spacks;
   int num;
   forn(i, N){
     cin >> num;
