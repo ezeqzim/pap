@@ -1,4 +1,4 @@
-#include <bits/stdc++.h>
+#include "../stdc++.h"
 
 typedef long long ll;
 #define forr(i,a,b) for(int i=(a); i<(b); ++i)

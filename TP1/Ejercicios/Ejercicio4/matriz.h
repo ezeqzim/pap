@@ -1,7 +1,7 @@
 #ifndef __MATRIZ__
 #define __MATRIZ__
 
-#include "stdc++.h"
+#include "../stdc++.h"
 
 using namespace std;
 

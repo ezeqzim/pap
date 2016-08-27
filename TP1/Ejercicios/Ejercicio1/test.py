@@ -58,7 +58,7 @@ def basename(file_path):
     return os.path.basename(file_path)
 
 def execute(exe, test):
-	subprocess.call("./" + exe + " < " + test + "." + in_extension + " > " + test + "." + out_extension, shell=True)
+    subprocess.call("./" + exe + " < " + test + "." + in_extension + " > " + test + "." + out_extension, shell=True)
 
 if __name__ == '__main__':
 	main()
