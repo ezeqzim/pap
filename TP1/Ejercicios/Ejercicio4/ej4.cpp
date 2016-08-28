@@ -16,7 +16,7 @@ Matriz M;
 
 // TODO: SACAR LOS PUSH_BACK
 
-void linearSave(vector<Matriz>& memo, int init, int end, int dir){
+void linearSave(vector<Matriz>& memo, int init, int end, int dir) {
     if (dir == LEFT) {
         memo.push_back(matrices[end]);
         for (int j = 0; end - j - 1 >= init; j++)
@@ -28,7 +28,7 @@ void linearSave(vector<Matriz>& memo, int init, int end, int dir){
     }
 }
 
-bool divideAndConquer(int init, int end, int dir, vector<Matriz>& memo){
+bool divideAndConquer(int init, int end, int dir, vector<Matriz>& memo) {
     if(end - init <= L - 1) {
         linearSave(memo, init, end, dir);
         return end - init == L - 1 && M == memo[L - 1];
