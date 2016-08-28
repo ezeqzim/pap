@@ -7,10 +7,14 @@ typedef long long ll;
 using namespace std;
 
 void generateParts(vector<ll>& v, int num, int iter){
-  int size = (1<<iter)-1; //La posicion donde agregar el nuevo elemento (o sea, desde 0..size esta todo lo que fui calculando)
+  //La posicion donde agregar el nuevo elemento
+  //(o sea, desde 0..size esta todo lo que fui calculando)
+  int size = (1<<iter)-1;
   v[size] = num;
-  forn(i, size){ //Recorro todo lo que ya calcule
-     v[size+i+1] = num+v[i]; //Y lo guardo en las posiciones siguientes
+  //Recorre todo lo que ya calcule
+  forn(i, size){
+    //Y lo guarda en las posiciones siguientes
+    v[size+i+1] = num+v[i];
   }
 }
 
@@ -39,21 +43,23 @@ int main() {
   int P, N;
   cin >> P >> N;
   int half = N/2;
-  vector<ll> fpacks(1<<half); //Me guardo 2^(n/2) en cada arreglo, para guardar las partes
-  vector<ll> spacks(1<<(N-half));
+  //Guarda 2^(n/2) en cada arreglo, para guardar las partes
+  vector<ll> firstHalf((1<<half)+1);
+  vector<ll> secondHalf((1<<(N-half))+1);
   int num;
   forn(i, N){
     cin >> num;
     if(i < half)
-      generateParts(fpacks, num, i);//Paso el i como parametro para saber en que iteracion estoy
+      //Pasa el i como parametro para saber en que iteracion esta
+      generateParts(firstHalf, num, i);
     else
-      generateParts(spacks, num, i-half);
+      generateParts(secondHalf, num, i-half);
   }
-  fpacks.push_back(0);
-  spacks.push_back(0);
-  sort(fpacks.begin(), fpacks.end());
-  sort(spacks.begin(), spacks.end());
-  cout << getMax(fpacks, spacks, P) << endl;
+  firstHalf[1<<half] = 0;
+  secondHalf[1<<(N-half)] = 0;
+  sort(firstHalf.begin(), firstHalf.end());
+  sort(secondHalf.begin(), secondHalf.end());
+  cout << getMax(firstHalf, secondHalf, P) << endl;
   return 0;
 }
 
