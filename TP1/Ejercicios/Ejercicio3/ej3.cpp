@@ -7,11 +7,11 @@ typedef long long ll;
 using namespace std;
 
 int main(int argc, char const *argv[]) {
-  long N;
-  int val;
+  int N;
+  ll val;
   cin >> N;
 
-  int maximum = 0, tmp = 0;
+  ll maximum = 0, tmp = 0;
   forn(i, N){
     cin >> val;
     tmp = max(val, tmp + val);
