@@ -7,7 +7,8 @@ typedef long long ll;
 using namespace std;
 
 int main(int argc, char const *argv[]) {
-  int N, val;
+  long N;
+  int val;
   cin >> N;
 
   int maximum = 0, tmp = 0;
