@@ -1,5 +1,34 @@
 \section{Ejercicio 3}
 \subsection{El Problema}
+El problema consiste en encontrar el subarreglo de suma máxima de un arreglo dado. Formalmente, sea $A$ un arreglo de longitud $N$, se quiere encontrar el $i$ y el $j$ tal que se maximice la siguiente función (si no existen $i$ y $j$ tal que la función sea mayor a cero se devuelve 0): 
+\begin{center} $\sum_{k=i}^{j} A_k$            $ \quad 0\leq i\leq j\leq N$
+\end{center}
+Se pide implementar un algoritmo que devuelva el valor máximo de dicha función con complejidad temporal del orden de $O(N)$
 \subsection{Desarrollo}
+En la solución propuesta, se utilizan dos variables, \texttt{maximo} y \texttt{tmp}. Se va avanzando por el arreglo linealmente y tras el paso $p$, en  \texttt{maximo} se encuentra el valor máximo de la función $\sum_{k=i}^{j} A_k$            $ \quad 0\leq i\leq j\leq p \leq N$ (es decir, la suma de subarreglo máxima del arreglo  \texttt{A[0..p-1]} ) y en  \texttt{tmp} se encuentra la suma de subarreglo máxima tal que contenga al elemento \emph{p-ésimo}, es decir, el valor máximo de  $\sum_{k=i}^{p} A_k$            $ \quad 0\leq i\leq p\leq N$.
+
+
+Al comenzar el paso $p$,  \texttt{tmp} se actualiza al valor máximo entre  \texttt{A[p-1]} y  \texttt{tmp + A[p-1]}
+Al finalizar cada paso, si  \texttt{tmp > maximo}, se actualiza  \texttt{maximo} al valor de  \texttt{tmp}.
 \subsubsection{Implementación}
+\begin{verbatim}
+int main(int argc, char const *argv[]) {
+  int N, val;
+  cin >> N;
+
+  int maximum = 0, tmp = 0;
+  forn(i, N){
+    cin >> val;
+    tmp = max(val, tmp + val);
+    if(maximum < tmp)
+      maximum = tmp;
+  }
+
+  cout << maximum << endl;
+  return 0;
+}
+\end{verbatim}
 \subsubsection{Complejidad}
+Se analizará la complejidad temporal del algoritmo.
+Fuera del \texttt{for} únicamente se realizan operaciones de orden $O(1)$. Dentro del \texttt{for}, en cada iteración se lee un elemento de la entrada y se ejecuta una operación de \texttt{max}, una comparación y si el nuevo valor es mayor al máximo, una asignación. Todas estas operaciones son de orden $O(1)$.
+Como el \texttt{for} va de $0$ hasta $N$, la complejidad total del algoritmo es del orden de $O(N)$.
