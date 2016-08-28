@@ -10,6 +10,7 @@ En la solución propuesta, se utilizan dos variables, \texttt{maximo} y \texttt{
 
 Al comenzar el paso $p$,  \texttt{tmp} se actualiza al valor máximo entre  \texttt{A[p-1]} y  \texttt{tmp + A[p-1]}
 Al finalizar cada paso, si  \texttt{tmp > maximo}, se actualiza  \texttt{maximo} al valor de  \texttt{tmp}.
+De esta forma, al terminar el paso \emph{N-ésimo}, en \texttt{maximo} se va a encontrar la solución al problema.
 \subsubsection{Implementación}
 \begin{verbatim}
 int main(int argc, char const *argv[]) {
