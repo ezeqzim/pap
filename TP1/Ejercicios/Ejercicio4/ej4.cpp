@@ -44,6 +44,12 @@ bool divideAndConquer(int init, int end, int dir, vector<Matriz>& memo) {
     if (divideAndConquer(half + 1, end, RIGHT, secondHalfMemo))
         return true;
 
+    // cout << "init: " << init << endl;
+    // cout << "end: " << end << endl;
+    // cout << "firstHalfMemo: " << firstHalfMemo.size() << endl;
+    // cout << "secondHalfMemo: " << secondHalfMemo.size() << endl;
+    // cout << "memo: " << memo.size() << endl;
+
     int size = min(firstHalfMemo.size(), secondHalfMemo.size());
     for (int i = L - size - 1, j = size - 1; i < size; i++, j--)
         if (M == firstHalfMemo[i] * secondHalfMemo[j])
@@ -63,7 +69,7 @@ void init() {
 int main(int argc, char const *argv[]) {
     init();
     vector<Matriz> memo;
-    if (divideAndConquer(0, N - 1, RIGHT, memo))
+    if (divideAndConquer(0, N - 1, LEFT, memo))
         cout << "SI" << endl;
     else
         cout << "NO" << endl;
