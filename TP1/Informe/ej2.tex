@@ -2,17 +2,27 @@
 
 \subsection{El Problema}
 
-El problema toma como entrada un conjunto P de $N$ personas y una matriz M de $N \times N$, tal que $M_{ij}$ almacena que tal se llevan $P_i$ con $P_j$. Un valor negativo implica que se llevan mal, cero que les es indistinto y positivo que se llevan bien. $M_{ii} = 0$ $\forall i \in \{1..N\}$ y $M_{ij} = M_{ji}$  $\forall i, j \in \{1..N\}$. Es decir que M es sim\'etrica y con diagonal nula. 
+El problema toma como entrada un conjunto P de $N$ personas y una matriz M de $N \times N$, tal que $M_{ij}$ almacena que tan bien se llevan $P_i$ con $P_j$.
 
-Interesa construir una partici\'on de $P = \cup_{i \in N} A_i$, para cada par $i \neq j$, $A_i \cap A_j = \emptyset$, \textbf{sin} la condici\'on $A_i \neq \emptyset$
+Un valor negativo implica que se llevan mal, cero que les es indistinto y positivo que se llevan bien. Vale que $M_{ii} = 0$ $1 \leq i \leq N$ y $M_{ij} = M_{ji}$  $1 \leq i, j \leq N$. Es decir que M es sim\'etrica y con diagonal nula. 
 
-Si $P_i, P_j \in A_k$ entonces aportan un valor de $M_{ij}$ al mismo.
+Interesa construir una partici\'on de $P = \bigcup\limits_{i = 1}^{N} A_i$, tal que para cada par $1 \leq i, j \leq N$ $i \neq j$, $A_i \cap A_j = \emptyset$, \textbf{sin} la condici\'on $A_i \neq \emptyset$
 
-El objetivo del problema es maximizar $\sum_{k \in N} valor(A_k)$
+El objetivo del problema es maximizar $\displaystyle\sum_{k = 1}^{N} valor(A_k)$ donde $valor(A_k)$ es igual a $\displaystyle\sum_{i,j = 1, P_i, P_j \in A_k}^{N} M_{ij}$
 
 \subsection{Desarrollo}
 
-La funci\'on funScore calcula, dado un conjunto, el m\'aximo de la sumatoria de los scores de sus particiones posibles. Esto es, el m\'aximo entre 0 (N particiones), score(conjunto) (1 particion) y ($\forall subconjunto \in conjunto$) score(subconjunto) + score(complemento(subconjunto)) ($2$ a $N-1$ particiones)
+Representaremos a los conjuntos con un entero \textit{mask}, cuya representaci\'on en binario indica que si el bit i-\'esimo es un $1$ entonces $P_i \in mask_i$.
+
+La soluci\'on consiste en calcular, para cada elemento del conjunto de partes de P, la suma de los $M_{ij}$ correspondientes. Luego buscamos la partici\'on que cumpla el requisito de la secci\'on anterior.
+
+La funci\'on funScore realiza lo pedido, esto es el m\'aximo entre:
+
+\begin{itemize}
+	\item $0 \rightarrow N$ subconjuntos.
+	\item valor(conjunto) $\rightarrow 1$ subconjunto.
+	\item ($\forall subconjunto \in conjunto$) score(subconjunto) + score(complemento(subconjunto)) $\rightarrow 2$ a $N-1$ subconjuntos.
+\end{itemize}
 
 \subsubsection{Implementación}
 
@@ -64,16 +74,13 @@ int main(int argc, char const *argv[]) {
 
 \subsubsection{Complejidad}
 
-Complejidad main: $O(3^N)$
+En este apartado analizaremos la complejidad de las funciones \textit{main}, \textit{funScore} y \textit{setToScore}
 
-La funci\'on lee la entrada, el entero $N$, luego $N^2$ enteros, complejidad que es absorbida por la inicializaci\'on del memo \textit{fun}, que tiene $O(2^N)$ posiciones. Luego esta es absorbida por la complejidad de funScore que veremos a continuaci\'on. \\
+\begin{itemize}
+	\item \textbf{main}: La funci\'on lee la entrada, el entero $N$, luego $N^2$ enteros, inicializa el memo \textit{fun}, que tiene $O(2^N)$ posiciones. Luego llama a la funci\'on funScore $O(3^N)$. La complejidad es entonces $O(1 + N^2 + 2^N + 3^N)$ que es igual a $O(3^N)$.
 
-Complejidad funScore: $O(3^N)$
+	\item \textbf{funScore}: La funci\'on calcula el score de mask $O(N^2)$., luego itera sobre los subconjuntos calculando la suma de su score con el del complemento en forma recursiva, y se queda con el m\'aximo entre ellos.
+	Cabe destacar que para cada subconjunto posible, se llama solo una vez a la funci\'on setToScore, dado que se memoizan los resultados. En total son $O(2^N)$ subconjuntos, sumado a la iteraci\'on sobre los subconjuntos de \textit{mask}, se puede demostrar que la complejidad final es de $O(3^N)$.
 
-La funci\'on es igual a la de las diapositivas presentadas en clase, salvo por el hecho de que maximizamos en vez de minimizar (indistinto en el c\'alculo de complejidad) y adem\'as no iteramos todos los posibles conjuntos, sino que directamente iteramos sobre los subconjuntos del pasado como par\'ametro. Por otro lado, tenemos 2 llamados recursivos, pero al estar utilizando el memo \textit{fun}, los llamados con conjuntos repetidos, no es necesario recalcularlos. Por lo tanto, vale el mismo an\'alisis de complejidad que se encuentra en las diapositivas.\\
-
-Complejidad setToScore: $O(N^2)$
-
-La funci\'on hace un for de 0 a N que realiza un for de i+1 a N. Las dem\'as operaciones son $O(1)$. Se puede ver el detalle en la secci\'on implementaci\'on.
-
-\textcolor{red}{CREO QUE HAY QUE HABLAR ALGO SOBRE QUE LLAMAMOS $2^N$ VECES A LA FUNCI\'ON setToScore PARA CERRAR EL AN\'ALISIS. EN LAS DIAPOS NO HABLA NADA SOBRE UN PROCESO DE ESTE ESTILO}
+	\item \textbf{setToScore}: La funci\'on hace un for de 0 a N que realiza otro for de i+1 a N. Las dem\'as operaciones son $O(1)$. Esto da como resultado una complejidad de $O(N^2)$.
+\end{itemize}
