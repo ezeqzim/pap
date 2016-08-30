@@ -18,15 +18,6 @@ void generateParts(vector<ll>& v, int num, int iter){
   }
 }
 
-//OLD GENERATEPARTS
-//void generateParts(vector<ll>& v, int num){
-//  int size = v.size();
-//  v.push_back(num);
-//  forn(i, size){
-//    v.push_back(num+v[i]);
-//  }
-//}
-
 int getMax(vector<ll>& first, vector<ll>& second, int limit){
   int max = 0, sum;
   int j = second.size()-1;
@@ -62,15 +53,3 @@ int main() {
   cout << getMax(firstHalf, secondHalf, P) << endl;
   return 0;
 }
-
-/*
-10 4
-3 3 3 3
-
-9
-
-12 5
-1 2 3 4 5
-
-12
-*/
