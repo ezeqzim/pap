@@ -26,8 +26,10 @@ void linearSave(int init, int end, int dir, vector<Matriz>& memo) {
 
 bool divideAndConquer(int init, int end, int dir, vector<Matriz>& memo) {
     linearSave(init, end, dir, memo);
-    if(end - init <= L - 1)
-        return end - init == L - 1 && M == memo[L - 1];
+    if (end - init < L - 1)
+        return false;
+    else if (end - init == L - 1)
+        return M == memo[L - 1];
 
     int half = (init + end) / 2;
     vector<Matriz> firstHalfMemo, secondHalfMemo;
