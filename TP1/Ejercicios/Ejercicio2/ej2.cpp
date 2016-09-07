@@ -9,8 +9,8 @@ using namespace std;
 vector<vector<int> > matrix;
 vector<pair<bool, int> > fun;
 
-int setToScore(int N, int mask){
-  int sum = 0;
+ll setToScore(int N, int mask){
+  ll sum = 0;
   forn(i, N)
     if((1<<i) == (mask&(1<<i)))
       forr(j, i+1, N)
@@ -19,10 +19,10 @@ int setToScore(int N, int mask){
   return sum;
 }
 
-int funScore(int N, int mask){
+ll funScore(int N, int mask){
   if(fun[mask].first)
     return fun[mask].second;
-  int res = 0, mask_score = setToScore(N, mask);
+  ll res = 0, mask_score = setToScore(N, mask);
   for(int i = mask&(mask-1); i != 0; i = mask&(i-1))
     res = max(res, funScore(N, mask^i) + funScore(N, i));
   res = max(res, mask_score);
