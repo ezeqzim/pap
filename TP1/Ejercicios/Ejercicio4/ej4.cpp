@@ -14,13 +14,13 @@ Matriz M;
 
 void linearSave(int init, int end, int dir, vector<Matriz>& memo) {
     if (dir == LEFT) {
-        memo.push_back(matrices.at(end));
+        memo.push_back(matrices[end]);
         for (int j = 0; j < L && end - j - 1 >= init; j++)
-            memo.push_back(matrices.at(end - j - 1) * memo.at(j));
+            memo.push_back(matrices[end - j - 1] * memo[j]);
     } else {
-        memo.push_back(matrices.at(init));
+        memo.push_back(matrices[init]);
         for (int j = 0; j < L && init + j + 1 <= end; j++)
-            memo.push_back(memo.at(j) * matrices.at(init + j + 1));
+            memo.push_back(memo[j] * matrices[init + j + 1]);
     }
 }
 
@@ -51,7 +51,7 @@ bool divideAndConquer(int init, int end, int dir, vector<Matriz>& memo) {
     }
 
     for (int i = start; finish - (i + 1) >= 0; i++)
-        if (M == firstHalfMemo.at(finish - (i + 1)) * secondHalfMemo.at(i))
+        if (M == firstHalfMemo[finish - (i + 1)] * secondHalfMemo[i])
             return true;
 
     return false;
