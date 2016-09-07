@@ -38,9 +38,20 @@ bool divideAndConquer(int init, int end, int dir, vector<Matriz>& memo) {
         return true;
 
     int size = min(firstHalfMemo.size(), secondHalfMemo.size());
+    int start, finish;
+    if (L <= size) {
+        // Si L es menor que el tamaño, no me tengo que pasar de L.
+        start = 0;
+        finish = L - 1;
+    } else {
+        // Si L es mayor que el tamaño, entonces no sirve empezar en 0
+        // y tengo que terminar en size. Si me paso, falla.
+        start = L - size - 1;
+        finish = size;
+    }
 
-    for (int i = L - size, j = size - 1; i < size; i++, j--)
-        if (M == firstHalfMemo.at(i) * secondHalfMemo.at(j))
+    for (int i = start; finish - (i + 1) >= 0; i++)
+        if (M == firstHalfMemo.at(finish - (i + 1)) * secondHalfMemo.at(i))
             return true;
 
     return false;
