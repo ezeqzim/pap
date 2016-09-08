@@ -1,5 +1,9 @@
 \begin{thebibliography}{1}
 
+\bibitem{pushback}
+{push\_back}.
+\newblock \url{http://www.cplusplus.com/reference/vector/vector/push_back/}.
+
 \bibitem{knapp}
 {The Knapsack Problem}.
 \newblock \url{https://en.wikipedia.org/wiki/Knapsack_problem}.
