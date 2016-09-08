@@ -6,7 +6,7 @@ El problema toma como entrada un conjunto P de $N$ personas y una matriz M de $N
 
 Un valor negativo implica que se llevan mal, cero que les es indistinto y positivo que se llevan bien. Vale que $M_{ii} = 0$ $\forall i = 1,...,N$ y $M_{ij} = M_{ji}$  $\forall i,j = 1,...,N$. Es decir que M es sim\'etrica y con diagonal nula. 
 
-Interesa construir una partici\'on de $P = \biguplus\limits_{k = 1}^{K} A_k, K \leq N$ tal que se maximice $\displaystyle\sum_{k = 1}^{K} valor(A_k)$.
+Interesa construir una partici\'on de $P = \biguplus\limits_{i = 1}^{K} A_i, K \leq N$ tal que se maximice $\displaystyle\sum_{i = 1}^{K} valor(A_i)$.
 
 El valor de un conjunto es igual a la suma de qu\'e tan bien se llevan cada par de personas dentro del mismo.
 
@@ -14,14 +14,17 @@ El valor de un conjunto es igual a la suma de qu\'e tan bien se llevan cada par 
 
 Representaremos a los conjuntos con un entero \textit{mask}, cuya representaci\'on en binario indica que si el bit i-\'esimo es un $1$ entonces $P_i \in mask_i$.
 
-La soluci\'on consiste en calcular, para cada elemento del conjunto de partes de P, la suma de los $M_{ij}$ correspondientes. Luego buscamos la partici\'on que cumpla el requisito de la secci\'on anterior.
+La soluci\'on consiste en calcular, para cada elemento del conjunto de partes de P, la suma de los $M_{ij}$ correspondientes. Luego buscamos la partici\'on que maximiza la suma de los subconjuntos elegidos.
 
-La funci\'on funScore, dado un conjunto A, calcula el m\'aximo entre:
+Para esto, dado un conjunto A, para cada $A_i \subset  A$, sumamos su valor junto con el de $A_i^c$, es decir, partimos a A en dos subconjuntos disjuntos. A este n\'umero, lo comparamos luego contra valor(A) y nos quedamos con el mayor.
+
+Este procedimiento lo realizamos en forma recursiva, con $A_i$ y con $A_i^c$.
+
+Por lo tanto la funci\'on funScore, dado un conjunto A, calcula el m\'aximo entre:
 
 \begin{itemize}
-	\item $0$ que significa que tomamos $\#A$ subconjuntos de $A$.
-	\item valor(A).
-	\item ($\forall A_i \subset A$) score($A_i$) + score($A_i^c$) que significa que tomamos entre $2$ y $\#A-1$ subconjuntos de A.
+	\item valor(A)
+	\item ($\forall A_i \subset A$) valor($A_i$) + valor($A_i^c$)
 \end{itemize}
 
 \subsubsection{Complejidad}
