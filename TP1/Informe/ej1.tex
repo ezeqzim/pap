@@ -14,56 +14,6 @@ Finalmente, realiza una busqueda para encontrar un $a \in A$ y un $b \in B$ tale
 Si esa suma es mayor que $P$, avanza $j$, es decir, repite el proceso con $a_{i} + b_{j-1}$. Ya que $B$ esta ordenado de menor a mayor, si $a_{i} + b_{j} > P \Rightarrow (\forall k > j) a_{i}+b_{k} > P$, por lo que todos los $b_{k}$ ya no son necesarios.\\
 Si esa suma es menor o igual que $P$, se actualiza $MAX$ con el valor de dicha suma de ser necesario, y se avanza $i$, es decir, repite el proceso con $a_{i+1} + b_{j}$. Ya que $A$ esta ordenado de menor a mayor, si $a_{i} + b_{j} \leq P \Rightarrow (\forall k < i) a_{k}+b_{j} \leq P$, por lo que todos los $a_{k}$ ya no son necesarios.\par
 Al final del proceso, se retorna el valor $MAX$.
-\subsubsection{Implementación}
-\begin{verbatim}
-void generateParts(vector<ll>& v, int num, int iter){
-  //La posicion donde agregar el nuevo elemento
-  //(o sea, desde 0..size esta todo lo que fui calculando)
-  int size = (1<<iter)-1;
-  v[size] = num;
-  //Recorre todo lo que ya calcule
-  forn(i, size){
-    //Y lo guarda en las posiciones siguientes
-    v[size+i+1] = num+v[i];
-  }
-}
-
-int getMax(vector<ll>& first, vector<ll>& second, int limit){
-  int max = 0, sum;
-  int j = second.size()-1;
-  forn(i, first.size()){
-    while(first[i] + second[j] > limit && j > 0) j--;
-    sum = first[i]+second[j];
-    if(sum > limit) return max;
-    if(sum > max) max = sum;
-  }
-  return max;
-}
-
-int main() {
-  int P, N;
-  cin >> P >> N;
-  int half = N/2;
-  //Guarda 2^(n/2) en cada arreglo, para guardar las partes
-  vector<ll> firstHalf((1<<half)+1);
-  vector<ll> secondHalf((1<<(N-half))+1);
-  int num;
-  forn(i, N){
-    cin >> num;
-    if(i < half)
-      //Pasa el i como parametro para saber en que iteracion esta
-      generateParts(firstHalf, num, i);
-    else
-      generateParts(secondHalf, num, i-half);
-  }
-  firstHalf[1<<half] = 0;
-  secondHalf[1<<(N-half)] = 0;
-  sort(firstHalf.begin(), firstHalf.end());
-  sort(secondHalf.begin(), secondHalf.end());
-  cout << getMax(firstHalf, secondHalf, P) << endl;
-  return 0;
-}
-\end{verbatim}
 
 \subsubsection{Complejidad}
 Estudiaremos la complejidad de las tres funciones presentadas: \emph{generateParts, getMax} y \emph{main}:
