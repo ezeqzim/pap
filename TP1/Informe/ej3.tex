@@ -12,22 +12,23 @@ Al comenzar el paso $p$,  \texttt{tmp} se actualiza al valor máximo entre  \tex
 Al finalizar cada paso, si  \texttt{tmp > maximo}, se actualiza  \texttt{maximo} al valor de  \texttt{tmp}.
 De esta forma, al terminar el paso \emph{N-ésimo}, en \texttt{maximo} se va a encontrar la solución al problema.
 \subsubsection{Implementación}
+Se adjunta a continuación un pseudocódigo del algoritmo implementado.
 \begin{verbatim}
-int main(int argc, char const *argv[]) {
-  int N, val;
-  cin >> N;
+  begin
+  int N, val
+  input(N)
 
-  int maximum = 0, tmp = 0;
-  forn(i, N){
-    cin >> val;
-    tmp = max(val, tmp + val);
+  int maximum = 0, tmp = 0
+  for (i in 0..N) {
+    input(val)
+    tmp = max(val, tmp + val)
     if(maximum < tmp)
-      maximum = tmp;
+      maximum = tmp
   }
 
-  cout << maximum << endl;
-  return 0;
-}
+  print(maximum)
+  end
+
 \end{verbatim}
 \subsubsection{Complejidad}
 Se analizará la complejidad temporal del algoritmo.
