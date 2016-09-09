@@ -8,7 +8,7 @@ Sea $A = \{a_{1},...,a_{n}\}$ y sea $P$ el límite mencionado, y sea $A' \subset
 Este problema es un caso particular del \emph{Problema de la Mochila\textsuperscript{\cite{knapp}}}, en donde el peso de cada elemento se corresponde al valor del mismo.
 
 \subsection{Desarrollo}
-La solución consta de dividir los $N$ valores entrantes en dos, y para cada grupo de valores (que llamaremos $A$ y $B$), calcula el conjunto de partes, sólo que en lugar de guardar los subconjuntos, guarda la suma de los elementos de los mismos. Agrega también el valor $0$ a ambos grupos.\\
+El algoritmo que provee la solución divide los $N$ valores entrantes en dos, y para cada grupo de valores (que llamaremos $A$ y $B$), calcula el conjunto de partes, sólo que en lugar de guardar los subconjuntos, guarda la suma de los elementos de los mismos. Agrega también el valor $0$ a ambos grupos.\\
 Luego, ordena ambos grupos de menor a mayor, de manera tal que $A = [a_{1},...,a_{\vert A\vert}]$ con $a_{i} < a_{i+1}$, y $B = [b_{1},...,b_{\vert B\vert}]$ con $b_{i} < b_{i+1}$.\par
 Finalmente, realiza una busqueda para encontrar un $a \in A$ y un $b \in B$ tales que $a + b \leq P$ y $(\forall x \in A)(\forall y \in B) x \neq a \wedge y \neq b \Rightarrow x + y \leq a + b$. Dichos valores siempre existen dado que $P$ es un entero positivo y $a$ y $b$ podrían eventualmente ser $0$., y para hallarlos, recorre los elementos de $A$ de izquierda a derecha, y los de $B$ de derecha izquierda, y calcula si la suma $a_{i} + b_{j} > P$. En todo momento, se mantiene una variable (que llamaremos $MAX$) que recuerda cual fue el valor de la máxima suma encontrada.\\
 Si esa suma es mayor que $P$, avanza $j$, es decir, repite el proceso con $a_{i} + b_{j-1}$. Ya que $B$ esta ordenado de menor a mayor, si $a_{i} + b_{j} > P \Rightarrow (\forall k > j) a_{i}+b_{k} > P$, por lo que todos los $b_{k}$ ya no son necesarios.\\
@@ -29,3 +29,6 @@ Estudiaremos la complejidad de las tres funciones presentadas: \emph{generatePar
 	\end{enumerate}
 	Por la suma de dichas operaciones y por propiedades de la \emph{Cota superior}, esta función tiene complejidad $O(N*2^{N/2})$
 \end{itemize}
+
+\subsection{Puntaje}
+El peso otorgado a este ejercicio es: 10

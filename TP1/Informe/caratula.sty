@@ -33,10 +33,12 @@
 \newcommand{\LabelIntegrantes}{}
 \newboolean{showLU}
 \newboolean{showEntregas}
+\newboolean{showIntegrantes}
 \newboolean{showDirectores}
 \newboolean{showCoDirectores}
 \newboolean{showKeywords}
 \newboolean{showAbstract}
+\newboolean{showHash}
 
 % ----- Comandos para que el usuario defina las variables ------------------
 
@@ -57,6 +59,10 @@
 
 \newtoks\intlistSinLU\intlistSinLU={}
 
+\newtoks\intlistHashes\intlistHashes={}
+
+\newcounter{hashCount}
+\setcounter{hashCount}{0}
 \newcounter{integrantesCount}
 \setcounter{integrantesCount}{0}
 \newtoks\intTabNombre\intTabNombre={}
@@ -92,6 +98,11 @@
     \addtocounter{integrantesCount}{1}%
 }
 
+\def\hashGrupo#1{%
+    \intlistHashes=\expandafter{\the\intlistHashes\rule{0pt}{1.2em}#1\\[0.2em]}%
+    \addtocounter{hashCount}{1}%
+}
+
 \def\director#1#2{%
     \ifthenelse{\value{directoresCount} > 0}{%
         \direcTabNombre=\expandafter{\the\direcTabNombre & #1}%
@@ -119,7 +130,20 @@
 
 \newcommand{\tablaIntegrantes}{\ }
 
+\newcommand{\tablaHash}{%
+\ifthenelse{\boolean{showHash}}{
+    \begin{tabular}[t]{| c |}
+        \hline
+        Hash \\[0.2em]
+        \hline \hline
+        \the\intlistHashes
+        \hline
+    \end{tabular}
+    }{}
+}
+
 \newcommand{\tablaIntegrantesVertical}{%
+\ifthenelse{\boolean{showIntegrantes}}{
 \ifthenelse{\boolean{showLU}}{%
     \begin{tabular}[t]{| l @{\hspace{4ex}} c @{\hspace{4ex}} l|}
         \hline
@@ -137,9 +161,11 @@
         \hline
     \end{tabular}
     }%
+    }{}
 }
 
 \newcommand{\tablaIntegrantesHorizontal}{%
+\ifthenelse{\boolean{showIntegrantes}}{
     \begin{tabular}[t]{ *{\value{integrantesCount}}{c} }
     \the\intTabNombre \\%
 \ifthenelse{\boolean{showLU}}{
@@ -147,6 +173,7 @@
 }{}
     \the\intTabEmail %
     \end{tabular}%
+    }{}
 }
 
 \newcommand{\tablaDirectores}{%
@@ -222,8 +249,8 @@
     \let\ifsetuperror\iffalse
     \ifx\Materia\relax\se\errhelp={Te olvidaste de proveer una \materia{}.}\fi
     \ifx\Titulo\relax\se\errhelp={Te olvidaste de proveer un \titulo{}.}\fi
-    \edef\mlist{\the\intlist}\ifx\mlist\empty\se%
-    \errhelp={Tenes que proveer al menos un \integrante{nombre}{lu}{email}.}\fi
+    %\edef\mlist{\the\intlist}\ifx\mlist\empty\se%
+    %\errhelp={Tenes que proveer al menos un \integrante{nombre}{lu}{email}.}\fi
     \expandafter\ifsetuperror}
 
 \def\aftermaketitle{%
@@ -250,6 +277,7 @@
     \par\vspace{\stretch{3}}
     \ifx\Grupo\relax\else\textbf{\Grupo}\par\bigskip\fi
     \tablaIntegrantes
+    \tablaHash
     \tablaKeywords
     \textAbstract
     \end{center}
@@ -305,6 +333,8 @@
     \begin{center}
         \ifx\Grupo\relax\else\textbf{\Grupo}\par\bigskip\fi
         \tablaIntegrantes
+        
+        \tablaHash
 
         \tablaDirectores
 
@@ -376,6 +406,10 @@
 \DeclareOption{hideKeywords}{\setboolean{showKeywords}{false}}
 \DeclareOption{showAbstract}{\setboolean{showAbstract}{true}}
 \DeclareOption{hideAbstract}{\setboolean{showAbstract}{false}}
+\DeclareOption{showHash}{\setboolean{showHash}{true}}
+\DeclareOption{hideHash}{\setboolean{showHash}{false}}
+\DeclareOption{showIntegrantes}{\setboolean{showIntegrantes}{true}}
+\DeclareOption{hideIntegrantes}{\setboolean{showIntegrantes}{false}}
 %
 % Opciones predeterminadas
 %
@@ -386,6 +420,7 @@
 \ExecuteOptions{hideDirectores}%
 \ExecuteOptions{hideCoDirectores}%
 \ExecuteOptions{sinEntregas}
+\ExecuteOptions{showHash}
 \ExecuteOptions{hideKeywords}
 \ExecuteOptions{hideAbstract}
 %
