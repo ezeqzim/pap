@@ -1,49 +1,46 @@
 This is BibTeX, Version 0.99d (TeX Live 2016)
 Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
 The top-level auxiliary file: main.aux
-The style file: plain.bst
+The style file: unsrt.bst
 Database file #1: main.bib
-Warning--to sort, need author or key in knapp
-Warning--to sort, need author or key in pushback
 You've used 2 entries,
-            2118 wiz_defined-function locations,
-            502 strings with 4145 characters,
-and the built_in function-call counts, 338 in all, are:
-= -- 30
+            1791 wiz_defined-function locations,
+            450 strings with 3670 characters,
+and the built_in function-call counts, 220 in all, are:
+= -- 16
 > -- 2
 < -- 0
 + -- 2
 - -- 0
-* -- 12
-:= -- 43
+* -- 2
+:= -- 27
 add.period$ -- 4
 call.type$ -- 2
-change.case$ -- 6
+change.case$ -- 2
 chr.to.int$ -- 0
-cite$ -- 4
-duplicate$ -- 14
-empty$ -- 47
+cite$ -- 2
+duplicate$ -- 10
+empty$ -- 37
 format.name$ -- 0
-if$ -- 81
+if$ -- 55
 int.to.chr$ -- 0
 int.to.str$ -- 2
 missing$ -- 0
 newline$ -- 11
 num.names$ -- 0
-pop$ -- 16
+pop$ -- 12
 preamble$ -- 1
-purify$ -- 4
+purify$ -- 0
 quote$ -- 0
-skip$ -- 16
+skip$ -- 12
 stack$ -- 0
-substring$ -- 10
+substring$ -- 0
 swap$ -- 2
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 8
-warning$ -- 2
+type$ -- 0
+warning$ -- 0
 while$ -- 0
 width$ -- 3
 write$ -- 16
-(There were 2 warnings)
