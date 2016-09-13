@@ -1,0 +1,50 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{caratula}
+\usepackage{geometry}
+\usepackage{mathtools}
+\usepackage{tikz}
+\usepackage{float}
+%\usepackage{makecell}
+\usepackage{tabularx}
+\usepackage[nomove]{cite}
+%\usepackage[nottoc]{tocbibind}
+%\usepackage{placeins}
+\usepackage{hyperref}
+\hypersetup{
+    linktoc=all,     %set to all if you want both sections and subsections linked
+    linkcolor=blue,  %choose shttps://www.sharelatex.com/project/542da47afb0e80fe43643f61ome color if you want links to stand out
+}
+\input{page.layout}
+
+\begin{document}
+\titulo{Trabajo Práctico 1}
+\subtitulo{\emph{Técnicas Algorítmicas}}
+
+\fecha{\today}
+
+\materia{Problemas, Algoritmos y Programación}
+
+\integrante{5912580999204887}{5912580999204887}{5912580999204887}
+
+\maketitle
+
+\newpage
+\thispagestyle{empty}
+\vfill
+\vspace{3cm}
+\tableofcontents
+\newpage
+\setcounter{page}{1}
+
+\input{ej1}
+\newpage
+\input{ej2}
+\newpage
+\input{ej3}
+\newpage
+\input{ej4}
+
+\bibliographystyle{plain}
+\bibliography{main}
+\end{document}
