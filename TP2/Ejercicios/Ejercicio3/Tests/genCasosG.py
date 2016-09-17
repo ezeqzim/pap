@@ -1,21 +1,64 @@
 import random as r
 import sys
 
-def modo_de_uso():
-    print "Modo de uso:"
-    print "1. Ejecutar con nombre de archivo de salido deseado, la extension sera .big"
-    sys.exit()
+def specific():
+    filename = "big.in"
+    expected = "big.exp"
+    N = 10**4
+    M = 10**4
+    Qa = 10**3
+    Qb = (10**5 - Qa) / 2
+    Qc = (10**5 - Qa) / 2
+    with open(filename, "w") as f:
+        f.write(str(N) + " " + str(M) + "\n")
+        for i in range(1, M):
+            n1 = str(i)
+            n2 = str(i + 1)
+            f.write(n1 + " " + n2 + "\n")
+        f.write("1 " + str(M) + "\n")
+        for i in range(0, Qa):
+            n1 = str(r.randint(1, N))
+            n2 = str(r.randint(1, N))
+            f.write("A " + n1 + " " + n2 + "\n")
+        for i in range(0, Qb):
+            n1 = str(r.randint(1, M))
+            f.write("B " + n1 + "\n")
+        for i in range(0, Qc):
+            n1 = str(r.randint(1, N))
+            f.write("C " + n1 + "\n")
+    with open(expected, "w") as f:
+        for i in range(0, Qa):
+            f.write("0\n")
+        for i in range(0, Qb):
+            f.write("0\n")
+        for i in range(0, Qc):
+            f.write(str(N - 1) + "\n")
+
+def aleatorio(filename):
+    filename = filename + ".big"
+    with open(filename,"w") as f:
+        N = 10**4
+        M = 10**5
+        Qa = 10**3
+        Qb = (10**5 - Qa) / 2
+        Qc = (10**5 - Qa) / 2
+        f.write(str(N) + " " + str(M) + "\n")
+        for i in range(0, M):
+            n1 = str(r.randint(1, N))
+            n2 = str(r.randint(1, N))
+            f.write(n1 + " " + n2 + "\n")
+        for i in range(0, Qa):
+            n1 = str(r.randint(1, N))
+            n2 = str(r.randint(1, N))
+            f.write("A " + n1 + " " + n2 + "\n")
+        for i in range(0, Qb):
+            n1 = str(r.randint(1, M))
+            f.write("B " + n1 + "\n")
+        for i in range(0, Qc):
+            n1 = str(r.randint(1, N))
+            f.write("C " + n1 + "\n")
 
 if(len(sys.argv) == 1):
-  modo_de_uso()
+    specific()
 else:
-  filename = sys.argv[1] + ".big"
-  with open(filename,"w") as f:
-    N = r.randint(1, 10**5)
-    f.write(str(N))
-    f.write("\n")
-    for i in range(0, N):
-      f.write(str(r.randint(0, 10**9)))
-      if(i != N-1):
-        f.write(" ")
-    f.write("\n")
+    aleatorio(sys.argv[1])
