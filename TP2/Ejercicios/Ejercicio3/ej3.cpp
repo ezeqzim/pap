@@ -155,8 +155,8 @@ void init() {
 
 int main(int argc, char const *argv[]) {
     int q; char t;
-     std::ifstream in("./Tests/friendship.in");
-     std::cin.rdbuf(in.rdbuf());
+      std::ifstream in("./Tests/k2.in");
+      std::cin.rdbuf(in.rdbuf());
 
     init();
     createGraph();
