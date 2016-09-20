@@ -14,6 +14,15 @@ char c;
 nodo sumidero;
 nodo fuente;
 
+
+nodo out(nodo v) {
+    return 2*v+1;
+}
+
+nodo in(nodo v) {
+    return 2*v;
+}
+
 void test(){
     // Este test toma el grafo nuevo, osea, con fuente y sumidero y con los nodos partidos en v_in y v_out y 
     // reconstruye el grafo original más fuente y sumidero. Es decir, muestra como estaban conectados los 
@@ -25,7 +34,7 @@ void test(){
         if (i == 0) cout << "Fuente" << endl;
         else cout << i << endl;
         cout << "Ejes salientes a: ";
-        for (nodo v : grafo[2*i+1]) {
+        for (nodo v : grafo[out(i)]) {
             if (v == fuente) cout << "fuente ";
             else if (v==sumidero) cout << "sumidero ";
             else cout << v/2 << " ";
@@ -36,13 +45,13 @@ void test(){
 
 void armar_nodos(){
 	forr(i,1,n+1){
-    	grafo[2*i].push_back(2*i+1);   // Conecto todos los u.in con u.out
+    	grafo[in(i)].push_back(out(i));   // Conecto todos los u.in con u.out
     	cin >> c;
     	if (c == 'A') {   // De la fuente voy a los alumnos
-    		grafo[fuente].push_back(2*i);
+    		grafo[fuente].push_back(in(i));
     	}
     	else if (c == 'E') {  // De las escuelas voy al sumidero
-    		grafo[2*i+1].push_back(sumidero);
+    		grafo[out(i)].push_back(sumidero);
     	}
     }
 }
@@ -51,10 +60,11 @@ void armar_ejes(){
 	int u,v;
 	forn(i,m){
     	cin >> u >> v;     // Si u y v están conectados, entonces de u.out sale eje a v.in y de v.out a u.in
-    	grafo[2*u+1].push_back(2*v);
-    	grafo[2*v+1].push_back(2*u);
+    	grafo[out(u)].push_back(in(v));
+    	grafo[out(v)].push_back(in(u));
     }
 }
+
 
 int main(int argc, char const *argv[]) {
 
