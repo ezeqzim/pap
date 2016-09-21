@@ -2,8 +2,8 @@ import random as r
 import sys
 
 def specific():
-    filename = "big.in"
-    expected = "big.exp"
+    filename = "bigTest.in"
+    expected = "bigTest.exp"
     N = 10**4
     M = 10**4
     Qa = 10**3
@@ -16,6 +16,7 @@ def specific():
             n2 = str(i + 1)
             f.write(n1 + " " + n2 + "\n")
         f.write("1 " + str(M) + "\n")
+        f.write(str(Qa + Qb + Qc))
         for i in range(0, Qa):
             n1 = str(r.randint(1, N))
             n2 = str(r.randint(1, N))
@@ -47,6 +48,7 @@ def aleatorio(filename):
             n1 = str(r.randint(1, N))
             n2 = str(r.randint(1, N))
             f.write(n1 + " " + n2 + "\n")
+        f.write(str(Qa + Qb + Qc))
         for i in range(0, Qa):
             n1 = str(r.randint(1, N))
             n2 = str(r.randint(1, N))
