@@ -125,7 +125,7 @@ int main(int argc, char const *argv[]) {
   obtener_precios(a, d, precios_por_dia);
   armar_grafo(a, d, precios_por_dia);
   conectar_fuente_y_sumidero(a);
-  cout << edmondsKarp() << endl;
+  cout << a - edmondsKarp() << endl;
   test(a);
   return 0;
 }
