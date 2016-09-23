@@ -71,10 +71,10 @@ void test(int a){
     if(i == a) cout << "Fuente" << endl;
     else cout << i << endl;
     cout << "Ejes salientes a: ";
-    forn(j, grafo[out(i)].size()) {
-      if(grafo[out(i)][j] == fuente) cout << "fuente ";
-      else if(grafo[out(i)][j] == sumidero) cout << "sumidero ";
-      else cout << grafo[out(i)][j]/2 << " ";
+    forn(j, grafo[in(i)].size()) {
+      if(grafo[in(i)][j] == fuente) cout << "fuente ";
+      else if(grafo[in(i)][j] == sumidero) cout << "sumidero ";
+      else cout << grafo[in(i)][j]/2 << " ";
     }
     cout << endl;
   }
@@ -101,7 +101,7 @@ void armar_grafo(int a, int d, vector<vector<int> >& precios_por_dia){
     forn(j, a)
       if (i != j)
         if(puede_ir_arriba(d, i, j, precios_por_dia))
-          grafo[out(i)].push_back(in(j));
+          grafo[in(i)].push_back(out(j));
 }
 
 void conectar_fuente_y_sumidero(int a){
@@ -112,16 +112,16 @@ void conectar_fuente_y_sumidero(int a){
 }
 
 int main(int argc, char const *argv[]) {
-  // Fuente = n+1
-  // Sumidero = n
+  // Fuente = a
+  // Sumidero = a+1
   // Para toda accion i, accion_i_in = 2i
   // Para toda accion i, accion_i_out = 2i+1
   int d, a;
   cin >> a >> d;
   grafo = vector<vector<nodo> >(2*a+2);
   vector<vector<int> > precios_por_dia(a, vector<int>(d, 0));
-  sumidero = 2*a;
-  fuente = 2*a+1;
+  sumidero = 2*a+1;
+  fuente = 2*a;
   obtener_precios(a, d, precios_por_dia);
   armar_grafo(a, d, precios_por_dia);
   conectar_fuente_y_sumidero(a);
