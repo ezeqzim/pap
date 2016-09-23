@@ -88,7 +88,7 @@ void obtener_precios(int a, int d, vector<vector<int> >& precios_por_dia){
 
 bool puede_ir_arriba(int d, nodo i, nodo j, vector<vector<int> >& precios_por_dia) {
   forn(k, d)
-    if (precios_por_dia[i][k] > precios_por_dia[j][k])
+    if (precios_por_dia[i][k] >= precios_por_dia[j][k])
       return false;
   return true;
 }
@@ -123,6 +123,6 @@ int main(int argc, char const *argv[]) {
   armar_grafo(a, d, precios_por_dia);
   conectar_fuente_y_sumidero(a);
   cout << a - edmondsKarp() << endl;
-  test(a);
+  // test(a);
   return 0;
 }
