@@ -106,8 +106,8 @@ void armar_grafo(int a, int d, vector<vector<int> >& precios_por_dia){
 
 void conectar_fuente_y_sumidero(int a){
   forn(i, a){
-    grafo[fuente].push_back(out(i));
-    grafo[in(i)].push_back(sumidero);
+    grafo[fuente].push_back(in(i));
+    grafo[out(i)].push_back(sumidero);
   }
 }
 
@@ -125,7 +125,7 @@ int main(int argc, char const *argv[]) {
   obtener_precios(a, d, precios_por_dia);
   armar_grafo(a, d, precios_por_dia);
   conectar_fuente_y_sumidero(a);
-  cout << a - edmondsKarp() << endl;
+  cout << edmondsKarp() << endl;
   test(a);
   return 0;
 }
