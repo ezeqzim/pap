@@ -68,7 +68,7 @@ void test(int a){
   // puede eliminar más adelante.
   forn(i, a+1){
     cout << "Nodo: ";
-    if(i == 0) cout << "Fuente" << endl;
+    if(i == a) cout << "Fuente" << endl;
     else cout << i << endl;
     cout << "Ejes salientes a: ";
     forn(j, grafo[out(i)].size()) {
