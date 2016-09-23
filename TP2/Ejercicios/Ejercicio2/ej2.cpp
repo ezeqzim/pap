@@ -69,29 +69,26 @@ void test(int a){
   forn(i, a+1){
     cout << "Nodo: ";
     if(i == a) cout << "Fuente" << endl;
-    else cout << i << endl;
+    else cout << i+1 << endl;
     cout << "Ejes salientes a: ";
-    forn(j, grafo[out(i)].size()) {
-      if(grafo[out(i)][j] == fuente) cout << "fuente ";
-      else if(grafo[out(i)][j] == sumidero) cout << "sumidero ";
-      else cout << grafo[out(i)][j]/2 << " ";
+    forn(j, grafo[in(i)].size()) {
+      if(grafo[in(i)][j] == fuente) cout << "fuente ";
+      else if(grafo[in(i)][j] == sumidero) cout << "sumidero ";
+      else cout << grafo[in(i)][j]/2 + 1 << " ";
     }
     cout << endl;
   }
 }
 
 void obtener_precios(int a, int d, vector<vector<int> >& precios_por_dia){
-  int precio;
   forn(i, a)
-    forn(j, d){
-      cin >> precio;
-      precios_por_dia[i][j] = precio;
-    }
+    forn(j, d)
+      cin >> precios_por_dia[i][j];
 }
 
 bool puede_ir_arriba(int d, nodo i, nodo j, vector<vector<int> >& precios_por_dia) {
   forn(k, d)
-    if (precios_por_dia[i][k] <= precios_por_dia[j][k])
+    if (precios_por_dia[i][k] > precios_por_dia[j][k])
       return false;
   return true;
 }
@@ -101,7 +98,7 @@ void armar_grafo(int a, int d, vector<vector<int> >& precios_por_dia){
     forn(j, a)
       if (i != j)
         if(puede_ir_arriba(d, i, j, precios_por_dia))
-          grafo[out(i)].push_back(in(j));
+          grafo[in(i)].push_back(out(j));
 }
 
 void conectar_fuente_y_sumidero(int a){
@@ -125,7 +122,7 @@ int main(int argc, char const *argv[]) {
   obtener_precios(a, d, precios_por_dia);
   armar_grafo(a, d, precios_por_dia);
   conectar_fuente_y_sumidero(a);
-  cout << edmondsKarp() << endl;
+  cout << a - edmondsKarp() << endl;
   test(a);
   return 0;
 }
