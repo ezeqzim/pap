@@ -7,50 +7,52 @@ typedef int nodo;
 
 using namespace std;
 
-vector<vector<nodo> > grafo;
-nodo sumidero;
-nodo fuente;
+vector<vector<nodo> > grafo, residual;
+nodo sumidero, fuente;
+int capacidad = 1, INF = numeric_limits<int>::max();
 
 int edmondsKarp(){
-  int n = grafo.size(), f = 0, capacity = 1;
-  vector<int> p(n), m(n);
-  vector<vector<int> > flujo(n, vector<int>(n, 0));
-  while(true){
-    forn(i, n)
-      p[i] = -1;
-    p[fuente] = -2;
-    m[fuente] = 1000000000;
-    m[sumidero] = 0;
-    queue<nodo> q;
-    q.push(fuente);
-    bool b = true;
-    while(!q.empty() && b){
-      nodo v = q.front();
-      q.pop();
-      forn(i, grafo[v].size()){
-        nodo vec = grafo[v][i];
-        if(capacity > flujo[v][vec] && p[vec] == -1){
-          p[vec] = v;
-          m[vec] = min(m[v], capacity - flujo[v][vec]);
-          q.push(vec);
-          if(vec == sumidero){
-            b = false;
-            break;
-          }
+  int flujo = 0, n = grafo.size();
+  bool hayCamino = true;
+  while(hayCamino){
+    vector<nodo> previous(n, -1);
+    vector<nodo> pathCapacity(n, 0);
+    previous[fuente] = -2;
+    pathCapacity[fuente] = INF;
+    queue<nodo> cola;
+    cola.push(fuente);
+    bool terminar = false;
+    // Busco un camino de aumento
+    // Almaceno el flujo maximo que puedo pasar por el mismo
+    while(!cola.empty() && !terminar){
+      nodo u = cola.front(); cola.pop();
+      forn(i, grafo[u].size()){
+        nodo v = grafo[u][i];
+        if(previous[v] == -1 && capacidad - residual[u][v]){
+          previous[v] = u;
+          pathCapacity[v] = min(pathCapacity[u], capacidad - residual[u][v]);
+          if(v != sumidero)
+            cola.push(v);
+          else
+            terminar = true;
         }
       }
     }
-    if(b)
-      break;
-    f += m[sumidero];
-    nodo v = sumidero;
-    while(v != fuente){
-      flujo[p[v]][v] += m[sumidero];
-      flujo[v][p[v]] -= m[sumidero];
-      v = p[v];
+    // Si no hay flujo posible, termino
+    if(pathCapacity[sumidero] == 0)
+      hayCamino = false;
+    else{
+      flujo += pathCapacity[sumidero];
+      nodo v = sumidero;
+      while(v != fuente){
+        nodo u = previous[v];
+        residual[u][v] += pathCapacity[sumidero];
+        residual[v][u] -= pathCapacity[sumidero];
+        v = u;
+      }
     }
   }
-  return f;
+  return flujo;
 }
 
 nodo out(nodo v) {
@@ -116,6 +118,7 @@ int main(int argc, char const *argv[]) {
   int d, a;
   cin >> a >> d;
   grafo = vector<vector<nodo> >(2*a+2);
+  residual = vector<vector<nodo> >(2*a+2, vector<nodo>(2*a+2, 0));
   vector<vector<int> > precios_por_dia(a, vector<int>(d, 0));
   sumidero = 2*a+1;
   fuente = 2*a;
