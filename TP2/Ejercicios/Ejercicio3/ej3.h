@@ -1,12 +1,13 @@
 #define forr(i,a,b) for(int i = a; i < b; ++i)
 #define forn(i,n) forr(i, 0, n)
-typedef std::pair<int, int> eje;
 typedef unsigned int nodo;
+typedef unsigned int eje;
+typedef std::pair<eje, nodo> infoEje;
 
 using namespace std;
 
 void init();
-eje edge(nodo, nodo);
+infoEje info(eje, nodo);
 void calcularPuentes();
 int dfs(nodo, int, nodo, vector<int>&, vector<int>&);
 void calcularComponentesK2();

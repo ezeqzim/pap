@@ -3,9 +3,8 @@
 #include "pair_hash.cpp"
 
 unsigned int n;
-vector<eje> ejes;
-vector<list<nodo> > grafo;
-unordered_map<eje, bool, pair_hash> esPuente;
+vector<list<infoEje> > grafo;
+vector<eje> esPuente;
 vector<unsigned int> nodosEnLaMismaComponente;
 
 int main(int argc, char const *argv[]) {
@@ -51,8 +50,7 @@ void A() {
 void B() {
     int calle;
     cin >> calle;
-    eje e = ejes[calle - 1];
-    if (esPuente[e])
+    if (esPuente[calle - 1])
         cout << 1 << endl;
     else
         cout << 0 << endl;
@@ -69,26 +67,26 @@ void C() {
 void init() {
     unsigned int m, u, v;
     cin >> n >> m;
-    grafo = vector<list<nodo> >(n);
-    ejes = vector<eje>(m);
-    forn(i, m) {
+    grafo = vector<list<infoEje> >(n);
+    esPuente = vector<eje>(m, false);
+    forr(i, 1, m + 1) {
         cin >> u >> v;
-        ejes[i] = edge(u, v);
-        grafo[u - 1].push_back(v);
-        grafo[v - 1].push_back(u);
+        grafo[u - 1].push_back(info(i, v));
+        grafo[v - 1].push_back(info(i, u));
     }
 }
 
 int dfs(nodo v, int d, nodo padre, vector<int>& depth, vector<int>& low) {
     depth[v - 1] = d;
     low[v - 1] = d;
-    for (const nodo& w : grafo[v - 1]) {
+    for (const infoEje& info : grafo[v - 1]) {
+        eje e = info.first;
+        nodo w = info.second;
         if (w != padre) {
             if (depth[w - 1] == -1) {
                 low[v - 1] = min(low[v - 1], dfs(w, d + 1, v, depth, low));
                 if (low[w - 1] >= depth[w - 1]) {
-                    esPuente[edge(v, w)] = true;
-                    esPuente[edge(w, v)] = true;
+                    esPuente[e - 1] = true;
                 }
             } else {
                 low[v - 1] = min(low[v - 1], depth[w - 1]);
@@ -102,8 +100,10 @@ void nodosEnComponente(nodo v, list<nodo>& nodosEnComp, vector<bool>& visitado) 
     if (!visitado[v - 1]) {
         visitado[v - 1] = true;
         nodosEnComp.push_back(v);
-        for (const nodo& w : grafo[v - 1]) {
-            if (!esPuente[edge(v, w)]) {
+        for (const infoEje& info : grafo[v - 1]) {
+            eje e = info.first;
+            nodo w = info.second;
+            if (!esPuente[e - 1]) {
                 nodosEnComponente(w, nodosEnComp, visitado);
             }
         }
@@ -116,14 +116,16 @@ int encontrar(nodo v, nodo buscado, int puentesPasados, vector<bool>& visitado) 
     visitado[v - 1] = true;
     if (v == buscado)
         return puentesPasados;
-    for (const nodo& n : grafo[v - 1]) {
-        int nuevoPuente = (esPuente[edge(v, n)]) ? 1 : 0;
-        int res = encontrar(n, buscado, puentesPasados + nuevoPuente, visitado);
+    for (const infoEje& info : grafo[v - 1]) {
+        eje e = info.first;
+        nodo w = info.second;
+        int nuevoPuente = (esPuente[e - 1]) ? 1 : 0;
+        int res = encontrar(w, buscado, puentesPasados + nuevoPuente, visitado);
         if (res > 0) return res;
     }
     return 0;
 }
 
-eje edge(nodo v, nodo w) {
-    return make_pair(v, w);
+infoEje info(eje e, nodo v) {
+    return make_pair(e, v);
 }
