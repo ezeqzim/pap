@@ -7,16 +7,16 @@ typedef long long ll;
 using namespace std;
 
 vector<vector<int> > original, traspuesto;
-vector<int> scc;
+vector<int> scc; // scc = Strong Connected Component
 int componente;
 stack<int> pila;
-vector<bool> visited;
+vector<bool> visitado;
 
 void dfs(int nodo, bool segundaPasada, vector<vector<int> >& grafo){
-  visited[nodo] = true;
+  visitado[nodo] = true;
   forn(i, grafo[nodo].size()){
     int vecino = grafo[nodo][i];
-    if(!visited[vecino])
+    if(!visitado[vecino])
       dfs(vecino, segundaPasada, grafo);
   }
   if(segundaPasada)
@@ -28,18 +28,18 @@ void dfs(int nodo, bool segundaPasada, vector<vector<int> >& grafo){
 void kosaraju(int A){
   componente = 0;
   pila = stack<int>();
-  visited = vector<bool>(A, false);
+  visitado = vector<bool>(A, false);
   scc = vector<int>(A);
 
   forn(i, A)
-    if(!visited[i])
+    if(!visitado[i])
       dfs(i, false, original);
 
-  visited = vector<bool>(A, false);
+  visitado = vector<bool>(A, false);
 
   while(!pila.empty()){
     int v = pila.top(); pila.pop();
-    if (!visited[v]) {
+    if (!visitado[v]) {
       dfs(v, true, traspuesto);
       componente++;
     }
@@ -65,8 +65,7 @@ void terminar(){
   cin >> Q;
   forn(i, Q){
     cin >> v >> w;
-    v--; w--;
-    if(scc[v] == scc[w])
+    if(scc[v - 1] == scc[w - 1])
       cout << 'S' << endl;
     else
       cout << 'N' << endl;
