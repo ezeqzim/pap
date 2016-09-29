@@ -7,79 +7,57 @@ typedef int nodo;
 
 using namespace std;
 
-vector<vector<nodo> > grafo, residual;
-nodo sumidero, fuente;
-int capacidad = 1, INF = numeric_limits<int>::max();
+// guardo la lista de adyacencia y el flujo que pasa en la red residual
+vector<vector<pair<nodo, int> > > grafo;
+nodo fuente, sumidero;
+int capacidad = 1, INF = 1e31-1;
+
+bool hayCaminoDeAumento(vector<pair<nodo, int> >& padres){
+  padres[fuente].first = -1;
+  vector<bool> visitados(grafo.size(), false);
+  queue<nodo> q;
+  q.push(fuente);
+  visitados[fuente] = true;
+
+  while(!q.empty()){
+    nodo u = q.front(); q.pop();
+    forn(i, grafo[u].size()){
+      nodo v = grafo[u][i].first;
+      int f = grafo[u][i].second;
+      if(!(visitados[v] || f == 1)){
+        visitados[v] = true;
+        padres[v] = make_pair(u, i);
+        q.push(v);
+      }
+    }
+  }
+  return visitados[sumidero];
+}
 
 int edmondsKarp(){
   int flujo = 0, n = grafo.size();
   bool hayCamino = true;
-  while(hayCamino){
-    vector<nodo> previous(n, -1);
-    vector<nodo> pathCapacity(n, 0);
-    previous[fuente] = -2;
-    pathCapacity[fuente] = INF;
-    queue<nodo> cola;
-    cola.push(fuente);
-    bool terminar = false;
-    // Busco un camino de aumento
-    // Almaceno el flujo maximo que puedo pasar por el mismo
-    while(!cola.empty() && !terminar){
-      nodo u = cola.front(); cola.pop();
-      forn(i, grafo[u].size()){
-        nodo v = grafo[u][i];
-        if(previous[v] == -1 && capacidad - residual[u][v]){
-          previous[v] = u;
-          pathCapacity[v] = min(pathCapacity[u], capacidad - residual[u][v]);
-          if(v != sumidero)
-            cola.push(v);
-          else
-            terminar = true;
-        }
-      }
-    }
-    // Si no hay flujo posible, termino
-    if(pathCapacity[sumidero] == 0)
-      hayCamino = false;
-    else{
-      flujo += pathCapacity[sumidero];
-      nodo v = sumidero;
-      while(v != fuente){
-        nodo u = previous[v];
-        residual[u][v] += pathCapacity[sumidero];
-        residual[v][u] -= pathCapacity[sumidero];
-        v = u;
-      }
+  // El par indica de que nodo vine y que indice en la lista use
+  vector<pair<nodo, int> > padres(n, make_pair(-1, -1));
+  while(hayCaminoDeAumento(padres)){
+    flujo++;
+    nodo v = sumidero;
+    while(v != fuente){
+      nodo u = padres[v].first;
+      int index = padres[v].second;
+      grafo[u][index].second++;
+      v = u;
     }
   }
   return flujo;
 }
 
-nodo out(nodo v) {
-  return 2*v+1;
-}
-
-nodo in(nodo v) {
+nodo izq(nodo v) {
   return 2*v;
 }
 
-void test(int a){
-  // Este test toma el grafo nuevo, osea, con fuente y sumidero y con los nodos partidos en v_in y v_out y
-  // reconstruye el grafo original más fuente y sumidero. Es decir, muestra como estaban conectados los
-  // nodos originales y a qué nodos se conecta la fuente. Es para ver si se armó bien, ésta función se
-  // puede eliminar más adelante.
-  forn(i, a+1){
-    cout << "Nodo: ";
-    if(i == a) cout << "Fuente" << endl;
-    else cout << i+1 << endl;
-    cout << "Ejes salientes a: ";
-    forn(j, grafo[in(i)].size()) {
-      if(grafo[in(i)][j] == fuente) cout << "fuente ";
-      else if(grafo[in(i)][j] == sumidero) cout << "sumidero ";
-      else cout << grafo[in(i)][j]/2 + 1 << " ";
-    }
-    cout << endl;
-  }
+nodo der(nodo v) {
+  return 2*v+1;
 }
 
 void obtener_precios(int a, int d, vector<vector<int> >& precios_por_dia){
@@ -90,24 +68,38 @@ void obtener_precios(int a, int d, vector<vector<int> >& precios_por_dia){
 
 bool puede_ir_arriba(int d, nodo i, nodo j, vector<vector<int> >& precios_por_dia) {
   forn(k, d)
-    if (precios_por_dia[i][k] >= precios_por_dia[j][k])
+    if (precios_por_dia[i][k] <= precios_por_dia[j][k])
       return false;
   return true;
 }
 
 void armar_grafo(int a, int d, vector<vector<int> >& precios_por_dia){
   forn(i, a)
-    forn(j, a)
-      if (i != j)
-        if(puede_ir_arriba(d, i, j, precios_por_dia))
-          grafo[in(i)].push_back(out(j));
+    forr(j, i+1, a)
+      if (puede_ir_arriba(d, i, j, precios_por_dia))
+        grafo[izq(i)].push_back(make_pair(der(j), 0));
+      else if (puede_ir_arriba(d, j, i, precios_por_dia))
+        grafo[izq(j)].push_back(make_pair(der(i), 0));
 }
 
 void conectar_fuente_y_sumidero(int a){
   forn(i, a){
-    grafo[fuente].push_back(in(i));
-    grafo[out(i)].push_back(sumidero);
+    grafo[fuente].push_back(make_pair(izq(i), 0));
+    grafo[der(i)].push_back(make_pair(sumidero, 0));
   }
+}
+
+int inicializar(){
+  int d, a;
+  cin >> a >> d;
+  grafo = vector<vector<pair<nodo, int> > >(2*a+2);
+  vector<vector<int> > precios_por_dia(a, vector<int>(d, 0));
+  sumidero = 2*a+1;
+  fuente = 2*a;
+  obtener_precios(a, d, precios_por_dia);
+  armar_grafo(a, d, precios_por_dia);
+  conectar_fuente_y_sumidero(a);
+  return a;
 }
 
 int main(int argc, char const *argv[]) {
@@ -115,17 +107,7 @@ int main(int argc, char const *argv[]) {
   // Sumidero = a+1
   // Para toda accion i, accion_i_in = 2i
   // Para toda accion i, accion_i_out = 2i+1
-  int d, a;
-  cin >> a >> d;
-  grafo = vector<vector<nodo> >(2*a+2);
-  residual = vector<vector<nodo> >(2*a+2, vector<nodo>(2*a+2, 0));
-  vector<vector<int> > precios_por_dia(a, vector<int>(d, 0));
-  sumidero = 2*a+1;
-  fuente = 2*a;
-  obtener_precios(a, d, precios_por_dia);
-  armar_grafo(a, d, precios_por_dia);
-  conectar_fuente_y_sumidero(a);
+  int a = inicializar();
   cout << a - edmondsKarp() << endl;
-  // test(a);
   return 0;
 }

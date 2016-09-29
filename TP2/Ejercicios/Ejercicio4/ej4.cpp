@@ -46,21 +46,22 @@ void kosaraju(int A){
   }
 }
 
-int main(int argc, char const *argv[]) {
-  int A, P, Q;
+int inicializar(){
+  int A, P, v, w;
   cin >> A >> P;
   original = vector<vector<int> >(A, vector<int>());
   traspuesto = vector<vector<int> >(A, vector<int>());
-  int v, w;
   forn(i, P){
     cin >> v >> w;
     v--; w--;
     original[v].push_back(w);
     traspuesto[w].push_back(v);
   }
+  return A;
+}
 
-  kosaraju(A);
-
+void terminar(){
+  int Q, v, w;
   cin >> Q;
   forn(i, Q){
     cin >> v >> w;
@@ -70,5 +71,13 @@ int main(int argc, char const *argv[]) {
     else
       cout << 'N' << endl;
   }
+}
+
+int main(int argc, char const *argv[]) {
+  int A = inicializar();
+
+  kosaraju(A);
+
+  terminar();
   return 0;
 }
