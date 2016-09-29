@@ -11,7 +11,7 @@ int main(int argc, char const *argv[]) {
     int q; char t;
     init();
     calcularPuentes();
-    calcularComponentesK2();
+    calcularComponentesSinPuentes();
     cin >> q;
     forn(i, q) {
         cin >> t;
@@ -28,7 +28,7 @@ void calcularPuentes() {
     dfs(1, 0, 1, depth, low);
 }
 
-void calcularComponentesK2() {
+void calcularComponentesSinPuentes() {
     nodosEnLaMismaComponente = vector<unsigned int>(n, 0);
     vector<bool> visitado(n, false);
     forr (i, 1, n + 1) {
