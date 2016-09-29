@@ -1,7 +1,31 @@
 \section{Ejercicio 1}
-
 \subsection{El Problema}
+
+Se tiene un grafo $G$ $=$ $(V,E)$ de N vértices y M ejes bidireccionales. Se tienen además dos subconjuntos disjuntos $A \subset V$ y $Esc \subset V$ que representan alumnos y escuelas respectivamente. El problema consiste en encontrar la cantidad mínima de vértices $D$ (que representan divulgadores)  tales que para cualquier camino $C$ que una un vértice de $A$ con un vértice de $Esc$, algún $d_i \in C$. Se pide implementar un algoritmo que resuelva este problema con complejidad temporal $O(NM^2)$
 
 \subsection{Desarrollo}
 
+Se pensó el problema utilizando la idea de corte mínimo. Esto es, se quería buscar el corte mínimo tal que los ejes de $A$ queden de un lado y los de $Esc$ del otro. Para esto se armó una red de flujo, agregando dos vértices $s$ y $t$ (sumidero y fuente respectivamente). Se conectó $s$ a los vértices de $A$ y $t$ a los de $Esc$. Se decidió ponerle capacidad 1 a todos los ejes. De esta forma se pensó en, obteniendo el corte mínimo, ver la mínima cantidad de ejes que separan los vértices de $A$ de los de $Esc$. Esto sería equivalente a obtener el flujo máximo, por el teorema de $max-flow$ $min-cut$. Tras discutir esta idea se llegó a un ejemplo que mostró que esa solución no era la indicada.
+
+%%Insertar acá grafo de ejemplo, cuando tenga la herramienta%%
+
+En el grafo del ejemplo, se puede observar que el flujo máximo es 3 pero con poner un único divulgador en el vértice del medio el problema se solucionaría. Esto se debe a que los divulgadores se ubican en los vértices y no en los ejes. Es decir, los vértices van a tener capacidades también. Entonces se decidió poner capacidad 1 a los vértices. 
+
+%% Grafo nuevo %%
+
+De esta forma, ahora el corte mínimo va a solucionar efectivamente el problema. %Hablar más?
+
+Entonces, dado el grafo original $G$ $=$ $(V,E)$, se arma uno nuevo, $G' = (V_{in} \cup V_{out} \cup \{s,t\}, E')$. Para modelar las capacidades de los nodos, se dividió $V$ en dos conjuntos disjuntos $V_{in}$ y $V_{out}$. Cada vértice de $v_i \in V$ se corresponde con un un $v_{iin} \in V_{in}$ y un $v_{iout} \in V_{out}$. 
+
+\begin{itemize}
+\item Por cada vértice $v \in V$ se agrega a $E'$ el eje $(v_{in},v_{out})$.
+\item Por cada uno de los ejes $(u,v) \in E$, se agregan los ejes $(u_{out}, v_{in})$ y $(v_{out}, u_{in})$.
+\item Por cada vértice $a \in A$ se agrega a $E'$ un eje $(s,a_{in})$.
+\item Por cada vértice $e \in Esc$ se agrega a $E'$ un eje $(e_{out},t)$.
+\end{itemize}
+
+%Quizás mencionar algo más sobre por qué se soluciona el problema.
+
+
+\subsubsection{Implementación}
 \subsubsection{Complejidad}
