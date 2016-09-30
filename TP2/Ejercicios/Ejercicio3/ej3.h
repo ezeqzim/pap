@@ -12,6 +12,7 @@ void calcularPuentes();
 int dfs(nodo, int, nodo, vector<int>&, vector<int>&);
 void calcularComponentesK2();
 void nodosEnComponente(nodo, list<nodo>&, vector<bool>&);
+void calcularComponentesSinPuentes();
 void A();
 void B();
 void C();

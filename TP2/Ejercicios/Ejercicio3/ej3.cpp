@@ -1,6 +1,5 @@
 #include "../stdc++.h"
 #include "ej3.h"
-#include "pair_hash.cpp"
 
 unsigned int n;
 vector<list<infoEje> > grafo;
