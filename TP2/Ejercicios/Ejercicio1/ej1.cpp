@@ -44,6 +44,7 @@ int edmondsKarp(){
     nodo v = sumidero;
     while(v != fuente){
       nodo u = padres[v].first;
+      grafo[v].push_back(make_pair(u, 0));
       int index = padres[v].second;
       grafo[u][index].second++;
       v = u;
