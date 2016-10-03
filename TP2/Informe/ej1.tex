@@ -1,7 +1,7 @@
 \section{Ejercicio 1}
 \subsection{El Problema}
 
-Se tiene un grafo $G$ $=$ $(V,E)$ de N vértices y M ejes bidireccionales. Se tienen además dos subconjuntos disjuntos $A \subset V$ y $Esc \subset V$ que representan alumnos y escuelas respectivamente. El problema consiste en encontrar la cantidad mínima de vértices $D$ (que representan divulgadores)  tales que para cualquier camino $C$ que una un vértice de $A$ con un vértice de $Esc$, algún $d_i \in C$. Se pide implementar un algoritmo que resuelva este problema con complejidad temporal $O(NM^2)$
+Se tiene un grafo $G$ $=$ $(V,E)$ de N vértices y M ejes bidireccionales. Se tienen además dos subconjuntos disjuntos $A \subset V$ y $Esc \subset V$ que representan alumnos y escuelas respectivamente. El problema consiste en encontrar la cantidad mínima de vértices $D$ (que representan divulgadores)  tales que para cualquier camino $C$ que una un vértice de $A$ con un vértice de $Esc$, algún $d_i \in C$. Se pide implementar un algoritmo que resuelva este problema con complejidad temporal \O{NM^2}
 
 \subsection{Desarrollo}
 
@@ -77,17 +77,17 @@ Se implementó luego el algoritmo de Edmonds-Karp para resolver el problema de f
 En esta sección se comentará la complejidad del algoritmo implementado. Primero se analizará la complejidad del armado del grafo. El grafo se va armando a medida se va leyendo la entrada, implementado con listas de adyacencia. Esto es:
 
 \begin{itemize}
-\item Primero se lee $N$ y se arma un vector de tamaño $2*N + 2$ (un $in$ y un $out$ por cada vértice original más fuente y sumidero). Esto es del orden de $O(N)$.
-\item Por cada vértice que se lee de la entrada, se conecta su $in$ con su $out$. Si se trata de una escuela, se conecta su $out$ al sumidero y si se trata de un alumno, se conecta la fuente a su $in$. Esto es del orden de $O(1)$ y como se hace una vez por vértice, este paso es del orden de $O(N)$.
-\item Por cada eje $(u,v)$ que se lee de la entrada, se conecta $(u_{out}$ con $v_{in})$ y $(v_{out}$ con $u_{in})$. Esto es $O(1)$ y como se hace una vez por cada eje, este paso es del orden de $O(M)$.
+\item Primero se lee $N$ y se arma un vector de tamaño $2*N + 2$ (un $in$ y un $out$ por cada vértice original más fuente y sumidero). Esto es del orden de \O{N}.
+\item Por cada vértice que se lee de la entrada, se conecta su $in$ con su $out$. Si se trata de una escuela, se conecta su $out$ al sumidero y si se trata de un alumno, se conecta la fuente a su $in$. Esto es del orden de \O{1} y como se hace una vez por vértice, este paso es del orden de \O{N}.
+\item Por cada eje $(u,v)$ que se lee de la entrada, se conecta $(u_{out}$ con $v_{in})$ y $(v_{out}$ con $u_{in})$. Esto es \O{1} y como se hace una vez por cada eje, este paso es del orden de \O{M}.
 \end{itemize}
 
-Esto deja una complejidad total de $O(N+M)$ para el armado del grafo. Luego le sigue el algoritmo de Edmonds-Karp. Este tiene una complejidad de $O(M^2N)$. Cabe mencionar que el grafo que se arma tiene $2*N+2$ vértices y $2*M + A + E + N$ ejes (con $A$ cantidad de alumnos y $E$ cantidad de escuelas). 
+Esto deja una complejidad total de \O{N+M} para el armado del grafo. Luego le sigue el algoritmo de Edmonds-Karp. Este tiene una complejidad de \O{M^2N}. Cabe mencionar que el grafo que se arma tiene $2*N+2$ vértices y $2*M + A + E + N$ ejes (con $A$ cantidad de alumnos y $E$ cantidad de escuelas). 
 
 %% EZE.SUMMON() habla de la complejidad de Edmonds-Karp si queres.
 
-Como el grafo original es conexo, tiene al menos $N-1$ ejes, esto es,  $O(N) \subseteq O(M)$. Además, $O(A) \subseteq O(N)$ y $O(E) \subseteq O(N)$ porque $A+E \leq N$. Entonces $O(2*M + A + E + N) \subseteq$ $O(M)$. Además, el grafo nuevo tiene $2*N+2$ vértices, es decir, $O(N)$ vértices. 
+Como el grafo original es conexo, tiene al menos $N-1$ ejes, esto es,  $O(N) \subseteq O(M)$. Además, \O{A} $\subseteq$ \O{N} y \O{E} $\subseteq$ \O{N} porque $A+E \leq N$. Entonces \O{2*M + A + E + N} $\subseteq$ \O{M}. Además, el grafo nuevo tiene $2*N+2$ vértices, es decir, \O{N} vértices. 
 
-Por lo tanto, el nuevo grafo tiene $O(N)$ vértices y $O(M)$ ejes, por lo que la complejidad de Edmonds-Karp es de $O(M^2N)$.
+Por lo tanto, el nuevo grafo tiene \O{N} vértices y \O{M} ejes, por lo que la complejidad de Edmonds-Karp es de \O{M^2N}.
 
-Entonces la complejidad total del algoritmo es $O(M^2N + N + M)$. Como $N > 0$ y $M>0$, $O(N+M) \subseteq O(M^2N)$. Por lo tanto, la complejidad total del algoritmo es de $O(M^2N)$.
+Entonces la complejidad total del algoritmo es \O{M^2N + N + M}. Como $N > 0$ y $M>0$, \O{N+M} $\subseteq$ \O{M^2N}. Por lo tanto, la complejidad total del algoritmo es de \O{M^2N}.
