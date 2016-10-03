@@ -1,7 +1,19 @@
 \section{Ejercicio 4}
-
 \subsection{El Problema}
+Se tienen $A$ aulas y $P$ pasillos, que se pueden recorrer unidireccionalmente. Se desea saber, a través de una serie de $Q$ consultas, si es posible llegar desde un aula $A_{i}$ a un aula $A_{j}$ y volver al aula $A_{i}$.
 
 \subsection{Desarrollo}
+Para resolver el problema en cuestion, se modeló un DAG $G$ $=$ $(V,E)$ con $V$ $=$ $A$ y $E$ $=$ $P$.
+En dicho DAG, se calcularon las componentes fuertemente conexas.
+Por definición de componente fuertemente conexa, si dos aulas $A_{i}$ y $A_{j}$ pertenecen a la misma componente, eso significa que es posible llegar desde $A_{i}$ a $A_{j}$ y volver a $A_{i}$\textsuperscript{\cite{cfc}}.
+Por lo tanto, las consultas se responden simplemente verificando si las aulas por las que se pregunta, pertenecen a la misma componente.
 
 \subsubsection{Complejidad}
+Nuestro algoritmo consta de las siguientes partes
+\begin{itemize}
+	\item Lectura de la entrada y armado del grafo: Se crean los vértices $A$ y se van agregando los $P$ pasillos. Complejidad: \O{A+P}.
+	\item Calculo de componentes fuertemente conexas: Para el calculo de las componentes, se utilizó el algoritmo de Kosaraju, cuya complejidad es \O{V+E}\textsuperscript{\cite{cormen}}. Complejidad: \O{A+P}.
+	\item Consultas: Las consultas se realizan de forma inmediata, simplemente preguntando si dos aulas pertenecen a la misma componente conexa. Complejidad: \O{Q}.
+\end{itemize}
+
+Por propiedad de la \emph{cota asintótica superior}, la complejidad total de la solución es \O{A+P+Q}.

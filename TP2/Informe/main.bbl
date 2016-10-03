@@ -1,8 +1,12 @@
 \begin{thebibliography}{1}
 
-\bibitem{cormenkarp}
+\bibitem{cormen}
 Thomas~H. Cormen, Clifford Stein, Ronald~L. Rivest, and Charles~E. Leiserson.
-\newblock {\em Introduction to Algorithms}, page 669.
+\newblock {\em Introduction to Algorithms}, pages 553, 669.
 \newblock McGraw-Hill Higher Education, 2nd edition, 2001.
+
+\bibitem{cfc}
+{Strongly Connected Component}.
+\newblock \url{https://en.wikipedia.org/wiki/Strongly_connected_component}.
 
 \end{thebibliography}

@@ -70,9 +70,11 @@ Entonces, la cantidad de vértices de $IZQ$ del grafo $G$ que no tienen ningun e
 El matching bipartito, a su vez, se resuelve utilizando flujo como fue visto en clase. Se conecta una fuente a todos los vértices de la partición $IZQ$ y se conecta todos los vértices de la partición $DER$ a un sumidero, poniendole a todos los ejes capacidad 1.
 
 \subsubsection{Complejidad}
-Estudiaremos la complejidad por partes:
+Nuestro algoritmo consta de las siguientes partes partes:
 \begin{itemize}
 	\item Lectura de la entrada: Se leen $A$ acciones y por cada acción, el valor correspondiente al \emph{i-ésimo} día. Complejidad: \O{A*D}.
 	\item Armado del grafo: Al momento de armar el grafo, se procedió a armar directamente el grafo bipartito $G$ previamente mencionado. Para eso, se generaron $A*2+2$ nodos. $A*2$ correspondientes a los conjuntos $IZQ$ y $DER$ de vértices, más la fuente y el sumidero. Por cada acción, se procede a ver \emph{a cuales otras acciones es mayor}, por lo que por cada accion se deben revisar todas las demás acciones y sus días. Complejidad: \O{A^2*D}.
-	\item Calculo de flujo: El cálculo del flujo utilizando el algoritmo de Edmonds Karp, cuya complejidad es \O{V*E^2}. Sin embargo, al tratarse de un grafo bipartito, la complejidad es \O{V*E}\textsuperscript{\cite{cormenkarp}}.
+	\item Calculo de flujo: El cálculo del flujo utilizando el algoritmo de Edmonds Karp, cuya complejidad es \O{V*E^2}. Sin embargo, al tratarse de un grafo bipartito, la complejidad es \O{V*E}\textsuperscript{\cite{cormen}}. Dado que en nuestro grafo puede haber, en peor caso, $A-1$ ejes, la complejidad es \O{A^2}.
 \end{itemize}
+
+Por propiedad de la \emph{cota asintótica superior}, la complejidad total de la solución es \O{A^2*D}
