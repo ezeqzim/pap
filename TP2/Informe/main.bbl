@@ -1,11 +1,8 @@
 \begin{thebibliography}{1}
 
-\bibitem{pushback}
-{push\_back}.
-\newblock \url{http://www.cplusplus.com/reference/vector/vector/push_back/}.
-
-\bibitem{knapp}
-{The Knapsack Problem}.
-\newblock \url{https://en.wikipedia.org/wiki/Knapsack_problem}.
+\bibitem{cormenkarp}
+Thomas~H. Cormen, Clifford Stein, Ronald~L. Rivest, and Charles~E. Leiserson.
+\newblock {\em Introduction to Algorithms}, page 669.
+\newblock McGraw-Hill Higher Education, 2nd edition, 2001.
 
 \end{thebibliography}

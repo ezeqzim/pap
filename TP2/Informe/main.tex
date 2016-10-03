@@ -8,14 +8,15 @@
 %\usepackage{makecell}
 \usepackage{tabularx}
 \usepackage[nomove]{cite}
-%\usepackage[nottoc]{tocbibind}
-%\usepackage{placeins}
+\usepackage[nottoc]{tocbibind}
+\usepackage{placeins}
 \usepackage{hyperref}
 \hypersetup{
     linktoc=all,     %set to all if you want both sections and subsections linked
     linkcolor=blue,  %choose shttps://www.sharelatex.com/project/542da47afb0e80fe43643f61ome color if you want links to stand out
 }
 \renewcommand{\O}[1]{$\mathcal{O}(#1)$}
+\newcommand{\incfig}[2]{\begin{figure}[H]\centering\includegraphics[width=15cm]{#1}\caption{#2}\end{figure}}
 \input{page.layout}
 
 \begin{document}
@@ -26,7 +27,7 @@
 
 \materia{Problemas, Algoritmos y Programación}
 
-\integrante{5912580999204887}{5912580999204887}{5912580999204887}
+\hashGrupo{5912580999204887}
 
 \maketitle
 
@@ -46,6 +47,6 @@
 \newpage
 \input{ej4}
 
-\bibliographystyle{plain}
+\bibliographystyle{unsrt}
 \bibliography{main}
 \end{document}
