@@ -12,7 +12,7 @@ Por lo tanto, las consultas se responden simplemente verificando si las aulas po
 Nuestro algoritmo consta de las siguientes partes
 \begin{itemize}
 	\item Lectura de la entrada y armado del grafo: Se crean los vértices $A$ y se van agregando los $P$ pasillos. Complejidad: \O{A+P}.
-	\item Calculo de componentes fuertemente conexas: Para el calculo de las componentes, se utilizó el algoritmo de Kosaraju, cuya complejidad es \O{V+E}\textsuperscript{\cite{cormen}}. Complejidad: \O{A+P}.
+	\item Calculo de componentes fuertemente conexas: Para el calculo de las componentes, se utilizó el algoritmo de Kosaraju, que calcula las componentes fuertemente conexas, y cuya complejidad es \O{V+E}\textsuperscript{\cite{cormen}}. Complejidad: \O{A+P}.
 	\item Consultas: Las consultas se realizan de forma inmediata, simplemente preguntando si dos aulas pertenecen a la misma componente conexa. Complejidad: \O{Q}.
 \end{itemize}
 
