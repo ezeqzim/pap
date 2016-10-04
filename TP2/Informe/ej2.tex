@@ -74,7 +74,7 @@ Nuestro algoritmo consta de las siguientes partes partes:
 \begin{itemize}
 	\item Lectura de la entrada: Se leen $A$ acciones y por cada acción, el valor correspondiente al \emph{i-ésimo} día. Complejidad: \O{A*D}.
 	\item Armado del grafo: Al momento de armar el grafo, se procedió a armar directamente el grafo bipartito $G$ previamente mencionado. Para eso, se generaron $A*2+2$ nodos. $A*2$ correspondientes a los conjuntos $IZQ$ y $DER$ de vértices, más la fuente y el sumidero. Por cada acción, se procede a ver \emph{a cuales otras acciones es mayor}, por lo que por cada accion se deben revisar todas las demás acciones y sus días. Complejidad: \O{A^2*D}.
-	\item Calculo de flujo: El cálculo del flujo utilizando el algoritmo de Edmonds Karp, cuya complejidad es \O{V*E^2}. Sin embargo, al tratarse de un grafo bipartito, la complejidad es \O{V*E}\textsuperscript{\cite{cormen}}. Dado que en nuestro grafo puede haber, en peor caso, $\frac{(A-1)*(A-2)}{2}$ ejes, la complejidad es \O{A^3}.
+	\item Calculo de flujo: El cálculo del flujo utilizando el algoritmo de Edmonds Karp, cuya complejidad es \O{V*E^2}. Sin embargo, al tratarse de un grafo bipartito, la complejidad es \O{V*E}\textsuperscript{\cite{cormen}}. Dado que en nuestro grafo puede haber, en peor caso, $\frac{(A-1)*(A-2)}{2}+2A$ ejes, la complejidad es \O{A^3}.
 \end{itemize}
 
 Por propiedad de la \emph{cota asintótica superior}, la complejidad total es
