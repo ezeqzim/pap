@@ -1,28 +1,28 @@
 This is BibTeX, Version 0.99d (TeX Live 2016)
-Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
 The top-level auxiliary file: main.aux
 The style file: unsrt.bst
 Database file #1: main.bib
 You've used 2 entries,
             1791 wiz_defined-function locations,
-            454 strings with 3763 characters,
-and the built_in function-call counts, 502 in all, are:
-= -- 44
+            454 strings with 3767 characters,
+and the built_in function-call counts, 538 in all, are:
+= -- 48
 > -- 15
 < -- 1
 + -- 6
 - -- 4
-* -- 25
-:= -- 68
+* -- 29
+:= -- 72
 add.period$ -- 5
 call.type$ -- 2
 change.case$ -- 2
 chr.to.int$ -- 0
 cite$ -- 2
 duplicate$ -- 25
-empty$ -- 55
+empty$ -- 59
 format.name$ -- 4
-if$ -- 123
+if$ -- 131
 int.to.chr$ -- 0
 int.to.str$ -- 2
 missing$ -- 2
@@ -34,7 +34,7 @@ purify$ -- 0
 quote$ -- 0
 skip$ -- 20
 stack$ -- 0
-substring$ -- 31
+substring$ -- 43
 swap$ -- 11
 text.length$ -- 1
 text.prefix$ -- 0
