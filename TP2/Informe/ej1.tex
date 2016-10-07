@@ -5,7 +5,11 @@ Se tiene un grafo $G$ $=$ $(V,E)$ de N vértices y M ejes bidireccionales. Se ti
 
 \subsection{Desarrollo}
 
-Se pensó el problema utilizando la idea de corte mínimo. Esto es, se quería buscar el corte mínimo tal que los ejes de $A$ queden de un lado y los de $Esc$ del otro. Para esto se armó una red de flujo, agregando dos vértices $s$ y $t$ (sumidero y fuente respectivamente). Se conectó $s$ a los vértices de $A$ y $t$ a los de $Esc$. Se decidió ponerle capacidad 1 a todos los ejes. De esta forma se pensó en, obteniendo el corte mínimo, ver la mínima cantidad de ejes que separan los vértices de $A$ de los de $Esc$. Esto sería equivalente a obtener el flujo máximo, por el teorema de $max-flow$ $min-cut$. Tras discutir esta idea se llegó a un ejemplo que mostró que esa solución no era la indicada.
+A la hora de pensar este problema se llegó a una primera solución que luego probó ser incorrecta. 
+
+En primer lugar, se pensó el problema utilizando la idea de corte mínimo. Esto es, se quería buscar el corte mínimo tal que los ejes de $A$ queden de un lado y los de $Esc$ del otro. Para esto se armó una red de flujo, agregando dos vértices $s$ y $t$ (sumidero y fuente respectivamente). Se conectó $s$ a los vértices de $A$ y $t$ a los de $Esc$. Se decidió ponerle capacidad 1 a todos los ejes. De esta forma se pensó en, obteniendo el corte mínimo, ver la mínima cantidad de ejes que separan los vértices de $A$ de los de $Esc$. Esto sería equivalente a obtener el flujo máximo, por el teorema de $max-flow$ $min-cut$. 
+
+Tras discutir esta idea se llegó a un ejemplo que mostró que esa solución no era la indicada.
 
 %%Insertar acá grafo de ejemplo, cuando tenga la herramienta%%
 
@@ -15,7 +19,7 @@ Se pensó el problema utilizando la idea de corte mínimo. Esto es, se quería b
 \caption{Grafo 1}
 \end{figure}
 
-En el Grafo 1, se puede ver que hay dos alumnos, dos escuelas, y una esquina intermedia. La correcta solución al problema sería poner un divulgador en la esquina central, vértice $X$ en la imagen. Al armar la red de flujo quedaría el Grafo 2. Asumir que todas las capacidades de los ejes son 1. No están en la imagen para no ensuciarla.
+En el Grafo 1, se puede ver que hay dos alumnos, dos escuelas, y una esquina intermedia. La correcta solución al problema sería poner un divulgador en la esquina central, vértice $X$ en la imagen. Al armar la red de flujo quedaría el Grafo 2. Asumir que todas las capacidades de los ejes son 1.
 
 \begin{figure}[H]
 \centering
@@ -23,7 +27,9 @@ En el Grafo 1, se puede ver que hay dos alumnos, dos escuelas, y una esquina int
 \caption{Grafo 2}
 \end{figure}
 
-En el Grafo 2, se puede observar que el flujo máximo es 2, pero con poner un único divulgador en el vértice del medio el problema se solucionaría. Esto se debe a que los divulgadores se ubican en los vértices y no en los ejes. Es decir, los vértices deberían tener capacidades también. Entonces se decidió poner capacidad 1 a los vértices. Así se armó un grafo nuevo, partiendo cada nodo $v$ en $v_{in}$ y $v_{out}$ (conectados entre si por un eje dirigido de $in$ a $out$). Se conectó la fuente a los $in$ de los alumnos, se conectó el sumidero a los $out$ de las escuelas. La idea es que al $in$ lleguen todos los ejes entrantes y que del $out$ salgan todos los salientes. Quedaría entonces el Grafo 3.
+En el Grafo 2, se puede observar que el flujo máximo es 2, pero con poner un único divulgador en el vértice del medio el problema se solucionaría. Se debió replantear la solución propuesta.
+
+El problema con la solución propuesta era causado por el hecho de que los divulgadores se ubican en los vértices y no en los ejes. Es decir, los vértices deberían tener capacidades también. Entonces se decidió poner capacidad 1 a los vértices. Así se propuso una segunda solución, en la que en lugar de armar la red de flujo vista en el Grafo 2, se armó una red de flujo sobre un grafo nuevo, partiendo cada nodo $v$ del grafo original (Grafo 1) en $v_{in}$ y $v_{out}$ (conectados entre si por un eje dirigido de $in$ a $out$). Se conectó la fuente a los $in$ de los alumnos, se conectó el sumidero a los $out$ de las escuelas. La idea era que al $in$ lleguen todos los ejes entrantes y que del $out$ salgan todos los salientes. Quedaría entonces el Grafo 3.
 
 \begin{figure}[H]
 \centering
@@ -91,3 +97,6 @@ Como el grafo original es conexo, tiene al menos $N-1$ ejes, esto es,  $O(N) \su
 Por lo tanto, el nuevo grafo tiene \O{N} vértices y \O{M} ejes, por lo que la complejidad de Edmonds-Karp es de \O{M^2N}.
 
 Entonces la complejidad total del algoritmo es \O{M^2N + N + M}. Como $N > 0$ y $M>0$, \O{N+M} $\subseteq$ \O{M^2N}. Por lo tanto, la complejidad total del algoritmo es de \O{M^2N}.
+
+\subsection{Puntaje}
+El peso otorgado a este ejercicio es: 8
