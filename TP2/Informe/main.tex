@@ -49,31 +49,7 @@
 \newpage
 \input{ej4}
 \newpage
-\section{Apéndice}
-\subsection{Edmonds Karp}\label{edmkarp}
-\begin{algorithmic}
-	\State Inicializar flujo en 0
-	\While{HayCaminoDeAumento}
-		\State Incrementar flujo
-		\State ActualizarRedResidual
-	\EndWhile
-	\State Retornar flujo
-\end{algorithmic}
-\vspace{1em}
-\begin{algorithmic}
-\Function{HayCaminoDeAumento}{}
-	\State Hacer DFS pasando solo por nodos no visitados y que aun no hayan llenado el flujo
-\EndFunction
-
-\Function{ActualizarRedResidual}{}
-	\For{eje en camino de aumento}
-		\State Saturar eje
-		\State Agregar eje en direccion opuesta
-	\EndFor
-\EndFunction
-\end{algorithmic}
-
-\emph{NOTA: Se consideraró que todos los ejes tienen capacidad 1. Por lo tanto, de haber camino de aumento, su flujo será 1. Agregar ejes en dirección opuesta supone que en peor caso se hagan el doble de DFS}
+\input{apendix}
 
 \bibliographystyle{unsrt}
 \bibliography{main}

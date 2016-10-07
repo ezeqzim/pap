@@ -1,0 +1,31 @@
+\section{Apéndice}
+\subsection{Edmonds Karp}\label{edmkarp}
+\begin{algorithmic}
+	\State Inicializar flujo en 0
+	\While{HayCaminoDeAumento}
+		\State Incrementar flujo
+		\State ActualizarRedResidual
+	\EndWhile
+	\State Retornar flujo
+\end{algorithmic}
+
+\vspace{1em}
+
+\begin{algorithmic}
+\Function{HayCaminoDeAumento}{}
+	\State Hacer DFS pasando solo por nodos no visitados y que aun no hayan llenado el flujo
+\EndFunction
+
+\vspace{1em}
+
+\Function{ActualizarRedResidual}{}
+	\For{eje en camino de aumento}
+		\State Saturar eje
+		\State Agregar eje en direccion opuesta
+	\EndFor
+\EndFunction
+\end{algorithmic}
+
+\emph{NOTA 1: Se consideró que todos los ejes tienen capacidad 1. Por lo tanto, de haber camino de aumento, su flujo será siempre 1.}
+
+\emph{NOTA 2: "Agregar eje en direcci\'on opuesta" a lo sumo duplica la cantidad de ejes en la red residual \footnote{Por la nota 1, los ejes de un camino de aumento no pueden ser elegidos en otro.}. Esto implica que encontrar un camino de aumento no modifica la cota de complejidad y sigue siendo \O{E}. Como el flujo se puede aumentar a lo sumo \O{VE}\textsuperscript{\cite{cormen}} veces, la complejidad del algoritmo es \O{VE^2}}
