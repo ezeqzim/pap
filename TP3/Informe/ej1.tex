@@ -1,0 +1,34 @@
+\section{Ejercicio 1}
+\subsection{El Problema}
+El problema toma como entrada un límite $P$ y $N$ valores $a_{i}$, y busca la suma de los elementos del conjunto máximo de valores cuya suma sea la máxima posible, y que sea menor a $P$.\\
+Formalmente, \\
+\begin{center}
+Sea $A = \{a_{1},...,a_{n}\}$ y sea $P$ el límite mencionado, y sea $A' \subset A / \displaystyle\sum_{a \in A'} a < P \wedge (\forall B \subset A) B \neq A \wedge \displaystyle\sum_{b \in B} b < P \Rightarrow \displaystyle\sum_{a \in A'} a > \displaystyle\sum_{b \in B} b$, \\se busca el valor $L = \displaystyle\sum_{a \in A'} a$
+\end{center}
+Este problema es un caso particular del \emph{Problema de la Mochila\textsuperscript{\cite{knapp}}}, en donde el peso de cada elemento se corresponde al valor del mismo.
+
+\subsection{Desarrollo}
+El algoritmo que provee la solución divide los $N$ valores entrantes en dos, y para cada grupo de valores (que llamaremos $A$ y $B$), calcula el conjunto de partes, sólo que en lugar de guardar los subconjuntos, guarda la suma de los elementos de los mismos. Agrega también el valor $0$ a ambos grupos.\\
+Luego, ordena ambos grupos de menor a mayor, de manera tal que $A = [a_{1},...,a_{\vert A\vert}]$ con $a_{i} < a_{i+1}$, y $B = [b_{1},...,b_{\vert B\vert}]$ con $b_{i} < b_{i+1}$.\par
+Finalmente, realiza una busqueda para encontrar un $a \in A$ y un $b \in B$ tales que $a + b \leq P$ y $(\forall x \in A)(\forall y \in B) x \neq a \wedge y \neq b \Rightarrow x + y \leq a + b$. Dichos valores siempre existen dado que $P$ es un entero positivo y $a$ y $b$ podrían eventualmente ser $0$., y para hallarlos, recorre los elementos de $A$ de izquierda a derecha, y los de $B$ de derecha izquierda, y calcula si la suma $a_{i} + b_{j} > P$. En todo momento, se mantiene una variable (que llamaremos $MAX$) que recuerda cual fue el valor de la máxima suma encontrada.\\
+Si esa suma es mayor que $P$, avanza $j$, es decir, repite el proceso con $a_{i} + b_{j-1}$. Ya que $B$ esta ordenado de menor a mayor, si $a_{i} + b_{j} > P \Rightarrow (\forall k > j) a_{i}+b_{k} > P$, por lo que todos los $b_{k}$ ya no son necesarios.\\
+Si esa suma es menor o igual que $P$, se actualiza $MAX$ con el valor de dicha suma de ser necesario, y se avanza $i$, es decir, repite el proceso con $a_{i+1} + b_{j}$. Ya que $A$ esta ordenado de menor a mayor, si $a_{i} + b_{j} \leq P \Rightarrow (\forall k < i) a_{k}+b_{j} \leq P$, por lo que todos los $a_{k}$ ya no son necesarios.\par
+Al final del proceso, se retorna el valor $MAX$.
+
+\subsubsection{Complejidad}
+Estudiaremos la complejidad de las tres funciones presentadas: \emph{generateParts, getMax} y \emph{main}:
+\begin{itemize}
+	\item \textbf{generateParts}: Actualiza el conjunto de partes, agregando el valor $num$, para lo cual recorre todos los subconjuntos previamente generados. Su complejidad es $O(2^n)$.
+	\item \textbf{getMax}: Recorre dos arreglos $A$ y $B$ y va sumando los valores. Recorre ambos una única vez. Su complejidad es $O(A+B)$.
+	\item \textbf{main}: Esta función realiza las siguientes operaciones:
+	\begin{enumerate}
+		\item Crea dos arreglos de tamaño $O(2^{N/2})$. $O(2^{N/2})$.
+		\item Por cada elemento, llama a \textbf{generateParts}. $O(N*2^{N/2})$
+		\item Ordena los dos arreglos. $O(log_{2}(2^{N/2})) = O(N/2)$
+		\item Llama a la función \textbf{getMax} con ambos arreglos. $O(2^{N/2} + 2^{N/2}) = O(2^{N/2})$.
+	\end{enumerate}
+	Por la suma de dichas operaciones y por propiedades de la \emph{Cota superior}, esta función tiene complejidad $O(N*2^{N/2})$
+\end{itemize}
+
+\subsection{Puntaje}
+El peso otorgado a este ejercicio es: 10

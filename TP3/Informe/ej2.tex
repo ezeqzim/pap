@@ -1,0 +1,44 @@
+\section{Ejercicio 2}
+
+\subsection{El Problema}
+
+El problema toma como entrada un conjunto P de $N$ personas y una matriz M de $N \times N$, tal que $M_{ij}$ almacena qu\'e tan bien se llevan $P_i$ con $P_j$.
+
+Un valor negativo implica que se llevan mal, cero que les es indistinto y positivo que se llevan bien. Vale que $M_{ii} = 0$ $\forall i = 1,...,N$ y $M_{ij} = M_{ji}$  $\forall i,j = 1,...,N$. Es decir que M es sim\'etrica y con diagonal nula. 
+
+Interesa construir una partici\'on de $P = \biguplus\limits_{i = 1}^{K} A_i, K \leq N$ tal que se maximice $\displaystyle\sum_{i = 1}^{K} valor(A_i)$.
+
+El valor de un conjunto es igual a la suma de qu\'e tan bien se llevan cada par de personas dentro del mismo.
+
+\subsection{Desarrollo}
+
+Representaremos a los conjuntos con un entero \textit{mask}, cuya representaci\'on en binario indica que si el bit i-\'esimo es un $1$ entonces $P_i \in mask_i$.
+
+La soluci\'on consiste en calcular, para cada elemento del conjunto de partes de P, la suma de los $M_{ij}$ correspondientes. Luego buscamos la partici\'on que maximiza la suma de los subconjuntos elegidos.
+
+Para esto, dado un conjunto A, para cada $A_i \subset  A$, sumamos su valor junto con el de $A_i^c$, es decir, partimos a A en dos subconjuntos disjuntos. A este n\'umero, lo comparamos luego contra valor(A) y nos quedamos con el mayor.
+
+Este procedimiento lo realizamos en forma recursiva, con $A_i$ y con $A_i^c$.
+
+Por lo tanto la funci\'on funScore, dado un conjunto A, calcula el m\'aximo entre:
+
+\begin{itemize}
+	\item valor(A)
+	\item ($\forall A_i \subset A$) valor($A_i$) + valor($A_i^c$)
+\end{itemize}
+
+\subsubsection{Complejidad}
+
+En este apartado analizaremos la complejidad de las funciones \textit{main}, \textit{funScore} y \textit{setToScore}
+
+\begin{itemize}
+	\item \textbf{setToScore}: La funci\'on hace un for de 0 a N que realiza otro for de i+1 a N. Las dem\'as operaciones son $O(1)$. Esto da como resultado una complejidad de $O(N^2)$.
+
+	\item \textbf{funScore}: La funci\'on calcula el score de mask $O(N^2)$, luego itera sobre los subconjuntos calculando la suma de su score con el del complemento en forma recursiva, y se queda con el m\'aximo entre ellos.
+	Cabe destacar que para cada subconjunto posible, se llama solo una vez a la funci\'on \texttt{setToScore}, dado que se memoizan los resultados. En total son $O(2^N)$ subconjuntos, sumado a la iteraci\'on sobre los subconjuntos de \textit{mask}, se puede demostrar que la complejidad final es de $O(3^N)$.
+
+	\item \textbf{main}: La funci\'on lee la entrada, el entero $N$, luego $N^2$ enteros, inicializa el memo \textit{fun}, que tiene $O(2^N)$ posiciones. Luego llama a la funci\'on funScore $O(3^N)$. La complejidad es entonces $O(1 + N^2 + 2^N + 3^N)$ que es igual a $O(3^N)$.
+\end{itemize}
+
+\subsection{Puntaje}
+El peso otorgado a este ejercicio es: 9
