@@ -39,7 +39,7 @@ ej4
 *.out
 *.toc
 *.synctex.gz
-
+*.pdf
 
 # Compiled source #
 ###################
