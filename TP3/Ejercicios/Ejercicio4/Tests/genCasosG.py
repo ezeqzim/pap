@@ -11,29 +11,24 @@ if(len(sys.argv) == 1):
 else:
 	filename = sys.argv[1] + ".big"
 	with open(filename,"w") as f:
-		N = r.randint(1,10**4)
+		N = r.randint(1,10**5)
 		f.write(str(N))
 		f.write(" ")
-		f.write(str(r.randint(1, N)))
+		R = r.randint(1,10**5)
+		f.write(str(R))
 		f.write("\n")
-		for i in range(0, (N+1)):
-			f.write(str(r.randint(0,10006)))
+		for i in range(0, N):
+			f.write(str(r.randint(0,10**5)))
 			f.write(" ")
-			f.write(str(r.randint(0,10006)))
+		f.write("\n")
+		for i in range(0, R):
+			a = 0
+			b = 0
+			while(a == b):
+				a = r.randint(0, N)
+				b = r.randint(0, N)
+			f.write(str(max(a, b)))
 			f.write(" ")
-			f.write(str(r.randint(0,10006)))
-			f.write(" ")
-			f.write(str(r.randint(0,10006)))
-			f.write(" ")
-			f.write(str(r.randint(0,10006)))
-			f.write(" ")
-			f.write(str(r.randint(0,10006)))
-			f.write(" ")
-			f.write(str(r.randint(0,10006)))
-			f.write(" ")
-			f.write(str(r.randint(0,10006)))
-			f.write(" ")
-			f.write(str(r.randint(0,10006)))
+			f.write(str(min(a, b)))
 			f.write("\n")
 		f.write("\n")
-

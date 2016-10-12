@@ -10,7 +10,8 @@ def main():
     if len(sys.argv) == 1:
 		modo_de_uso()
     cpp = find_cpp()
-    exe = compile_cpp(cpp)
+    exe = remove_ext(cpp)
+    # exe = compile_cpp(cpp)
     if "all" in sys.argv:
         execute_and_compare_tests(exe, load_tests(in_extension))
         execute_tests(exe, load_tests(big_extension))
@@ -26,7 +27,7 @@ def find_cpp():
 
 def compile_cpp(file_path):
     no_ext = remove_ext(file_path)
-    subprocess.call("g++ " + file_path + " -o " + no_ext, shell=True)
+    subprocess.call("g++ " + file_path + " -o " + no_ext + "-std=c++11", shell=True)
     return no_ext
 
 def load_tests(extension):
