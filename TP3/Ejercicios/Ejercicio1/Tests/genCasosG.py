@@ -11,13 +11,15 @@ if(len(sys.argv) == 1):
 else:
   filename = sys.argv[1] + ".big"
   with open(filename,"w") as f:
-    f.write(str(r.randint(1, 10**9)))
-    f.write(" ")
-    N = r.randint(1,40)
-    f.write(str(N))
-    f.write("\n")
+    N = r.randint(1, 10**7)
     for i in range(0, N):
-      f.write(str(r.randint(0, 10**9)))
-      if(i != N-1):
-        f.write(" ")
+      if(r.randint(0,1) % 2 == 0):
+        f.write(str(unichr(r.randint(65, 90))))
+      else:
+        f.write(str(unichr(r.randint(97, 122))))
     f.write("\n")
+    for i in range(0, r.randint(1,N*2)):
+      if(r.randint(0,1) % 2 == 0):
+        f.write(str(unichr(r.randint(65, 90))))
+      else:
+        f.write(str(unichr(r.randint(97, 122))))
