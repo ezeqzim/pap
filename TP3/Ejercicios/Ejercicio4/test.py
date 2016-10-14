@@ -27,7 +27,7 @@ def find_cpp():
 
 def compile_cpp(file_path):
     no_ext = remove_ext(file_path)
-    subprocess.call("g++ " + file_path + " -o " + no_ext + "-std=c++11", shell=True)
+    subprocess.call("g++ -std=c++11 " + file_path + " -o " + no_ext, shell=True)
     return no_ext
 
 def load_tests(extension):
