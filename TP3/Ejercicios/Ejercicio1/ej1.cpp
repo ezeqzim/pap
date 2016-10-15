@@ -51,7 +51,7 @@ int contains(const string& S, const string& W){
 int main(int argc, char const *argv[]) {
   string nombre, apodo;
   cin >> nombre >> apodo;
-  if(contains(nombre, apodo) > 0)
+  if(contains(nombre, apodo) != -1)
   	cout << "S";
   else
   	cout << "N";
