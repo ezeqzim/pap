@@ -14,38 +14,38 @@ int contains(const string& S, const string& W){
 	borders[0] = -1;
 	int pos = 2;
 	int cnd = 0;
-    while(pos < wsize){
-        if(W[pos-1] == W[cnd]){
-            borders[pos] = cnd + 1;
-            cnd++;
-            pos++;
-        }
-        else if(cnd > 0)
-            cnd = borders[cnd];
-        else{
-            borders[pos] = 0;
-            pos++;
-        }
+  while(pos < wsize){
+    if(W[pos-1] == W[cnd]){
+      borders[pos] = cnd + 1;
+      cnd++;
+      pos++;
     }
+    else if(cnd > 0)
+      cnd = borders[cnd];
+    else {
+      borders[pos] = 0;
+      pos++;
+    }
+  }
 	int i = 0;
 	int m = 0;
 	while(m + i < ssize){
-        if(W[i] == S[m + i]){
-            if(i == wsize - 1)
-                return m;
-            i++;
-        }
-        else
-            if(borders[i] > -1){
-                m += i - borders[i];
-                i = borders[i];
-            }
-            else{
-                m++;
-                i = 0;
-            }
+    if(W[i] == S[m + i]){
+      if(i == wsize - 1)
+        return m;
+      i++;
     }
-    return -1;
+    else
+      if(borders[i] > -1){
+        m += i - borders[i];
+        i = borders[i];
+      }
+      else{
+        m++;
+        i = 0;
+      }
+  }
+  return -1;
 }
 
 int main(int argc, char const *argv[]) {
