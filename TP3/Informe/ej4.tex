@@ -1,24 +1,30 @@
 \section{Ejercicio 4}
 \subsection{El Problema}
-En este problema se nos proporciona un arreglo \texttt{diversion} de tama\~no D con valores no negativos que indican que el evento del d\'ia $i$, tiene $diversion_i$ nivel de diversi\'on.
+En este problema se nos proporciona un arreglo \texttt{diversion} de tama\~no D con valores no negativos que indican que el evento del d\'ia $i$, tiene nivel de diversi\'on $diversion_i$. Luego, nos dan R intervalos de d\'ias. Para cada uno, nos piden devolver la suma de la diversi\'on de los dos eventos m\'as divertidos que ocurren dentro del rango otorgado.
 
-Luego, nos dan R intervalos de d\'ias. Para cada uno, nos piden devolver la suma de la diversi\'on de los dos eventos m\'as divertidos que ocurren dentro del rango otorgado.
-
-Nos piden que el algoritmo que resuelva el problema tenga complejidad \O{D + 	Rlog(D)}
+Por último, nos piden que el algoritmo que resuelva el problema tenga complejidad \O{D + R * log(D)}
 
 \subsection{Desarrollo}
-Para resolver este problema, usamos una estructura para responder consultas por rangos arbitrarios eficientemente. Dada la cota de complejidad, nos quedamos con Segment Tree, pero no implementamos la operaci\'on update que la distingue de la Sparse Table.
+Para resolver este problema, necesitamos una estructura que pueda responder consultas por rangos arbitrarios eficientemente. Para poder cumplir con la cota de complejidad, decidimos utilizar el Segment Tree. Como solo necesitamos responder consultas, decidimos no implementar la operaci\'on update. 
 
-Para poder utilizarlas, el operador deseado debe ser asociativo, \texttt{m\'aximo} lo es, por lo tanto obtener el m\'aximo y el subsiguiente m\'aximo tambi\'en es asociativo. Llamaremos a este operador \texttt{best2} \footnote{Dados pares de n\'umeros, devuelve un par con los dos n\'umeros m\'as grandes} y dado que los valores de \texttt{diversion} son no negativos, usaremos como \texttt{neutro} al par (0, 0).
+Para poder aprovechar este tipo de estruturas, el operador utilizado debe ser asociativo. El operador \texttt{m\'aximo} lo es, y entonces obtener tanto el m\'aximo como el subsiguiente m\'aximo tambi\'en es asociativo. Llamaremos \texttt{best2} a este operador que dados 2 pares de n\'umeros, devuelve un par con los dos n\'umeros m\'as grandes . Y dado que los valores de \texttt{diversion} son no negativos, usaremos como \texttt{neutro} al par (0, 0).
 
-Como primer paso, leemos la entrada, D y R.
+La solución consite en los siguiente pasos:
+\begin{enumerate}
+\item Inicialización general
+\item Inicialización del Segment Tree
+\item Respuesta a queries
+\end{enumerate}
 
-Luego creamos el Segment Tree, desde ahora segTree, con un tama\~no igual a dos veces la potencia de 2 m\'as cercana a D que lo sobrepase. Por simplicidad, asumiremos que D es potencia de 2 \footnote{En caso contrario, los espacios que sobren contendr\'an el neutro y no afectar\'an los resultados de las sucesivas consultas}, por lo tanto $size(segTree) = 2D$.
+\subsubsection{Inicialización general}
+Como primer paso, leemos la entrada, D y R. Luego creamos el Segment Tree, con un tama\~no igual a dos veces la potencia de 2 m\'as cercana a D que lo sobrepase. Por simplicidad, asumiremos que D es potencia de 2 \footnote{En caso contrario, los espacios que sobren contendr\'an el neutro y no afectar\'an los resultados de las sucesivas consultas}, por lo tanto $size(segTree) = 2D$.
 
-En las posiciones [D, 2D) de segTree, guardamos un par con los D valores del arreglo \texttt{diversion} y 0, el neutro de la operaci\'on m\'aximo.
+En las posiciones [D, 2D) del segTree, guardamos un par con los valores \texttt{$diversion_i$} y 0, el neutro de la operaci\'on m\'aximo.
 
+\subsubsection{Inicialización del Segment Tree}
 En las posiciones [1, D), en forma decreciente, vamos a guardar el best2($segTree_{left(i)}$, $segTree_{right(i)}$) con $left(i) = 2 * i$ y $right(i) = 2 * i + 1$. Es decir que usamos el arreglo segTree como un \'arbol donde $i$ representa un nodo padre y $left(i)$ y $right(i)$ sus dos nodos hijos.
 
+\subsubsection{Respuesta a queries}
 Finalmente, leemos las R querys, que nos indican los distintos intervalos a consultar.
 
 Cada query se responde a trav\'es del siguiente esquema recursivo:
@@ -34,18 +40,35 @@ $query(k, l, r, i, j) =
 
 Preguntar por el intervalo [i, j) equivale a llamar a query(1, 0, D, i, j)
 
-\subsubsection{Complejidad}
-En esta secci\'on hablaremos sobre la complejidad del algoritmo.
+{\color{red} Como vimos en clase, esto nos permite responder entonces cuales son las sumas de los días más divertidos de cada intervalo. }
 
-Antes que nada, si D no es potencia de 2, se puede demostrar que la potencia de 2 m\'as cercana que sobrepase D est\'a acotada por 2D. Como interesa crear un arreglo del doble de este valor, a lo sumo tendr\'a longitud 4D.
+\subsection{Complejidad}
+En esta secci\'on hablaremos sobre la complejidad del algoritmo. Como mencionamos previamente, nuestro algoritmo consta de las siguientes partes:
+\begin{enumerate}
+\item Inicialización general
+\item Inicialización del Segment Tree
+\item Respuesta a queries
+\end{enumerate}
 
-La funci\'on $best2out4$ tiene complejidad \O{1}, pues toma 2 pares, con 2 enteros cada uno, crea un vector con los 4 elementos, lo ordena y devuelve los 2 m\'as grandes.
+\subsubsection{Inicialización general}
+Antes que nada, si D no es potencia de 2, se puede demostrar que la potencia de 2 m\'as cercana que sobrepase D est\'a acotada por 2D. Como interesa crear un arreglo del doble de este valor, a lo sumo tendr\'a longitud 4D. Entonces crear el segTree toma a lo sumo \O{4D} y agregarle los elementos de \texttt{diversion} toma \O{D}.
 
-Ahora bien, crear el segTree toma a lo sumo \O{4D}, agregarle los elementos de \texttt{diversion} toma \O{D}, luego calcular las posiciones [1, D) es iterar hacia atr\'as y llamar a $best2out4$, es decir \O{D}. Por lo tanto inicializar el Segment Tree toma \O{D}.
+\subsubsection{Inicialización del Segment Tree}
+La funci\'on $best2OutOf4$ tiene complejidad \O{1}, pues toma 2 pares, con 2 enteros cada uno, crea un vector con los 4 elementos, lo ordena y devuelve los 2 m\'as grandes.
 
-Luego leemos R intervalos, en formato [i, j), esto toma \O{2R}. Por cada uno, hacemos una query a la estructura. Por el esquema presentado, se puede ver que la complejidad de una query toma \O{log(D)}. Por lo tanto la complejidad de esta etapa es \O{Rlog(D)}.
+Ahora, calcular las posiciones [1, D) es simplemente iterar de D a 1, en cada caso llamando a $best2OutOf4$, con los hijos de cada nodo. Como acceder a los hijos del nodo es \O{1}, inicializar el Segment Tree termina costando \O{D}.
 
-Finalmente, la complejidad es \O{D + Rlog(D)} como se nos ped\'ia.
+\subsubsection{Respuesta a queries}
+Finalmente leemos R intervalos, en formato [i, j), esto toma \O{2R}. Por cada uno, hacemos una query a la estructura. Como vimos en clase, las consultas a un Segment Tree tienen costo \O{log(D)}. Por lo tanto la complejidad de esta etapa es \O{R * log(D)}.
+
+\subsubsection{Conclusión}
+\begin{enumerate}
+\item \textbf{Inicialización general:} \O{D}
+\item \textbf{Inicialización del Segment Tree:} \O{D}
+\item \textbf{Respuesta a queries:} \O{R * log (D)}
+\end{enumerate}
+
+Finalmente, la complejidad es \O{D + R * log(D)} como se nos ped\'ia.
 
 \subsection{Puntaje}
 El peso otorgado a este ejercicio es:

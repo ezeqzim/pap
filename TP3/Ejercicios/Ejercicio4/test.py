@@ -10,8 +10,7 @@ def main():
     if len(sys.argv) == 1:
 		modo_de_uso()
     cpp = find_cpp()
-    exe = remove_ext(cpp)
-    # exe = compile_cpp(cpp)
+    exe = compile_cpp(cpp)
     if "all" in sys.argv:
         execute_and_compare_tests(exe, load_tests(in_extension))
         execute_tests(exe, load_tests(big_extension))
