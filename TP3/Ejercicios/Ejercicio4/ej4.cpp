@@ -27,7 +27,7 @@ void initSegTree() {
 pair<int, int> query(int node, int left, int right, int a, int b) {
   if(a <= left && right <= b)
     return segTree[node];
-  else if(b <= left || a >= right)
+  if(b <= left || a >= right)
     return NEUTRO;
   int middle = (left + right) / 2;
   return best2OutOf4(query(LEFT(node), left, middle, a, b), query(RIGHT(node), middle, right, a, b));
