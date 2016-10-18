@@ -23,8 +23,6 @@ Primero, el algoritmo actualiza \texttt{tmp} al máximo entre \texttt{A[p]} y  \
 
 Luego, si \texttt{maximo < tmp}, se actualiza \texttt{maximo} a \texttt{tmp}. En el ejemplo, \texttt{maximo = 9} y \texttt{tmp = 5}. Entonces no se va a actualizar el valor de \texttt{maximo}. Recordamos que \texttt{maximo} contiene la suma de subarreglo máxima del arreglo \texttt{A[1..4] = [2,3,4,-10]}. En el paso actual consideramos el arreglo \texttt{A[1..5] = [2,3,4,-10,5]}. Es decir, si hay una suma de subarreglo máxima en éste arreglo que sea mayor a la del arreglo \texttt{[2,3,4,-10]}, necesariamente va a tener que contener al elemento nuevo, el 5 (dado que si éste subarreglo no incluyera al 5, entonces sería igual al de la iteración anterior). Entonces, se ve que en el arreglo \texttt{[2,3,4,-10,5]}, el valor de la suma de subarreglo máxima es, o bien el valor de la suma de subarreglo máxima de \texttt{ [2,3,4,-10]} (valor en \texttt{maximo}) o la suma de subarreglo máxima que si o si contiene al elemento \texttt{A[5]=5} (valor en \texttt{tmp}). Entonces, por eso, si el valor de \texttt{tmp} es mayor al de \texttt{maximo}, se actualiza \texttt{maximo} al valor de \texttt{tmp} y ahora \texttt{maximo} efectivamente pasa a ser la suma de subarreglo máxima del arreglo \texttt{A[1..p]}.
 
-Notar que si hay solo números negativos en el arreglo, tanto \texttt{tmp} como \texttt{maximo} van a mantenerse siempre en 0, por lo que si no hay ninguna suma positiva se devuelve 0, que es la suma de subarreglo vacío.
-
 Entonces, por lo visto recién, al finalizar el paso $N$, en \texttt{maximo} se tiene el valor máximo de $\sum_{k=i}^{j} A_k$            $ \quad 1\leq i\leq j\leq N$, que es la solución al problema.
 
 \subsubsection{Complejidad}
