@@ -18,14 +18,10 @@ La soluci\'on consiste en calcular, para cada elemento del conjunto de partes de
 
 Para esto, dado un conjunto A, para cada $A_i \subset  A$, sumamos su valor junto con el de $A_i^c$, es decir, partimos a A en dos subconjuntos disjuntos. A este n\'umero, lo comparamos luego contra valor(A) y nos quedamos con el mayor.
 
-Este procedimiento lo realizamos en forma recursiva, con $A_i$ y con $A_i^c$.
+Este procedimiento lo realizamos en forma recursiva, con $A_i$ y con $A_i^c$, y definimos \[A_{max}=\operatorname*{arg\,max}_{A_i \subset  A} (valor(A_i) + valor(A_i^c))\]
 
-Por lo tanto la funci\'on funScore, dado un conjunto A, calcula el m\'aximo entre:
+Por lo tanto \[funScore(A) = max(valor(A), valor(A_{max}) + valor(A_{max}^c), 0)\]
 
-\begin{itemize}
-	\item valor(A)
-	\item valor($A_i$) + valor($A_i^c$) (para cada $A_i \subset A$)
-\end{itemize}
 
 \subsubsection{Complejidad}
 
@@ -40,7 +36,8 @@ En este apartado analizaremos la complejidad de las funciones \textit{main}, \te
 	\Function{FunScore}{mask}
 		\If{Ya fue calculado(mask)} Retornar score(mask)
 		\EndIf
-		\State Setear mask\_score y res en 0
+		\State Setear mask\_score en score(mask)
+		\State Setear res en 0
 		\For{cada subset $mask_i \subset mask$}
 			\State Setear res como max(res, FunScore($mask_i$) + FunScore($mask_i^c$))
 		\EndFor
