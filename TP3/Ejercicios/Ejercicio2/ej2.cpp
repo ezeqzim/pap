@@ -7,37 +7,25 @@ typedef long long ll;
 using namespace std;
 
 struct Node{
-	//bool endOfWord;
 	int maxAmountOfWords;
 	map<char,Node> next;
-	Node() : /*endOfWord(false), */maxAmountOfWords(0), next() {};
-	/*bool*/void addWord(string& s, int index, int size){
+	Node() : maxAmountOfWords(0), next() {};
+	void addWord(string& s, int index, int size){
 		if(index == size){
-		//	if(endOfWord) return false;
-		//	else{
-		//		endOfWord = true;
-		//		return endOfWord;
-		//	}
+			maxAmountOfWords++;
 			return;
 		}
-		//else{
-
-			map<char,Node>::iterator it;
-			it = next.find(s[index]);
-			//bool res;
-			if(it != next.end()){
-				/*res = */(*it).second.addWord(s,index+1,size);		
-			}
-			else{
-				Node nextNode;
-				/*res = */nextNode.addWord(s,index+1,size);
-				next.insert(pair<char,Node>(s[index],nextNode));
-			}
-			//if(res){
-				maxAmountOfWords++;
-			//}
-			//return res;
-		//}
+		map<char,Node>::iterator it;
+		it = next.find(s[index]);
+		if(it != next.end()){
+			(*it).second.addWord(s,index+1,size);		
+		}
+		else{
+			Node nextNode;
+			nextNode.addWord(s,index+1,size);
+			next.insert(pair<char,Node>(s[index],nextNode));
+		}
+		maxAmountOfWords++;
 	};
 	int getMaxAmountOfWords(){
 		return maxAmountOfWords;
