@@ -56,5 +56,48 @@ En $T_{c_2,a_2}$ se encuentra el sueldo al que se aspira. Sería el rectángulo 
 
 Una vez restados estos dos rectángulos, se puede ver que el rectángulo correspondiente al sueldo con $c_1,a_1$ (el azul de la primer figura) se restó dos veces, una por cada uno de los dos rectángulos que se restó. Entonces se lo suma una vez. De esta forma lo que queda es el rectángulo rojo de la figura que muestra la resolución de la query. Entonces realizar esa cuenta en la tabla aditiva resuelve la query.
 
+\subsubsection{Implementación}
+
+En esta sección se indexará desde 0. Para implementar la tabla aditiva $T$ se utilizó una matriz de tamaño $(C+1)x(A+1)$. Tanto la primer fila como la primer columna se llenan con ceros. La idea es lograr que valga que para todo elemento de la tabla, $T_{i,j} = \sum_{k=0}^{i-1} \sum_{w=0}^{j-1} M_{k,w}$.
+
+Para armar la tabla, el algoritmo implementado va recorriendo la entrada mientras arma la tabla. Se adjunta un breve pseudocódigo del armado de la tabla.
+
+\begin{verbatim}
+for(i in 1..c+1){
+    for(j in 1..a+1){
+        input(val)
+        tabla[i][j] = val + tabla[i-1][j] + tabla[i][j-1] - tabla[i-1][j-1]
+    }
+}    
+\end{verbatim}
+
+En la primera iteración, \texttt{val} $= M_{0,0}$ porque es el primer elemento que se lee. Tras la primera iteración, $T_{1,1} = val$, dado que $T_{1,0} = T_{0,1} = T_{0,0} = 0$. Por lo tanto, $T_{1,1} = M_{0,0} = \sum_{i=0}^{0} \sum_{j=0}^{0} M_{i,j}$.
+
+Luego, en la iteración en la que \texttt{val} $= M_{i,j}$, suponiendo que para cada posición previa de la tabla $T_{a,b} = \sum_{k=0}^{a-1} \sum_{w=0}^{b-1} M_{k,w}$, se quiere ver que al final de la iteración vale que $T_{i+1,j+1} = \sum_{k=0}^{i} \sum_{w=0}^{j} M_{k,w}$.
+
+Se setea $T_{i+1,j+1}$ en \texttt{val} $+ T_{i,j+1} + T_{i+1,j} - T_{i,j}$. Como se ha dicho, \texttt{val} $= M_{i,j}$. Vale que $T_{i,j}$, como es una posición previa de la matriz (porque $i \leq i+1$), contiene la suma $\sum_{k=0}^{i-1} \sum_{w=0}^{j-1} M_{k,w}$. Se pueden ver en la siguiente imagen los rectángulos que representan en la matriz original. En rojo \texttt{val} y en azul $T_{i,j}$.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=7cm]{Imagenes/Ej3f.png}
+\caption{Rectángulo correspondiente a $T_{i,j}$ y \texttt{val}}
+\end{figure}
+
+También vale que $T_{i,j+1}$ y $T_{i+1,j}$, como son posiciones previas de la matriz (en el primer caso porque $i \leq i+1$ y en el segundo porque $j \leq j+1$) contienen las sumas correspondientes. Se puede ver en las siguientes imagenes los rectángulos que representan en la matriz original.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=7cm]{Imagenes/Ej3g.png}
+\caption{Rectángulo correspondiente a $T_{i,j+1}$}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=7cm]{Imagenes/Ej3h.png}
+\caption{Rectángulo correspondiente a $T_{i+1,j}$}
+\end{figure}
+
+Entonces, similarmente al concepto explicado previamente, se puede ver cómo tras la iteración, al sumar los valores de los rectángulos amarillo y verde se está sumando el espacio del azul dos veces. Entonces se resta el azul y al sumarse \texttt{val} se obtiene el rectángulo que se deseaba. Por lo tanto, al terminar la iteración el valor de $T_{i+1,j+1} = \sum_{k=0}^{i} \sum_{w=0}^{j} M_{k,w}$. 
+
 \subsection{Puntaje}
 El peso otorgado a este ejercicio es:
