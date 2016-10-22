@@ -97,7 +97,18 @@ También vale que $T_{i,j+1}$ y $T_{i+1,j}$, como son posiciones previas de la m
 \caption{Rectángulo correspondiente a $T_{i+1,j}$}
 \end{figure}
 
-Entonces, similarmente al concepto explicado previamente, se puede ver cómo tras la iteración, al sumar los valores de los rectángulos amarillo y verde se está sumando el espacio del azul dos veces. Entonces se resta el azul y al sumarse \texttt{val} se obtiene el rectángulo que se deseaba. Por lo tanto, al terminar la iteración el valor de $T_{i+1,j+1} = \sum_{k=0}^{i} \sum_{w=0}^{j} M_{k,w}$. 
+Entonces, similarmente al concepto explicado previamente, se puede ver cómo tras la iteración, al sumar los valores de los rectángulos amarillo y verde se está sumando el espacio del azul dos veces. Entonces se resta el azul y al sumarse \texttt{val} se obtiene el rectángulo que se deseaba. Por lo tanto, al terminar la iteración el valor de $T_{i+1,j+1} = \sum_{k=0}^{i} \sum_{w=0}^{j} M_{k,w}$.
+
+\subsubsection{Complejidad}
+
+En esta sección se analizará la complejidad del algoritmo implementado. El algoritmo consiste de dos partes principales.
+
+\begin{itemize}
+    \item \textbf{Armado de la Tabla:} Como se analizó en la sección anterior, la tabla se arma mediante un \texttt{for}, recorriendo cada elemento de la matriz de entrada y realizndo una cantidad constante de cuentas por cada uno. Como la cantidad de elementos de la matriz es $A*C$, la complejidad del armado de la tabla es del orden de $O(A*C)$
+    \item \textbf{Resolución de Queries:} Luego, por cada una de las $Q$ queries se realiza una cantidad de cuentas constante (la suma explicada con anterioridad). Por lo tanto, se resuelven las queries con complejidad del orden de $O(Q)$.
+\end{itemize}
+
+Por lo tanto, la complejidad total del algoritmo es del orden de $O(A*C + Q)$. 
 
 \subsection{Puntaje}
 El peso otorgado a este ejercicio es:
