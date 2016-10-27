@@ -1,9 +1,26 @@
 \section{Ejercicio 2}
 \subsection{El Problema}
+Dadas $A$ cadenas, llamadas $D_i$, el problema consiste en encontrar 
+\begin{gather*}
+T = \operatorname*{max}_{i = 1,...,A} (\Phi(D_i))\text{, donde}\\
+\Phi(D_k) = \text{Cantidad de cadenas $D_i$ que tienen a $D_k$ como prefijo}
+\end{gather*}
+Este problema es equivalente encontrar 
+\begin{gather*}
+T = \operatorname*{max}_{i = 1,...,A} (\Phi(c))\text{, con}\\
+c = \text{Cadena de un solo elemento}
+\end{gather*}
+Ya que resolver $\Phi(c) = \Phi(M)$, con $M = D_i$ más corto que tiene a $c$ como prefijo.
 
 \subsection{Desarrollo}
+Para resolver el problema, se implementó un \emph{Trie}, donde en cada inserción de una cadena $D_i = [d_i,...,d_k]$, se guardó $C_i$ la cantidad de cadenas que tienen como prefijo a $[d_i]$. Dado que todos los $D_i$ son distintos, no fue necesario hacer ningún tipo de corroboración previa a actualizar los $C_i$.
+Luego, el valor $\displaystyle T = \operatorname*{max}_{i = 1,...,A} C_i$. Por practicidad, el valor $\operatorname*{max}_{i = 1,...,A} C_i$ se fue guardando y actualizando a medida que se fueron insertando las cadenas $D_i$ en el \emph{Trie}.
 
 \subsubsection{Complejidad}
+Dado que el algoritmo consiste en insertar $D_i$ en el \emph{Trie} y las operaciones de actualizar $C_i$ son operaciones básicas con complejidad \O{1}, la complejidad total del algoritmo es la suma de los costos de inserción para cada $D_i$.
+El costo de inserción de una cadena $S$ en un \emph{Trie} es \O{|S|}.
+
+Por la suma de dichas operaciones y por propiedades de la \emph{Cota superior} la complejidad total es \O{\displaystyle \sum_{i = 1}^{A} |D_i|}.
 
 \subsection{Puntaje}
 El peso otorgado a este ejercicio es:

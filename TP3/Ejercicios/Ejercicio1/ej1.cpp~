@@ -41,7 +41,7 @@ int main(int argc, char const *argv[]) {
   string name, nickname;
   cin >> name >> nickname;
   calculate_borders(nickname);
-  if(matchs(name, nickname))
+  if(matchs(name, nickname) != -1)
   	cout << "S";
   else
   	cout << "N";
