@@ -10,19 +10,19 @@ El algoritmo debe tener complejidad \O{|W|}.
 Para resolver el problema, se utilizó el algoritmo de \emph{Knuth-Morris-Pratt}.
 Por lo tanto, la solución se divide en dos partes:
 \begin{itemize}
-	\item Calcular los bordes de la cadena $P$
-	\item Buscar si existe $W_P$
+	\item Cálculo de bordes de la cadena $P$
+	\item Búsqueda de $W_P$
 \end{itemize}
 
-\subsubsection{Cálculo de bordes}
+\subsubsection{Cálculo de bordes de la cadena $P$}
 Esta sección explica unicamente cómo se realiza el calculo de bordes y por qué se realiza correctamente. En la sección siguiente se explica como se utiliza para resolver el problema.
 
 Primero, veamos algunas definiciones y propiedades:
 \begin{definition}
-Se denomina borde de una cadena $S$ a una subcadena que es prefijo y sufijo de $S$.
+$P_k \sqsubset P_i \Leftrightarrow P_k$ es prefijo de $P_i$. Analogamente vale $P_k \sqsupset P_i \Leftrightarrow P_k$ es sufijo de $P_i$.
 \end{definition}
 \begin{definition}
-$P_k \sqsubset P_i \Leftrightarrow P_k$ es prefijo de $P_i$. Analogamente vale $P_k \sqsupset P_i$
+Se denomina borde de una cadena $S$ a una subcadena que es prefijo y sufijo de $S$. Es decir, $Q$ es borde de $S \Leftrightarrow Q \sqsubset S \wedge Q \sqsupset S$
 \end{definition}
 
 \begin{lem}
@@ -36,83 +36,104 @@ Por transitividad de la relación $\sqsubset$, al ser $Q \sqsubset T$ y $T \sqsu
 Si $T$ y $Q$ son bordes de $S$ y $|Q|<|T|$, entonces $Q$ es borde de $T$.
 \end{lem}
 \begin{proof}
-Sea $T = [t_1,...,t_N]$, $Q = [q_1,...,q_M]$ y $S = [s_1,...,s_O]$ con $M < N \leq O$, como $Q \sqsubset S$ y $T \sqsubset S$, luego $T = [s_1,..., s_{M-1},s_M,s_{M+1},...,s_N]$ y $Q = [s_1,...,s_M]$. Por lo tanto $Q \sqsubset T$. Análogamente sucede con los sufijos.
+Sea $T = [t_1,...,t_N]$, $Q = [q_1,...,q_M]$ y $S = [s_1,...,s_O]$ con $M < N < O$, como $Q \sqsubset S$ y $T \sqsubset S$, luego $T = [s_1,..., s_{M-1},s_M,s_{M+1},...,s_N]$ y $Q = [s_1,...,s_M]$. Por lo tanto $Q \sqsubset T$. Análogamente sucede con los sufijos.
 \end{proof}
 
 \begin{lem}
 Si $T$ y $Q$ son bordes de $S$ y $Q$ es el mayor borde de $T$, entonces $Q$ es el mayor borde de $S$ de longitud menor a $|T|$.
 \end{lem}
 \begin{proof}
-Supongamos que $Q$ no fuera el mayor borde de $S$ de longitud menor a $|T|$, luego existiria un $Q'$ que fuese el mayor borde de $S$ de longitud menor a $|T|$. Si eso ocurriese, $Q'$ sería el mayor borde de $T$. Absurdo, pues $Q$ era el mayor borde de $T$.
+Supongamos que $Q$ no fuera el mayor borde de $S$ de longitud menor a $|T|$, luego existiria un $Q'$ que fuese el mayor borde de $S$ de longitud menor a $|T|$. Ya que $Q'$ es un borde de $S$, eso significa que $Q' \sqsubset S$, y como $|Q'| < |T|$ entonces por el \textbf{Lema 2}, $Q'$ sería el borde de $T$, y al ser $|Q'| > |Q|$, $Q'$ sería el mayor borde de $T$. Absurdo, pues $Q$ era el mayor borde de $T$.
 \end{proof}
 
 Por comodidad, en adelante llamaremos $P_k$ al prefijo de $P$ de tamaño $k$, y llamaremos $\Pi$ a la estructura que posee las siguientes propiedades:
 \begin{itemize}
-	\item $\pi_i = max \{k: k < i \wedge P_k \sqsupset P\}$
+	\item $\pi_i = max \{k: k < i \wedge P_k \sqsupset P\} = $ Longitud del mayor borde de $P$ de longitud menor a $i$.
 	\item $\Pi = [\pi_1,...,\pi_{|P|}]$
 \end{itemize}
-Es decir, $\Pi$ guarda en la \emph{i-ésima} posición, el borde más grande de $P$ que tenga longitud menor o igual a $i$, y es lo que el algoritmo calcula.
 
-\textbf{Correctitud}
-A continuación se adjunta un pseudocódigo para facilitar la comprensión de la demostración de correctitud:
-\begin{algorithmic}
-	\State $P$ cadena a la que calculo los bordes
-	\State $\Pi$ arreglo vacío de longitud $|P|$
-	\State $j$ tamaño de la cadena máxima encontrada\\
-	\State $\Pi[0] \gets 0$
-	\State $j \gets 0$
-	\For{$i \gets 1...|P|-1$}
-		\While{$j > 0 \wedge P[i] \neq P[j]$}
-			\State $j \gets \Pi[j-1]$
-		\EndWhile
-		\If{$P[i] = P[j]$}
-			\State $j \gets j+1$
-		\EndIf
-		\State $\Pi[i] = j$
-	\EndFor
-	\State Retornar $\Pi$
-\end{algorithmic}
+\textbf{Correctitud}\\
+A continuación se adjunta un pseudocódigo para facilitar la comprensión de la demostración de correctitud:\\
+\begin{algorithm}[H]
+ \DontPrintSemicolon
+ \KwData{$P$ cadena a la que calculo los bordes, 
+ $\Pi$ arreglo vacío de longitud $|P|$, 
+ $j$ tamaño de la cadena máxima encontrada}
+ \KwResult{$\Pi$}
+ $\Pi[0] \gets 0$\\
+ $j \gets 0$\\
+ \For{$i \gets 1...|P|-1$}{
+		\While{$j > 0 \wedge P[i] \neq P[j]$}{
+			$j \gets \Pi[j-1]$
+		}
+		\uIf{$P[i] = P[j]$}{
+			$j \gets j+1$
+		}
+		$\Pi[i] = j$
+ }
+ \caption{Cálculo de $\Pi$}
+\end{algorithm}
 
-Veamos entonces paso a paso.\\
-
-\begin{algorithmic}
-  \State $\Pi[0] \gets 0$
-  \For{$i \gets 1...|P|-1$}
-     \State ...
-  \EndFor
-\end{algorithmic}
-$\Pi[0]$ es $0$ ya que el borde de mayor tamaño del prefijo de tamaño $1$ es $0$ (es decir, la cadena vacía). Luego, se itera la cadena $P$ desde $1$ ya que no es necesario ver el caso del prefijo de tamaño $1$.\\
-
-\begin{algorithmic}
-\While{$j > 0 \wedge P[i] \neq P[j]$}
-	\State $j \gets \Pi[j-1]$
-\EndWhile
-\end{algorithmic}
-
-$j$ expresa en cada iteración, el tamaño del mayor borde de $P_i \sqsubset P$, $|P_i| = i$.
-Por lo tanto, aquí se intenta extender el borde de longitud $j$ (es decir, el borde de $P_i$) para el prefijo de longitud $P_{i+1}$. Si no se puede extender, se verifica si se puede extender el borde de $P_{i-1}$ y así sucesivamente.\\
-
-\begin{algorithmic}
-\If{$P[i] = P[j]$}
-	\State $j \gets j+1$
-\EndIf
-\end{algorithmic}
-
-Si es posible extender el borde de longitud $j$, lo extiendo.\\
-
-\begin{algorithmic}
-\State $\Pi[i] = j$
-\end{algorithmic}
-
-Agrego en $\Pi$ la longitud del borde de mayor tamaño que pude encontrar, es decir, el borde de mayor tamaño de $P_i$ (puede ser $0$).\\
+En las líneas 1-3, $\Pi[0]$ es $0$ ya que el borde de mayor tamaño del prefijo de tamaño $1$ es $0$ (es decir, la cadena vacía). Luego, se itera la cadena $P$ desde $1$ ya que no es necesario ver el caso del prefijo de tamaño $1$.\\
+Al comienzo de cada iteración, $j$ expresa el tamaño del mayor borde de $P_{i-1} \sqsubset P$, $|P_{i-1}| = i-1$.
+En las líneas 4-6, y por el \textbf{Lema 3}, lo que se intenta es extender el borde de mayor tamaño de entre todos los $P_{k}$, $k < i$, tal que sea borde de $P_i$.\\
+Si es posible extender el borde de longitud $j$, lo extiendo (líneas 7-8).\\
+En la última línea, agrego en $\Pi$ la longitud del borde de mayor tamaño que pude encontrar, es decir, el borde de mayor tamaño de $P_i$ (puede ser $0$).
 
 Al finalizar, se tendrá un arreglo $\Pi$ que cumple las propiedades previamente mencionadas.\\
+\strut\hfill\qedsymbol
 
-\hfill\ensuremath{\square}
+\textbf{Complejidad}\\
+Dado que el \textbf{for} realiza $|P|$ iteraciones, sólo demostraremos que las operaciones realizadas en el cuerpo del \textbf{for} tienen complejidad \O{1} amortizado, demostrando así que el algoritmo tiene complejidad \O{|P|}.
+Veremos que el cuerpo del \textbf{while} se ejecuta como mucho $|P|-2$ veces a lo largo de toda la ejecución del \textbf{for}, pero antes, algunas observaciones sobre $j$.\\
+Primero, la línea 2 comienza con $j$ en $0$, y la única forma de incrementar $j$ es en la línea 8, donde se incrementa en $1$, que se ejecuta a lo sumo una vez por cada iteración del \textbf{for}.\\
+Segundo, dado que $j < i$ al comienzo del \textbf{for} y que en cada iteración se incrementa el valor de $i$ en $1$, entonces la desigualdad $j < i$ se mantiene a lo largo de toda la ejecución del algoritmo. Por lo tanto, las asignaciónes en las líneas 1 y 9 garantizan que $\pi_i < i$ para todo $i = 1,2,...,|P|-1$, lo que significa que en cada iteración del \textbf{while}, se decrementa el valor de $j$.\\
+Tercero, $j$ nunca es negativo.\\
+Luego, con todos esos datos, se puede ver que el valor total por el que se puede decrementar $j$ durante la ejecución del \textbf{while} esta acotado por el valor máximo por el que se puede incrementar $j$, que es $|P|-2$, a lo largo de todas las iteraciones del \textbf{for}.
+En consecuencia, el \textbf{while} itera a lo sumo $|P|-2$ veces a lo largo de toda la ejecución del \textbf{for}, por lo que su costo amortizado es \O{1}.
 
-\textbf{Complejidad}
-En cada paso de la iteración
-\subsubsection{Complejidad}
+Luego, el algoritmo tiene complejidad \O{|P|}.\\
+\strut\hfill\qedsymbol
+
+\subsubsection{Búsqueda de $W_P$}
+A continuación se adjunta el algoritmo:\\
+\begin{algorithm}[H]
+ \DontPrintSemicolon
+ \KwData{$P$, $W$, 
+ $\Pi$ arreglo calculado en la sección anterior, 
+ $j$ tamaño de la subcadena de $W$ más grande que es prefijo de $P$}
+ \KwResult{El índice de $W$ donde comienza $W_P$, o $-1$ si no existe $W_P$}
+ $j \gets 0$\\
+ \For{$i \gets 0...|W|-1$}{
+		\While{$j > 0 \wedge W[i] \neq P[j]$}{
+			$j \gets \Pi[j-1]$
+		}
+		\If{$W[j] = P[i]$}{
+			$j \gets j+1$
+		}
+		\uIf{$j = |P|$}{
+			Devolver $i - j + 1$
+		}
+ }
+ Devolver -1
+ \caption{Búsqueda de $W_P$}
+\end{algorithm}
+
+Esencialmente, el algoritmo es igual al de cálculo de bordes, con la siguiente diferencia de que en las líneas 3-5, no se estan extendiendo bordes, sino que si el caracter que se esta observando no coincide, en lugar de comenzar de cero, se comienza desde el borde.\\
+Luego, si los caracteres son iguales, el tamaño de la subcadena de $W$ más grande que es prefijo de $P$ encontrado hasta el momento se incrementa.
+Finalmente, si $j = |P|$, significa que encontré $W_P$, y devuelvo el índice donde comienza.
+
+\textbf{Complejidad}\\
+Por el mismo razonamiento que en el algoritmo de \emph{cálculo de bordes de $P$}, se puede observar que el \textbf{while} se ejecuta $|W|-1$ veces a lo largo de toda la ejecución del algoritmo, con lo que el \textbf{while} tiene un costo amortizado de \O{1}. Luego, como el \textbf{for} itera $|W|-1$ veces, el algoritmo tiene complejidad \O{|W|}.
+
+\subsection{Complejidad}
+La complejidad del algoritmo es la suma de las complejidades de cada etapa:
+\begin{itemize}
+	\item Cálculo de bordes de la cadena $P$: \O{|P|}
+	\item Búsqueda de $W_P$: \O{|W|}
+\end{itemize}
+
+Por la suma de dichas operaciones y por propiedades de la \emph{Cota superior}, como $|P| \leq |W|$, la complejidad total es \O{|W| + |P|} $ = $ \O{|W|}.
 
 \subsection{Puntaje}
 El peso otorgado a este ejercicio es:
