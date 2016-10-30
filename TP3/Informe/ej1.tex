@@ -26,10 +26,18 @@ Se denomina borde de una cadena $S$ a una subcadena que es prefijo y sufijo de $
 \end{definition}
 
 \begin{lem}
+La relación $\sqsubset$ es transitiva.
+\end{lem}
+\begin{proof}
+Sean $A = [a_1,...,a_k]$, $B = [b_1,...,b_n]$, $C = [c_1,...,c_m]$, cadenas tales que $A \sqsubset B$, $B \sqsubset C$, queremos ver si $A \sqsubset C$.\\
+Como $A \sqsubset B$, luego $A = [b_1,...,b_k]$, y como $B \sqsubset C$, luego $B = [c_1,...,c_n]$. Entonces $A = [c_1,...,c_k]$ y por lo tanto $A \sqsubset C$.
+\end{proof}
+
+\begin{lem}
 Si $T$ es borde de $S$ y $Q$ es borde de $T$, entonces $Q$ es borde de $S$.
 \end{lem}
 \begin{proof}
-Por transitividad de la relación $\sqsubset$, al ser $Q \sqsubset T$ y $T \sqsubset S$, luego $Q \sqsubset S$. Análogamente sucede con los sufijos.
+Por \textbf{Lema 1}, al ser $Q \sqsubset T$ y $T \sqsubset S$, luego $Q \sqsubset S$. Análogamente sucede con los sufijos.
 \end{proof}
 
 \begin{lem}
@@ -43,7 +51,7 @@ Sea $T = [t_1,...,t_N]$, $Q = [q_1,...,q_M]$ y $S = [s_1,...,s_O]$ con $M < N < 
 Si $T$ y $Q$ son bordes de $S$ y $Q$ es el mayor borde de $T$, entonces $Q$ es el mayor borde de $S$ de longitud menor a $|T|$.
 \end{lem}
 \begin{proof}
-Supongamos que $Q$ no fuera el mayor borde de $S$ de longitud menor a $|T|$, luego existiria un $Q'$ que fuese el mayor borde de $S$ de longitud menor a $|T|$. Ya que $Q'$ es un borde de $S$, eso significa que $Q' \sqsubset S$, y como $|Q'| < |T|$ entonces por el \textbf{Lema 2}, $Q'$ sería el borde de $T$, y al ser $|Q'| > |Q|$, $Q'$ sería el mayor borde de $T$. Absurdo, pues $Q$ era el mayor borde de $T$.
+Supongamos que $Q$ no fuera el mayor borde de $S$ de longitud menor a $|T|$, luego existiria un $Q'$ que fuese el mayor borde de $S$ de longitud menor a $|T|$. Ya que $Q'$ es un borde de $S$, eso significa que $Q' \sqsubset S$, y como $|Q'| < |T|$ entonces por el \textbf{Lema 3}, $Q'$ sería el borde de $T$, y al ser $|Q'| > |Q|$, $Q'$ sería el mayor borde de $T$. Absurdo, pues $Q$ era el mayor borde de $T$.
 \end{proof}
 
 Por comodidad, en adelante llamaremos $P_k$ al prefijo de $P$ de tamaño $k$, y llamaremos $\Pi$ a la estructura que posee las siguientes propiedades:
@@ -76,7 +84,7 @@ A continuación se adjunta un pseudocódigo para facilitar la comprensión de la
 
 En las líneas 1-3, $\Pi[0]$ es $0$ ya que el borde de mayor tamaño del prefijo de tamaño $1$ es $0$ (es decir, la cadena vacía). Luego, se itera la cadena $P$ desde $1$ ya que no es necesario ver el caso del prefijo de tamaño $1$.\\
 Al comienzo de cada iteración, $j$ expresa el tamaño del mayor borde de $P_{i-1} \sqsubset P$, $|P_{i-1}| = i-1$.
-En las líneas 4-6, y por el \textbf{Lema 3}, lo que se intenta es extender el borde de mayor tamaño de entre todos los $P_{k}$, $k < i$, tal que sea borde de $P_i$.\\
+En las líneas 4-6, y por el \textbf{Lema 4}, lo que se intenta es extender el borde de mayor tamaño de entre todos los $P_{k}$, $k < i$, tal que sea borde de $P_i$.\\
 Si es posible extender el borde de longitud $j$, lo extiendo (líneas 7-8).\\
 En la última línea, agrego en $\Pi$ la longitud del borde de mayor tamaño que pude encontrar, es decir, el borde de mayor tamaño de $P_i$ (puede ser $0$).
 
@@ -120,11 +128,12 @@ A continuación se adjunta el algoritmo:\\
 \end{algorithm}
 
 Esencialmente, el algoritmo es igual al de cálculo de bordes, con la siguiente diferencia de que en las líneas 3-5, no se estan extendiendo bordes, sino que si el caracter que se esta observando no coincide, en lugar de comenzar de cero, se comienza desde el borde.\\
+
 Luego, si los caracteres son iguales, el tamaño de la subcadena de $W$ más grande que es prefijo de $P$ encontrado hasta el momento se incrementa.
 Finalmente, si $j = |P|$, significa que encontró $W_P$, y devuelvo $true$. Si el \textbf{for} termina de ejecutar, significa que no existe $W_P$, y devuelve $false$.
 
 \textbf{Complejidad}\\
-Por el mismo razonamiento que en el algoritmo de \emph{cálculo de bordes de $P$}, se puede observar que el \textbf{while} se ejecuta $|W|-1$ veces a lo largo de toda la ejecución del algoritmo, con lo que el \textbf{while} tiene un costo amortizado de \O{1}. Luego, como el \textbf{for} itera $|W|-1$ veces, el algoritmo tiene complejidad \O{|W|}.
+Por el mismo razonamiento que en el algoritmo de \emph{cálculo de bordes de $P$}, se puede observar que el \textbf{while} se ejecuta $|W|-1$ veces a lo largo de toda la ejecución del algoritmo, con lo que el \textbf{while} tiene un costo amortizado de \O{1}. Luego, como el \textbf{for} itera $|W|$ veces, el algoritmo tiene complejidad \O{|W|}.
 
 \subsection{Complejidad}
 La complejidad del algoritmo es la suma de las complejidades de cada etapa:
@@ -133,7 +142,7 @@ La complejidad del algoritmo es la suma de las complejidades de cada etapa:
 	\item Búsqueda de $W_P$: \O{|W|}
 \end{itemize}
 
-Por la suma de dichas operaciones y por propiedades de la \emph{Cota superior}, como $|P| \leq |W|$, la complejidad total es \O{|W| + |P|} $ = $ \O{|W|}.
+Por la suma de dichas operaciones y por propiedades de la \emph{Cota superior}, como $|P| \leq |W|$, la complejidad total es \O{|W| + |P|} $ = $ \O{2*|W|} $=$ \O{|W|}.
 
 \subsection{Puntaje}
 El peso otorgado a este ejercicio es:
