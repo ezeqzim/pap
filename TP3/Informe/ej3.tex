@@ -1,6 +1,6 @@
 \section{Ejercicio 3}
 \subsection{El Problema}
-Se tiene una matriz $M$ de tamaño $C*A$. Las filas representan cargos y las columnas antigûedades. Dicha matriz se usa para calcular el sueldo de los cientìficos. Para esto se tiene una función \texttt{sueldo} que dados un cargo $c_1$ y una antigüedad $a_1$ devuelve un número que se calcula con la siguiente fórmula.
+Se tiene una matriz $M$ de tamaño $C*A$. Las filas representan cargos y las columnas antig\"uedades. Dicha matriz se usa para calcular el sueldo de los cient\'ificos. Para esto se tiene una función \texttt{sueldo} que dados un cargo $c_1$ y una antigüedad $a_1$ devuelve un número que se calcula con la siguiente fórmula.
 
 \texttt{sueldo}($c_1$,$a_1$) = $\sum_{i=1}^{c} \sum_{j=1}^{a} M_{i,j}$
 
@@ -8,7 +8,7 @@ El problema en sí consiste en: dadas antigüedades $a_1$ y $a_2$ y cargos $c_1$
 
 \texttt{query}($a_1$,$a_2$,$c_1$,$c_2$) = $\sum_{i=c_1+1}^{c_2} \sum_{j=a_1+1}^{a_2} M_{i,j}$
 
-Se desea que, dada la matriz y dadas $Q$ queries (es decir, valores de $a_1$, $a_2$, $c_1$ y $c_2$), se pide implementar un algoritmo que las resuelva con orden de complejidad $O(A*C + Q)$.
+Se pide que, dada la matriz y dadas $Q$ queries (es decir, valores de $a_1$, $a_2$, $c_1$ y $c_2$), implementar un algoritmo que las resuelva con orden de complejidad $O(A*C + Q)$.
 
 \subsection{Desarrollo}
 
