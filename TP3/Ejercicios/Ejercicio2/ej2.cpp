@@ -11,8 +11,8 @@ struct Node{
 		Node() : maxAmountOfWords(0), next() {};
 
 		void addWord(string& s, int size, int index = 0){
-			if(index != size){
-				if(index == size-1)
+			if(index < size){
+				if(index == size - 1)
 					finished = true;
 				map<char, Node>::iterator it = next.find(s[index]);
 				if(it != next.end())
