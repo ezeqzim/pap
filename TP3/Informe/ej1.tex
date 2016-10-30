@@ -30,7 +30,7 @@ La relación $\sqsubset$ es transitiva.
 \end{lem}
 \begin{proof}
 Sean $A = [a_1,...,a_k]$, $B = [b_1,...,b_n]$, $C = [c_1,...,c_m]$, cadenas tales que $A \sqsubset B$, $B \sqsubset C$, queremos ver si $A \sqsubset C$.\\
-Como $A \sqsubset B$, luego $A = [b1,...,b_k]$, y como $B \sqsubset C$, luego $B = [c_1,...,c_n]$. Entonces $A = [c_1,...,c_k]$ y por lo tanto $A \sqsubset C$.
+Como $A \sqsubset B$, luego $A = [b_1,...,b_k]$, y como $B \sqsubset C$, luego $B = [c_1,...,c_n]$. Entonces $A = [c_1,...,c_k]$ y por lo tanto $A \sqsubset C$.
 \end{proof}
 
 \begin{lem}
@@ -110,7 +110,7 @@ A continuación se adjunta el algoritmo:\\
  \KwData{$P$, $W$, 
  $\Pi$ arreglo calculado en la sección anterior, 
  $j$ tamaño de la subcadena de $W$ más grande que es prefijo de $P$}
- \KwResult{El índice de $W$ donde comienza $W_P$, o $-1$ si no existe $W_P$}
+ \KwResult{Devuelve $true$ si existe $W_P$. De lo contrario devuelve $false$}
  $j \gets 0$\\
  \For{$i \gets 0...|W|-1$}{
 		\While{$j > 0 \wedge W[i] \neq P[j]$}{
@@ -120,16 +120,17 @@ A continuación se adjunta el algoritmo:\\
 			$j \gets j+1$
 		}
 		\uIf{$j = |P|$}{
-			Devolver $i - j + 1$
+			Devolver $true$
 		}
  }
- Devolver -1
+ Devolver $false$
  \caption{Búsqueda de $W_P$}
 \end{algorithm}
 
 Esencialmente, el algoritmo es igual al de cálculo de bordes, con la siguiente diferencia de que en las líneas 3-5, no se estan extendiendo bordes, sino que si el caracter que se esta observando no coincide, en lugar de comenzar de cero, se comienza desde el borde.\\
-Luego, si los caracteres son iguales, el tamaño de la subcadena de $W$ más grande que es prefijo de $P$ encontrada hasta el momento se incrementa.
-Finalmente, si $j = |P|$, significa que encontré $W_P$, y devuelvo el índice donde comienza.
+
+Luego, si los caracteres son iguales, el tamaño de la subcadena de $W$ más grande que es prefijo de $P$ encontrado hasta el momento se incrementa.
+Finalmente, si $j = |P|$, significa que encontró $W_P$, y devuelvo $true$. Si el \textbf{for} termina de ejecutar, significa que no existe $W_P$, y devuelve $false$.
 
 \textbf{Complejidad}\\
 Por el mismo razonamiento que en el algoritmo de \emph{cálculo de bordes de $P$}, se puede observar que el \textbf{while} se ejecuta $|W|-1$ veces a lo largo de toda la ejecución del algoritmo, con lo que el \textbf{while} tiene un costo amortizado de \O{1}. Luego, como el \textbf{for} itera $|W|$ veces, el algoritmo tiene complejidad \O{|W|}.

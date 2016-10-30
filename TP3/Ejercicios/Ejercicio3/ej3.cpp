@@ -7,15 +7,15 @@ typedef long long ll;
 using namespace std;
 
 int c, a, q;
-vector<vector<int> > memo;
+vector<vector<ll> > memo;
 
 void inicializar() {
   cin >> c >> a >> q;
-  memo = vector<vector<int> >(c + 1, vector<int>(a + 1, 0));
+  memo = vector<vector<ll> >(c + 1, vector<ll>(a + 1, 0));
 }
 
 void armar_memo() {
-  int val;
+  ll val;
   forr(i, 1, c + 1) {
     forr(j, 1, a + 1) {
       cin >> val;
@@ -28,7 +28,8 @@ void resolver_queries(){
   int c1, a1, c2, a2;
   forn(i, q) {
     cin >> c1 >> a1 >> c2 >> a2;
-    cout << (memo[c2][a2] + memo[c1][a1] - memo[c2][a1] - memo[c1][a2]) << endl;
+    ll res = memo[c2][a2] + memo[c1][a1] - memo[c2][a1] - memo[c1][a2];
+    cout << res << endl;
   }
 }
 
