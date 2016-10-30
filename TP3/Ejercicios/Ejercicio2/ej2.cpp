@@ -12,6 +12,8 @@ struct Node{
 
 		void addWord(string& s, int size, int index = 0){
 			if(index != size){
+				if(index == size-1)
+					finished = true;
 				map<char, Node>::iterator it = next.find(s[index]);
 				if(it != next.end())
 					it->second.addWord(s, size, index + 1);
@@ -24,15 +26,19 @@ struct Node{
 			maxAmountOfWords++;
 		};
 
-		int getMaxAmountOfWordsWithNonEmptyPrefix(){
+		int getMaxAmountOfWordsFromPrefix(){
 			int maximum = 0;
-			for(map<char, Node>::iterator it = next.begin(); it != next.end(); ++it)
-				maximum = max(maximum, it->second.maxAmountOfWords);
+			for(map<char, Node>::iterator it = next.begin(); it != next.end(); ++it){
+				if(finished)
+					maximum = max(maximum, it->second.maxAmountOfWords);
+				maximum = max(maximum, it->second.getMaxAmountOfWordsFromPrefix());
+			}
 			return maximum;
 		};
 
 	private:
 		int maxAmountOfWords;
+		bool finished = false;
 		map<char, Node> next;
 };
 
@@ -44,8 +50,8 @@ class Trie{
 			root.addWord(s, size);
 		}
 
-		int getMaxAmountOfWordsWithNonEmptyPrefix(){
-			root.getMaxAmountOfWordsWithNonEmptyPrefix();
+		int getMaxAmountOfWordsFromPrefix(){
+			root.getMaxAmountOfWordsFromPrefix();
 		}
 
 	private:
@@ -67,6 +73,6 @@ void initialize(Trie& dictionary){
 int main(int argc, char const *argv[]) {
 	Trie dictionary;
 	initialize(dictionary);
-	cout << dictionary.getMaxAmountOfWordsWithNonEmptyPrefix() << endl;
+	cout << dictionary.getMaxAmountOfWordsFromPrefix() << endl;
 	return 0;
 }
