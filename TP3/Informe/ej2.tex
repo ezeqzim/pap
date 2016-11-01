@@ -10,8 +10,9 @@ T = \operatorname*{max}_{i = 1,...,A} (\Phi(D_i))\text{, donde}\\
 Para resolver el problema, se implementó un \emph{Trie}.\\
 Un \emph{Trie} es un árbol donde cada camino desde la raíz hasta un nodo representa una cadena. Por lo tanto, el nodo raíz representa la cadena vacía, y dado un nodo cualquiera que representa a la cadena $R$, todos sus hijos representaran cadenas de la forma $R' = Ry$, es decir, $R'$ tiene a $R$ como prefijo.\\
 A su vez, se guardó en cada nodo $i$, la cantidad de cadenas $C_i$ que tienen como prefijo la cadena representada por dicho nodo.\\
-Para lograr esto, al insertar cada cadena y sabiendo que son distintas, cada nodo involucrado incrementa su $C$.\\
-De esta manera, hallar $T$ es equivalente a hallar $\displaystyle Q = \operatorname*{max}_{i} (C_i)$, y para hallarlo, basta recorrer los nodos que representan los prefijos más cortos (es decir, aquellos que representan fin de cadena y que estan más cerca de la raíz) y ver cuál tiene el $C$ más grande.
+Al agregar una palabra, como se sabe que no existen dos palabras iguales, se debe incrementar en uno el $C_i$ de cada nodo visitado al insertar la palabra nueva. 
+%Para lograr esto, al insertar cada cadena y sabiendo que son distintas, cada nodo involucrado incrementa su $C_i$, esto es, los nodos correspondientes a la cadena agregada.\\
+De esta manera, hallar $T$ es equivalente a hallar $\displaystyle Q = \operatorname*{max}_{i \in Terminales} (C_i)$, donde $Terminales$ es el conjunto de nodos del trie donde un prefijo termina. El nodo que posea el m\'aximo de estos valores representar\'a el prefijo desde el cual salga la mayor cantidad de palabras distintas. Esto es, el prefijo m\'as compartido. Para hallarlo, basta recorrer los nodos que representan los prefijos más cortos (es decir, aquellos que representan fin de cadena y que estan más cerca de la raíz) y ver cuál tiene el $C$ más grande.
 
 \subsubsection{Complejidad}
 El algoritmo consiste en insertar cada $D_i$ en el \emph{Trie} y actualizar $C_i$ donde corresponda.\\
