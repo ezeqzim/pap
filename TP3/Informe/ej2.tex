@@ -65,11 +65,11 @@ Resta ver la búsqueda de $\displaystyle Q = \operatorname*{max}_{i} (C_i)$. Par
 
 La complejidad de esta función se encuentra en las líneas 5 y 6, dado que las demás operaciones son básicas y por lo tanto, \O{1}.
 En la línea 6 se realiza una llamada recursiva, y dicha llamada se realiza con cada uno de los hijos de un nodo. Es decir, se esta realizando una búsqueda \emph{en profundidad} en el árbol.
-Dicha búsqueda pasa una única vez por cada nodo en todo el árbol. Si un nodo puede tener como mucho $256$ hijos (uno por cada caracter ASCII), y dado que el árbol tiene $N$ nodos, entonces la complejidad de recorrer dicho árbol es \O{256*N} $ = $ \O{N} (Por propiedades de la \emph{Cota superior}).
+Dicha búsqueda pasa una única vez por cada nodo, y dado que el árbol tiene $N$ nodos, entonces la complejidad de recorrer dicho árbol es \O{N}.
 
-Luego, y dado que $N = \displaystyle \sum_{i = 1}^{A} |D_i|$, obtener $Q$ tiene complejidad \O{\displaystyle \sum_{i = 1}^{A} |D_i|}.
+Luego, y dado que $N \leq \displaystyle \sum_{i = 1}^{A} |D_i|$ (ya que puede que existan algún $D_i$ que sea prefijo de algún $D_k$), obtener $Q$ tiene complejidad \O{\displaystyle \sum_{i = 1}^{A} |D_i|}.
 
 Por la suma de dichas operaciones y por propiedades de la \emph{Cota superior} la complejidad total es \O{\displaystyle \sum_{i = 1}^{A} |D_i|}.
 
 \subsection{Puntaje}
-El peso otorgado a este ejercicio es:
+El peso otorgado a este ejercicio es: 9
