@@ -42,7 +42,7 @@ Luego, el \emph{Trie} simplemente llama a la funcion $addWord(S_k, 0, |D_k|)$ de
 Este algoritmo es recursivo, y en cada llamada, se incrementa el valor de $i$, que puede llegar hasta $j$. Es decir, es equivalente a iterar un ciclo $j$ veces.\\
 Lo siguiente que hay que analizar, es el costo de la condición en la línea 4. Ya que existen $256$ símbolos ASCII, y el \emph{mapa} tiene como claves a dichos simbolos, la complejidad de buscar dicho nodo es \O{log(256)}$=$\O{1} (Por propiedades de la \emph{Cota superior}).
 
-Luego, y dado que $j = |D_k|$, insertar una cadena $S_i$ tiene complejidad \O{|D_i|}.
+Luego, y dado que $j = |D_k|$, insertar una cadena $S_i$ tiene complejidad \O{|D_i|}. Insertar las $A$, entonces, tiene complejidad \O{\displaystyle \sum_{i = 1}^{A} |D_i|}.
 
 Resta ver la búsqueda de $\displaystyle Q = \operatorname*{max}_{i} (C_i)$. Para esto, cada nodo implementa la función \textbf{getMaxAmountOfWordsFromPrefix}:\\
 \begin{algorithm}[H]
@@ -62,9 +62,9 @@ Resta ver la búsqueda de $\displaystyle Q = \operatorname*{max}_{i} (C_i)$. Par
 	\caption{Función \emph{getMaxAmountOfWordsFromPrefix} de los nodos}
 \end{algorithm}
 
-La complejidad de esta función se encuentra en las líneas 5 y 6, dado que las demás operaciones son básicas y por lo tanto, \O(1).
+La complejidad de esta función se encuentra en las líneas 5 y 6, dado que las demás operaciones son básicas y por lo tanto, \O{1}.
 En la línea 6 se realiza una llamada recursiva, y dicha llamada se realiza con cada uno de los hijos de un nodo. Es decir, se esta realizando una búsqueda \emph{en profundidad} en el árbol.
-Dicha búsqueda pasa una única vez por cada nodo en todo el árbol. Si un nodo puede tener como mucho $256$ hijos (uno por cada caracter ASCII), y suponiendo que el árbol tiene $N$ nodos, entonces la complejidad de recorrer dicho árbol es \O(256*N)$ = $\O(N) (Por propiedades de la \emph{Cota superior}).
+Dicha búsqueda pasa una única vez por cada nodo en todo el árbol. Si un nodo puede tener como mucho $256$ hijos (uno por cada caracter ASCII), y dado que el árbol tiene $N$ nodos, entonces la complejidad de recorrer dicho árbol es \O{256*N} $ = $ \O{N} (Por propiedades de la \emph{Cota superior}).
 
 Luego, y dado que $N = \displaystyle \sum_{i = 1}^{A} |D_i|$, obtener $Q$ tiene complejidad \O{\displaystyle \sum_{i = 1}^{A} |D_i|}.
 
