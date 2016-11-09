@@ -8,6 +8,9 @@ using namespace std;
 
 struct Point {
   int x, y;
+  Point() {
+	  this->x = this->y = 0;
+  }
 
   Point(int x, int y) {
     this->x = x;
@@ -36,7 +39,7 @@ void updateBorder(Point& p1, Point& p2){
 }
 
 void extractBorders(int N) {
-  forn(i, N-2){
+  forn(i, N - 2){
     int x1, y1, x2, y2, x3, y3;
     cin >> x1 >> y1 >> x2 >> y2 >> x3 >> y3;
     Point vertex1(x1, y1), vertex2(x2, y2), vertex3(x3, y3);
@@ -57,38 +60,38 @@ int crossProduct(Point &base, Point &p1, Point &p2){
   return x1 * y2 - x2 * y1;
 }
 
-void findFirst(){
-  Point actual = polygon[0];
-  auto iter = borders[actual].begin();
+pair<Point, Point> getAdyacent(Point point) {
+  auto iter = borders[point].begin();
   Point p1((*iter).x, (*iter).y);
   iter++;
   Point p2((*iter).x, (*iter).y);
-  if (crossProduct(actual, p1, p2) < 0)
-    polygon.push_back(p1);
+  return make_pair(p1, p2);
+}
+
+void findSecond(){
+  Point first = borders.begin()->first;
+  pair<Point, Point> adyacents = getAdyacent(first);
+  if (crossProduct(first, adyacents.first, adyacents.second) < 0)
+    polygon[1] = adyacents.first;
   else
-    polygon.push_back(p2);
+    polygon[1] = adyacents.second;
 }
 
 void clockwisePath(int N) {
-  findFirst();
-  int before = 0;
-  int actual = 1;
+  findSecond();
+  Point before = polygon[0];
+  Point actual = polygon[1];
 
-  while(polygon.size() < N) {
-    auto iter = borders[polygon[actual]].begin();
-    Point p1((*iter).x, (*iter).y);
-    iter++;
-    Point p2((*iter).x, (*iter).y);
-    if (polygon[before] == p2)
-      polygon.push_back(p1);
-    else
-      polygon.push_back(p2);
-    before++;
-    actual++;
+  forr(i, 2, N) {
+	pair<Point, Point> adyacents = getAdyacent(actual);
+	Point next = adyacents.first == before ? adyacents.second : adyacents.first;
+	polygon[i] = next;
+	before = actual;
+	actual = next;
   }
 }
 
-void finalize(int N){
+void print(int N){
   forn(i, N)
     cout << polygon[i] << " \n"[i == N-1];
 }
@@ -96,9 +99,10 @@ void finalize(int N){
 int main(int argc, char const *argv[]) {
   int N;
   cin >> N;
+  polygon = vector<Point>(N);
   extractBorders(N);
-  polygon.push_back(borders.begin()->first);
+  polygon[0] = borders.begin()->first;
   clockwisePath(N);
-  finalize(N);
+  print(N);
   return 0;
 }
