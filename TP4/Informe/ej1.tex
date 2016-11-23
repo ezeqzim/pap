@@ -1,9 +1,39 @@
 \section{Ejercicio 1}
 \subsection{El Problema}
 
-\subsection{Desarrollo}
+Obtenemos un polígono simple de $N$ lados, descompuesto en $N - 2$ triángulos. Los vértices de los mismos son también vértices del polígono original, tal que dos triángulos cualesquiera no tienen un punto estrictamente interior en común, y de manera tal que la unión de todos los triángulos produce el polígono original. 
 
+Lo que debemos hacer es reconstruir el polígono original, devolviendo  los $N$ vértices del mismo ordenados en sentido horario. Además debemos hacer en \O{N log N}.
+\subsection{Desarrollo}
+\subsubsection{Inspiración divina}
+
+Lo primero que hicimos fue darnos cuenta de lo siguiente:
+\textit{Todo par de vértices puede aparecer cero, una o dos veces como lado de un triángulo. Si aparece una, ese par es un lado del polígono original. Si aparece dos, no lo es.}
+
+Veamos por qué esto es cierto. 
+
+Un par de vértices puede no aparecer como lado de un triángulo. Esto se debe a que la descomposición en triángulos no es única, por lo que en la descomposición provista un par de vértices no se encuentra unido.
+* Imagen de rectángulo *
+
+
+Explicar xq aparece una
+Explicar xq podría aparecer 2.
+Explicar xq no 3 o más.
+Explicar xq si aparece una es externo y si aparece 2 es interno
+
+\subsubsection{Solución}
+Nuestra idea entonces es ir guardando los distintos lados de los triángulos, pero si encontramos uno ya guardado, lo borramos en vez de guardarlo. Entonces, solo nos quedaríamos con los que aparecen una vez, es decir, los del polígono original.
+
+\underline{\textbf{Implementación}}
+Cuando leemos un triángulo,  ABC, para A guardamos o borramos B y C, para B A y C, y para C, A y B. Así se vería:
+*Imagen*
+
+Una vez leídos todos los triángulos, nos quedaría lo siguiente:
+*Imagen*
+
+Después, tomamos el punto más abajo a la izq (*Revisar*) y elegimos el punto adyacente que respete el sentido horario (*Revisar*). Desde ahí, es cuestión de ir recorriendo los puntos sin repetir hasta volver al inicial.
 \subsubsection{Complejidad}
+
 
 \subsection{Puntaje}
 El peso otorgado a este ejercicio es:
