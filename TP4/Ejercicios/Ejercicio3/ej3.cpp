@@ -77,7 +77,7 @@ stack<Point> grahamScan(vector<Point>& points) {
   hull.push(points[1]);
 
   int i = 2;
-  while(i < points.size()){
+  while(i < points.size()) {
     Point top = hull.top();
     hull.pop();
     Point a = points[i] - top, b = hull.top() - top;
