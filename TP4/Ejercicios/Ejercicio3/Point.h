@@ -3,6 +3,12 @@ using namespace std;
 struct Point {
   int x, y;
 
+  Point operator=(const Point& p) {
+    x = p.x;
+    y = p.y;
+    return *this;
+  }
+
   bool operator<(const Point& p) const {
     if (y != p.y)
       return y < p.y;
