@@ -2,6 +2,7 @@
 #include "Point.h"
 #include "Content.h"
 #include "Line.h"
+#include "Triangle.h"
 
 typedef long long ll;
 #define forr(i, a, b) for(int i = (a); i < (b); ++i)
@@ -11,8 +12,7 @@ using namespace std;
 
 vector<Point> goodPoints;
 vector<Point> badPoints;
-vector<vector<vector<Content> > > triangles;
-vector<vector<int > > memo;
+map<Triangle, Content> contents;
 Point pivot;
 Point OUTSIDE(1 << 16, 1 << 16); //(2 ** 16, 2 ** 16)
 
@@ -22,6 +22,6 @@ Content getPointsInside(Point a, Point b, Point c);
 bool isInside(Point p, Point a, Point b, Point c);
 void sortPoints();
 bool POLAR_ORDER(Point a, Point b) { return pivot.counterClockWise(a, b); }
-stack<Point> grahamScan(vector<Point>& points);
+int grahamScan(vector<Point>& points);
 
 // ASUMIMOS QUE NO PUEDE HABER 2 CIUDADES EN EL MISMO PUNTO

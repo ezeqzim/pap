@@ -3,25 +3,25 @@ using namespace std;
 struct Point {
   int x, y;
 
-  bool operator<(Point& p) {
+  bool operator<(const Point& p) const {
     if (y != p.y)
       return y < p.y;
     return x < p.x;
   }
 
-  bool operator==(Point& p) {
+  bool operator==(const Point& p) const {
     return p.x == x && p.y == y;
   }
 
-  bool operator!=(Point& p) {
+  bool operator!=(const Point& p) const {
     return !(p == *this);
   }
 
-  Point operator-(Point& p) {
+  Point operator-(const Point& p) const {
     return Point(x - p.x, y - p.y);
   }
 
-  float crossProduct(Point& p) {
+  float crossProduct(const Point& p) const {
     return x * p.y - y * p.x;
   }
 

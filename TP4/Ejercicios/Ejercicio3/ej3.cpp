@@ -4,19 +4,12 @@ int main(int argc, char const *argv[]) {
   initialize();
   triangulate();
 
-  while(goodPoints.size() > 0){
-    cout << endl;
-    stack<Point> hull = grahamScan(goodPoints);
-
-    while (!hull.empty()) {
-      Point p = hull.top();
-      hull.pop();
-      cout << p << endl;
-    }
-
+  int maximum = 0;
+  while(goodPoints.size() > 0) {
+    maximum = max(grahamScan(goodPoints), maximum);
     goodPoints.erase(goodPoints.begin());
   }
-
+  cout << maximum << endl;
   return 0;
 }
 
@@ -25,8 +18,6 @@ void initialize(){
   cin >> H >> E;
   goodPoints = vector<Point>(H);
   badPoints = vector<Point>(E);
-  triangles = vector<vector<vector<Content> > > (H, vector<vector<Content> > (H, vector<Content>(H)));
-  memo = vector<vector<int> > (H, vector<int>(H, 0));
   forn(i, H) {
     Point p;
     cin >> p.x >> p.y;
@@ -40,11 +31,11 @@ void initialize(){
 }
 
 void triangulate() {
-  forn(i, goodPoints.size())
-    forn(j, goodPoints.size())
-      forn(k, goodPoints.size())
-        if (i != j && i != k && j != k)
-          triangles[i][j][k] = getPointsInside(goodPoints[i], goodPoints[j], goodPoints[k]);
+  for(Point a : goodPoints)
+    for(Point b : goodPoints)
+      for(Point c : goodPoints)
+        if (a != b && a != c && b != c)
+          contents[Triangle(a, b, c)] = getPointsInside(a, b, c);
 }
 
 Content getPointsInside(Point a, Point b, Point c) {
@@ -63,32 +54,40 @@ bool isInside(Point p, Point a, Point b, Point c) {
   return ab.intersect(l1) + bc.intersect(l1) + ac.intersect(l1) % 2 == 1;
 }
 
-stack<Point> grahamScan(vector<Point>& points) {
-  stack<Point> hull;
-  if (points.size() < 3){
-    for(int i = 0; i < points.size(); ++i)
-      hull.push(points[i]);
-    return hull;
-  }
+int grahamScan(vector<Point>& points) {
+  if (points.size() < 3)
+    return points.size();
 
   sortPoints();
 
-  hull.push(points[0]);
-  hull.push(points[1]);
+  vector<vector<int > > memo(points.size(), vector<int>(points.size(), 0));
 
-  int i = 2;
-  while(i < points.size()) {
-    Point top = hull.top();
-    hull.pop();
-    Point a = points[i] - top, b = hull.top() - top;
-    if(!(hull.size() > 0 && a.crossProduct(b) < 0)) {
-      hull.push(top);
-      hull.push(points[i]);
-      i++;
+  forr(i, 1, points.size())
+    memo[0][i] = 2;
+
+  int maximum = 2;
+
+  forr(current, 2, points.size()) {
+    forr(prevLast, 0, current - 1) {
+      forr(last, prevLast + 1, current) {
+        // Point a = points[current] - points[last], b = points[prevLast] - points[last];
+        // !(a.crossProduct(b) < 0)
+
+        // Nos fijamos si es convexo
+        if (points[last].counterClockWise(points[current], points[prevLast])) {
+          Content content = contents[Triangle(points[0], points[last], points[current])];
+          if (content.bad == 0) {
+            // POSSIBLE POINT OF FAILURE
+            memo[last][current] = content.good + 1 + memo[prevLast][last];
+            // cout << "Current: " << current << " Last: " << last << " PrevLast: " << prevLast << " Val : " << memo[last][current] << endl;
+            maximum = max(maximum, memo[last][current]);
+          }
+        }
+      }
     }
   }
 
-  return hull;
+  return maximum;
 }
 
 void sortPoints() {
