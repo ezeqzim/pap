@@ -6,7 +6,7 @@ int main(int argc, char const *argv[]) {
 
   int maximum = 0;
   while(goodPoints.size() > 0) {
-    maximum = max(grahamScan(goodPoints), maximum);
+    maximum = max(iteration(), maximum);
     goodPoints.erase(goodPoints.begin());
   }
   cout << maximum << endl;
@@ -16,12 +16,13 @@ int main(int argc, char const *argv[]) {
 void initialize(){
   int H, E;
   cin >> H >> E;
-  goodPoints = vector<Point>(H);
+  goodPoints = vector<pair<Point, int> >(H);
   badPoints = vector<Point>(E);
+  contents = vector<vector<vector<Content> > >(H, vector<vector<Content> >(H, vector<Content>(H)));
   forn(i, H) {
     Point p;
     cin >> p.x >> p.y;
-    goodPoints[i] = p;
+    goodPoints[i] = make_pair(p, i);
   }
   forn(i, E) {
     Point p;
@@ -31,17 +32,17 @@ void initialize(){
 }
 
 void triangulate() {
-  for(Point a : goodPoints)
-    for(Point b : goodPoints)
-      for(Point c : goodPoints)
+  for(pair<Point, int> a : goodPoints)
+    for(pair<Point, int> b : goodPoints)
+      for(pair<Point, int> c : goodPoints)
         if (a != b && a != c && b != c)
-          contents[Triangle(a, b, c)] = getPointsInside(a, b, c);
+          contents[a.second][b.second][c.second] = getPointsInside(a.first, b.first, c.first);
 }
 
 Content getPointsInside(Point a, Point b, Point c) {
   int good = 0, bad = 0;
-  for (Point p : goodPoints)
-    if (p != a && p != b && p != c && isInside(p, a, b, c))
+  for (pair<Point, int> p : goodPoints)
+    if (p.first != a && p.first != b && p.first != c && isInside(p.first, a, b, c))
       good++;
   for (Point p : badPoints)
     if (isInside(p, a, b, c))
@@ -54,28 +55,25 @@ bool isInside(Point p, Point a, Point b, Point c) {
   return ab.intersect(l1) + bc.intersect(l1) + ac.intersect(l1) % 2 == 1;
 }
 
-int grahamScan(vector<Point>& points) {
-  if (points.size() < 3)
-    return points.size();
+int iteration() {
+  if (goodPoints.size() < 3)
+    return goodPoints.size();
 
   sortPoints();
 
-  vector<vector<int > > memo(points.size(), vector<int>(points.size(), 0));
+  vector<vector<int > > memo(goodPoints.size(), vector<int>(goodPoints.size(), 0));
 
-  forr(i, 1, points.size())
+  forr(i, 1, goodPoints.size())
     memo[0][i] = 2;
 
   int maximum = 2;
 
-  forr(current, 2, points.size()) {
+  forr(current, 2, goodPoints.size()) {
     forr(prevLast, 0, current - 1) {
       forr(last, prevLast + 1, current) {
-        // Point a = points[current] - points[last], b = points[prevLast] - points[last];
-        // !(a.crossProduct(b) < 0)
-
         // Nos fijamos si es convexo
-        if (points[last].counterClockWise(points[current], points[prevLast])) {
-          Content content = contents[Triangle(points[0], points[last], points[current])];
+        if (goodPoints[last].first.counterClockWise(goodPoints[current].first, goodPoints[prevLast].first)) {
+          Content content = contents[goodPoints[0].second][goodPoints[last].second][goodPoints[current].second];
           if (content.bad == 0) {
             // POSSIBLE POINT OF FAILURE
             memo[last][current] = content.good + 1 + memo[prevLast][last];
@@ -93,11 +91,11 @@ int grahamScan(vector<Point>& points) {
 void sortPoints() {
   int leastY = 0;
   for (int i = 1; i < goodPoints.size(); i++)
-    if (goodPoints[i] < goodPoints[leastY])
+    if (goodPoints[i].first < goodPoints[leastY].first)
       leastY = i;
 
   swap(goodPoints[0], goodPoints[leastY]);
 
-  pivot = goodPoints[0];
+  pivot = goodPoints[0].first;
   sort(goodPoints.begin() + 1, goodPoints.end(), POLAR_ORDER);
 }

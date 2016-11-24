@@ -10,9 +10,9 @@ typedef long long ll;
 
 using namespace std;
 
-vector<Point> goodPoints;
+vector<pair<Point, int> > goodPoints; //index on contents
 vector<Point> badPoints;
-map<Triangle, Content> contents;
+vector<vector<vector<Content> > > contents;
 Point pivot;
 Point OUTSIDE(1 << 16, 1 << 16); //(2 ** 16, 2 ** 16)
 
@@ -21,7 +21,7 @@ void triangulate();
 Content getPointsInside(Point a, Point b, Point c);
 bool isInside(Point p, Point a, Point b, Point c);
 void sortPoints();
-bool POLAR_ORDER(Point a, Point b) { return pivot.counterClockWise(a, b); }
-int grahamScan(vector<Point>& points);
+bool POLAR_ORDER(pair<Point, int> a, pair<Point, int> b) { return pivot.counterClockWise(a.first, b.first); }
+int iteration();
 
 // ASUMIMOS QUE NO PUEDE HABER 2 CIUDADES EN EL MISMO PUNTO
