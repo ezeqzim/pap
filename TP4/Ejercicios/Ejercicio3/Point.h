@@ -23,6 +23,12 @@ struct Point {
     return x * p.y - y * p.x;
   }
 
+  bool counterClockWise(Point p1, Point p2) {
+    Point a = p1 - *this;
+    Point b = p2 - *this;
+    return a.crossProduct(b) > 0;
+  }
+
   friend std::ostream& operator<<(std::ostream& os, const Point &p) {
     return os << p.x << " " << p.y;
   }
