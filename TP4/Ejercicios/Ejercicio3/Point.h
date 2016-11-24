@@ -1,3 +1,5 @@
+using namespace std;
+
 struct Point {
   int x, y;
 
@@ -29,7 +31,7 @@ struct Point {
     return a.crossProduct(b) > 0;
   }
 
-  friend std::ostream& operator<<(std::ostream& os, const Point &p) {
+  friend ostream& operator<<(ostream& os, const Point &p) {
     return os << p.x << " " << p.y;
   }
 

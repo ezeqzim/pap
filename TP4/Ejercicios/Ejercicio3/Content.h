@@ -1,3 +1,5 @@
+using namespace std;
+
 struct Content {
   int good, bad;
 
@@ -10,7 +12,7 @@ struct Content {
     this->bad = bad;
   }
 
-  friend std::ostream& operator<<(std::ostream& os, const Content &p) {
+  friend ostream& operator<<(ostream& os, const Content &p) {
     return os << "Good: " << p.good << " Bad: " << p.bad;
   }
 };
