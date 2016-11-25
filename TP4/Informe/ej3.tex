@@ -2,46 +2,49 @@
 \subsection{El Problema}
 En este problema interesa construir una muralla para salvar edificios.
 
-Nos brindan H puntos donde se encuentran edificios históricos que nos gustaría salvar. Por otro lado nos dicen la ubicación de los E edificios tomados por enemigos que no queremos mantener dentro de la nueva muralla.
+Nos brindan H puntos donde se encuentran edificios históricos que nos gustaría salvar. Por otro lado nos dicen la ubicación de E edificios tomados por enemigos que no queremos mantener dentro de la nueva muralla.
 
-Nos piden un algoritmo polinomial (preferentemente \O{(H+E)^4}) que compute el polígono convexo máximo en cuanto a la cantidad de edificios históricos salvados, pero que no contenga ningún edificio tomado por enemigos. En particular interesa la cantidad máxima de edificios que se pueden salvar.
+Nos piden un algoritmo polinomial (preferentemente \O{(H+E)^4}) que compute el polígono convexo máximo en cuanto a la cantidad de edificios históricos salvados, pero que no contenga ningún edificio tomado por enemigos. En particular interesa la cantidad máxima de edificios que se pueden salvar y no el polígono en sí.
 
-Desde ahora llamaremos puntos \textit{buenos} a los puntos que perteneces a H y \textit{malos} a los que pertenecen a E.
+Desde ahora llamaremos puntos \textit{buenos} a los puntos que pertenecen a H y \textit{malos} a los que pertenecen a E.
 
 \subsection{Estrategia}
 Para resolver este problema, se plantea el siguiente esquema:
 
 Si supieramos cual es el punto que se encuentra más abajo a la izquierda del polígono solución, entonces podemos calcular la cápsula convexa pedida con este punto como referencia. Este punto será llamado \textit{\textbf{pivot}}
 
-Como no sabemos cual es este punto, vamos a probar con todos los candidatos, es decir los puntos buenos.
-
-Ahora nos queda como construir el polígono buscado:
+Veamos como construir el polígono buscado:
 
 Si H = 0, no hay polígono que construir, si H = 1, ese punto será la cápsula máxima, si H = 2, entonces el segmento entre ellos será solución, pues no existen 3 puntos colineares.
 
 Veamos el caso $H \geq 3$:
 
-En primer medida vamos a ordenar los H puntos respecto al ángulo con el \textit{pivot}.
+En primer medida vamos a ordenar los H puntos respecto al ángulo con el \textit{pivot}, en sentido antihorario.
 
 Luego, sabemos que cualquier segmento desde \textit{pivot} hacia los demás puntos son candidatos a solución.
 
-Sea \textit{current} = cada uno de los puntos desde el tercero en adelante.
+La idea será, a partir de un punto cualquiera, recorrer todos los que estan entre este y el \textit{pivot}, y considerarlos el triángulo que forman los 3 puntos como candidato a ser parte de la cápsula buscada.
 
-Sea \textit{prevLast} = cada uno de los puntos entre \textit{pivot} y current - 1.
+De esta manera sean:
+\begin{itemize}
+  \item \textit{current} = cada uno de los puntos desde el tercero en adelante.
 
-Sea \textit{last} = cada uno de los puntos entre prevLast + 1 y current.
+  \item \textit{prevLast} = cada uno de los puntos entre \textit{pivot} y current - 1.
 
-Si los tres puntos se encuentran en sentido antihorario, entonces mantinienen el atributo de convexidad, por lo tanto, es un candidato válido.
+  \item \textit{last} = cada uno de los puntos entre prevLast + 1 y current.
+\end{itemize}
+
+Si los tres puntos se encuentran en sentido antihorario respeto a \textit{last}, entonces mantienen el atributo de convexidad buscado, por lo tanto, esa configuración es un candidato válido.
 
 Dadas estas definiciones, se derivan los triángulos con vértices \textit{pivot}, \textit{last}, \textit{current} (1) y textit{pivot}, \textit{prevLast}, \textit{last} (2).
 
-Si en (1) hay algún punto \textit{malo}, no nos sirve, entonces (1) deja de ser candidato a solución. Si no contiene ningún punto \textit{malo}, entonces la solución será igual a la cantidad de puntos \textit{buenos} dentro de (1) + 1 (agregar \textit{current} al polígono) + la mejor solución de usar \textit{current} = \textit{last}, \textit{last} = \textit{prevLast} (este caso es recursivo).
+Si en (1) hay algún punto \textit{malo}, no nos sirve, entonces (1) deja de ser candidato a solución. Si no contiene ningún punto \textit{malo}, entonces la solución será igual a la cantidad de puntos \textit{buenos} dentro de (1) + 1 (agregar \textit{current} al polígono) + la mejor solución hallada en (2) (este caso es recursivo).
 
-Notamos entonces que tenemos subproblemas repetidos, que no queremos recalcular cada vez, con lo cual, podemos guardarlo en un \textbf{memo}, las claves de este memo, serán los puntos \textit{last} y \textit{current} e indicarán la máxima cantidad de puntos que se salvan usando el triángulo (1).
+Notamos entonces que tenemos subproblemas repetidos, que no queremos recalcular cada vez, con lo cual, podemos guardarlo en un \textbf{memo}. Las claves de este serán los puntos \textit{last} y \textit{current} e indicarán la máxima cantidad de puntos que se salvan usando el triángulo (1) para todo posible configuración.
 
 Alcanza entonces con devolver el máximo de estos cálculos.
 
-Finalmente, eliminamos el \textit{pivot} de los puntos buenos y repetimos el proceso para contemplar todos los casos.
+Finalmente, tenemos que eliminar el \textit{pivot} de los puntos buenos y repetir el proceso para contemplar todos los casos, pues partimos de la hipótesis de que el \textit{pivot} pertenece al polígono solución.
 
 \subsubsection{Complejidad}
 Para alcanzar la complejidad \O{N^4}, con N = H + E, primero calculamos todos los triángulos que se forman con los puntos buenos.
@@ -52,9 +55,9 @@ Por cada triángulo, calculamos la cantidad de puntos buenos y malos dentro de �
 
 Una vez calculado esto, aplicamos el algoritmo descripto previamente. Tenemos \O{H} $\in$ \O{N} puntos \textit{buenos} sobre los que iterar. Por cada uno de estos, aplicamos el algoritmo que es ordenar los puntos (buscar el \textit{pivot} y ordenar según el ángulo, \O{Nlog(N)}), luego iterar los índices \textit{current} entre 2 y H (\O{N}), textit{prevLast} entre 0 y current (\O{N}) y textit{last} entre prevLast + 1 y current (\O{N}), esto es \O{N^3}.
 
-Entonces por cada punto \textit{bueno}, tardamos \O{Nlog(N) + N^3}. Finalmente la complejidad es de \O{N^4}.
+Entonces por cada punto \textit{bueno}, tardamos \O{Nlog(N) + N^3}. Como tenemos \O{N} puntos buenos que iterar, la complejidad de esta parte es \O{N^4}.
 
-En resumen, el problema se resuelve en 2 etapas de costo \O{N^4 + N^4}, lo que se resume en \O{N^4} como se pedía.
+Finalmente, el problema se resuelve en 2 etapas de costo \O{N^4 + N^4}, lo que se resume en \O{N^4} como se pedía.
 
 \subsection{Puntaje}
 El peso otorgado a este ejercicio es:
