@@ -33,7 +33,7 @@ void triangulate() {
   for(pair<Point, int> a : goodPoints)
     for(pair<Point, int> b : goodPoints)
       for(pair<Point, int> c : goodPoints)
-        if (a != b && a != c && b != c)
+        if (a.first != b.first && a.first != c.first && b.first != c.first)
           contents[a.second][b.second][c.second] = getPointsInside(a.first, b.first, c.first);
 }
 

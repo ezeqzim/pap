@@ -11,11 +11,33 @@
 \usepackage[nottoc]{tocbibind}
 \usepackage{placeins}
 \usepackage{hyperref}
+\usepackage{subcaption}
 \hypersetup{
     linktoc=all,     %set to all if you want both sections and subsections linked
     linkcolor=blue,  %choose shttps://www.sharelatex.com/project/542da47afb0e80fe43643f61ome color if you want links to stand out
 }
 \input{page.layout}
+
+\newcommand{\miniig}[4]{
+  \begin{figure}[H]
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=8cm]{#1}
+      \begin{minipage}{7cm}
+        \caption{#2}
+      \end{minipage}
+    \end{subfigure}
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=8cm]{#3}
+      \begin{minipage}{7cm}
+        \caption{#4}
+      \end{minipage}
+    \end{subfigure}
+  \end{figure}
+}
+
+\newcommand{\ig}[2]{\begin{figure}[H]\centering\includegraphics[width=15cm]{#1}\caption{#2}\end{figure}}
 
 \begin{document}
 \titulo{Trabajo Práctico 1}
