@@ -1,7 +1,22 @@
 \section{Ejercicio 2}
 \subsection{El Problema}
 
+Se tiene un alrogitmo de ordenamiento. (INSERT PSEUDOCODIGO DEL ENUNCIADO AQUI)
+
+El problema consiste en encontrar la esperanza de la cantidad de permutaciones que deberán realizarse. Se pide implementar un algoritmo que encuentre este número con una complejidad del orden de $O(N^2)$
+
 \subsection{Desarrollo}
+
+Se modeló el problema como una cadena de Markov, donde los estados posibles son los distintos valores de $i$, desde 0 hasta $N-1$. Cada transición $(j,w)$ tiene asociada una probabilidad, que es la probabilidad de, en un paso, pasar de $i=j$ a $i=w$.
+
+Para poder calcular dichas probabilidades es necesario saber cuál es la probabilidad de que, al permutar el subarreglo correspondiente, uno de los elementos mínimos quede al principio. Para poder calcular esto es necesario saber, dado un valor de $i$, cuántos elementos mínimos hay en el subarreglo $A[i..N]$. Se define entonces $Mins_i =$ \emph{Cantidad de elementos minimos en el subarreglo} $A[i..N]$.
+
+Se define entonces $P_i$ como la probabilidad de que al permutar el subarreglo quede un mínimo al principio.
+$P_i = \frac{Mins_i}{N-i}$.
+
+De esta forma, se puede calcular la probabilidad de pasar del estado $i=j$ al estado $i=w$, de la siguiente manera. Llamaremos a dicha probabilidad $M_{j,w}$. $M_{j,w} = (\prod_{z=j}^{w-1} P_z) * (1 - P_w)$. Por ejemplo, si se quiere ver la probabilidad de pasar de tener $i=0$ a $i=2$, ésto es la probabilidad de tomar el mínimo la primera vez, multiplicada por la de tomar el mínimo la segunda vez, multiplicada por la de no tomar el mínimo la tercera.
+
+%ESTO NO VALE SI W=N-1, ACLARAR
 
 \subsubsection{Complejidad}
 
