@@ -13,7 +13,7 @@ Para resolver este problema, planteamos el siguiente esquema:
 
 Si supiéramos cuál es el punto que se encuentra más abajo a la izquierda del polígono solución, entonces podemos calcular la cápsula convexa pedida con este punto como referencia. Este punto será llamado \textit{\textbf{pivot}}.
 
-Notemos que si el polígono solución tiene $k > 2$ vértices, puede ser dividido en $k - 2$ triángulos con vértices \textit{pivot}-$punto_i$-$punto_{i+1}$. En particular ninguno de estos triángulos debe contener ningún punto malo y debemos conocer todos los puntos buenos que tiene adentro.
+Notemos que si el polígono solución tiene $k > 2$ vértices, puede ser dividido en $k - 2$ triángulos con vértices \textit{pivot}-$punto_i$-$punto_{i+1}$. Vamos a querer conocer cuantos puntos buenos y malos tiene cada uno de estos triángulos, para usar esta información más tarde.
 
 Por ejemplo, dada la siguiente imagen, donde los puntos verdes son los buenos y el rojo el único malo.
 
@@ -23,7 +23,7 @@ Puede formarse un triángulo que contiene un punto bueno adentro. Y puede formar
 
 \miniig{Imagenes/ej3/Imagen_B.jpg}{Posible triángulo a formar con puntos buenos dentro}{Imagenes/ej3/Imagen_C.jpg}{Posible triángulo a formar con puntos malos dentro}
 
-Supongamos que ya encontramos el punto \textit{pivot}, veamos entonces cómo construir el polígono buscado:
+Supongamos ahora que ya encontramos el punto \textit{pivot}, y que calculamos los triángulos y sus contenidos. Veamos ahora cómo construir el polígono buscado:
 
 Si H = 0, no hay polígono que construir, si H = 1, ese punto será la cápsula máxima, si H = 2, entonces el segmento entre ellos será solución, pues no existen 3 puntos colineales.
 
@@ -35,7 +35,7 @@ En primer medida vamos a ordenar los H puntos respecto al ángulo con el \textit
 
 Además, como no existen 3 puntos colineales, cualquier segmento desde \textit{pivot} hacia los demás puntos son candidatos a solución.
 
-La idea será la siguiente: para cada punto $X$ distinto al \textit{pivot}, armar todos los triángulos posibles con otros puntos buenos $Y$ anteriores. Los siguientes son los triángulos posibles desde el punto 4:
+La idea será la siguiente: para cada punto $X$ distinto al \textit{pivot}, armar todos los triángulos posibles con otros puntos buenos anteriores, que llamaremos $Y$. Los siguientes son los triángulos posibles desde el punto 4:
 
 \ig{Imagenes/ej3/Imagen_E.jpg}{Triángulos posibles desde el punto 4}
 
@@ -45,16 +45,16 @@ Si uno de estos triángulos tiene dentro un punto malo, lo descartamos. Si no es
 
 Cabe aclarar que ninguno de estos triángulos forma una figura convexa con el triángulo P-4-3, por lo que no serán tenidos en cuenta para la solución final.
 
-Ahora, en cada uno de estos pasos, podemos ir contando la cantidad de cantidad de puntos buenos que quedan dentro del polígono que estamos armando. De esta forma vamos a encontrar el mejor polígono posible para el \textit{pivot} elegido. Lo único que falta ahora es repetir el algoritmo eligiendo a un \textit{pivot} nuevo en cada iteración y devolver el máximo de cada iteración.
+Ahora, en cada uno de estos pasos, podemos ir contando la cantidad de cantidad de puntos buenos que quedan dentro del polígono que estamos armando. De esta forma vamos a encontrar el mejor polígono posible para el \textit{pivot} elegido. Lo único que falta ahora es repetir el algoritmo eligiendo a un \textit{pivot} nuevo en cada iteración y devolver el máximo entre todas las iteraciones.
 
 \subsection{Implementación}
 En primera instancia precomputamos todas las triangulaciones posibles desde cada punto. Para cada uno de estos, guardamos además cuántos puntos buenos y cuántos malos tienen dentro cada uno. Por motivos de eficiencia, al tener que reordenar el arreglo de puntos buenos de acuerdo al \textit{pivot} en cada iteración, guardamos en este el índice por el cual indexar el precómputo de los triángulos.
 
-La forma que decidimos implementar el algoritmos descrito previamente fue la siguiente: a partir de un punto cualquiera (distinto al \textit{pivot}), recorrer todos los que están entre este y el \textit{pivot}. Recordemos que estos ya se encuentran ordenados.
+La forma que decidimos implementar el algoritmo descrito previamente fue la siguiente: a partir de un punto cualquiera (distinto al \textit{pivot}), recorrer todos los que están entre este y el \textit{pivot}. Recordemos que estos ya se encuentran ordenados.
 
 De esta manera llamaremos:
 \begin{itemize}
-  \item \textit{current} = cada uno de los puntos desde el tercero en adelante. \textcolor{blue}{yo le pongo tercero porque tengo en cuenta el pivot}
+  \item \textit{current} = cada uno de los puntos desde el tercero en adelante. \textcolor{blue}{yo le pongo tercero porque tengo en cuenta el pivot} \textcolor{red}{Aclaralo entonces}
 
   \item \textit{prevLast} = cada uno de los puntos entre \textit{pivot} y current - 1.
 
