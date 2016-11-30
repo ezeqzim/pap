@@ -54,14 +54,14 @@ La forma que decidimos implementar el algoritmo descrito previamente fue la sigu
 
 De esta manera llamaremos:
 \begin{itemize}
-  \item \textit{current} = cada uno de los puntos desde el tercero en adelante. \textcolor{blue}{yo le pongo tercero porque tengo en cuenta el pivot} \textcolor{red}{Aclaralo entonces}
+  \item \textit{current} = cada uno de los puntos desde el tercero en adelante, siendo el primero el \textit{pivot}.
 
   \item \textit{prevLast} = cada uno de los puntos entre \textit{pivot} y current - 1.
 
   \item \textit{last} = cada uno de los puntos entre prevLast + 1 y current.
 \end{itemize}
 
-Si los tres puntos se encuentran en sentido anti-horario respeto a \textit{last} \textcolor{red}{(Esto me hace ruido, como está escrito)} \textcolor{blue}{es una mierda de escribir :)}, entonces mantienen el atributo de convexidad buscado, por lo tanto, esa configuración es un candidato válido.
+Si los tres puntos se encuentran en sentido anti-horario respeto a \textit{last}, entonces mantienen el atributo de convexidad buscado, por lo tanto, la configuración es un candidato válido.
 
 Dadas estas definiciones, se derivan los triángulos con vértices \textit{pivot}-\textit{last}-\textit{current} (PLC) y \textit{pivot}-\textit{prevLast}-\textit{last} (PPL).
 
