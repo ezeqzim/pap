@@ -81,7 +81,7 @@ int iteration() {
         if (goodPoints[last].first.counterClockWise(goodPoints[current].first, goodPoints[prevLast].first)) {
           Content content = contents[goodPoints[0].second][goodPoints[last].second][goodPoints[current].second];
           if (content.bad == 0) {
-            memo[last][current] = content.good + 1 + memo[prevLast][last];
+            memo[last][current] = max(memo[last][current], content.good + 1 + memo[prevLast][last]);
             maximum = max(maximum, memo[last][current]);
           }
         }
