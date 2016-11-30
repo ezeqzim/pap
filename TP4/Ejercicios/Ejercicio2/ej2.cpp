@@ -12,12 +12,14 @@ vector<int> arr;
 vector<int> mins;
 vector<double> p;
 vector<vector<double> > chanchimatriz;
+vector<double> numeroDePasos;
 
 void inicializar(){
 	cin >> n;
 	arr = vector<int>(n,0);
 	mins = vector<int>(n,0);
 	p = vector<double>(n,0);
+	numeroDePasos = vector<double>(n,0);
 	chanchimatriz = vector<vector<double> >(n, vector<double>(n, 0));
 	forn(i,n){
 		cin >> arr[i];
@@ -63,16 +65,36 @@ void armarChanchiMatriz2(){
 	for(int i=n-1; i>=0; i--){
 		for(int j=i; j<=n-1;j++){
 			if (j==i)chanchimatriz[i][j] = 1-p[i];
-			else if (j==n-1) chanchimatriz[i][j] = ((chanchimatriz[i][j-1]) / (1-p[j-1]))*p[j-1];
-			else chanchimatriz[i][j] = ((chanchimatriz[i][j-1]) / (1-p[j-1]))*p[j-1]*(1-p[j]);
+			else {
+				double proba = (p[j-1] == 1 ? 1 : (1-p[j-1]));
+				if (j==n-1)
+					chanchimatriz[i][j] = ((chanchimatriz[i][j-1]) / proba)*p[j-1];
+				else
+					chanchimatriz[i][j] = ((chanchimatriz[i][j-1]) / proba)*p[j-1]*(1-p[j]);
+			}
 		}
 	}
 	chanchimatriz[n-1][n-1]=1;
 }
 
+double obtenerEsperanza(){
+	for(int i=n-2; i>=0; i--){
+		double row = 0;
+		for(int j=i+1; j<=n-1;j++){
+			row += numeroDePasos[j]*chanchimatriz[i][j];
+		}
+		numeroDePasos[i] = (row+1) / p[i];
+	}
+	return numeroDePasos[0];
+}
+
 int main(int argc, char const *argv[]) {
 
-	inicializar();	
+	inicializar();
+	if (n == 1){
+		cout << 1 << endl;
+		return 0;
+	}
 	sort(arr.begin(), arr.end()); // Ordenar el array (NlogN)
 	calcularMins(); // Calcular la cantidad de minimos en cada paso (hacer caso borde si el arreglo tiene un elem) (N)
 	calcularPs(); 	// Calcular P_is para todos los i (N)
@@ -85,6 +107,7 @@ int main(int argc, char const *argv[]) {
 		}
 		cout << endl;
 	}
+	cout << fixed << setprecision(6) << obtenerEsperanza() << endl;
 
   return 0;
 }
