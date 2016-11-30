@@ -17,7 +17,7 @@ Notemos que si el polígono solución tiene $k > 2$ vértices, puede ser dividid
 
 Por ejemplo, dada la siguiente imagen, donde los puntos verdes son los buenos y el rojo el único malo.
 
-\ig{Imagenes/ej3/Imagen_A.jpg}{Posible input del problema}
+\begin{figure}[H]\centering\includegraphics[scale=0.7]{Imagenes/ej3/Imagen_A.jpg}\caption{Posible input del problema}\end{figure}
 
 Puede formarse un triángulo que contiene un punto bueno adentro. Y puede formarse uno que contiene un punto malo adentro.
 
@@ -31,13 +31,13 @@ Veamos el caso $H \geq 3$:
 
 En primer medida vamos a ordenar los H puntos respecto al ángulo con el \textit{pivot}, en sentido anti-horario.
 
-\ig{Imagenes/ej3/Imagen_D.jpg}{Puntos ordenados por ángulo respecto al pivot, en sentido anti-horario}
+\begin{figure}[H]\centering\includegraphics[scale=0.7]{Imagenes/ej3/Imagen_D.jpg}\caption{Puntos ordenados por ángulo respecto al pivot, en sentido anti-horario}\end{figure}
 
 Además, como no existen 3 puntos colineales, cualquier segmento desde \textit{pivot} hacia los demás puntos son candidatos a solución.
 
 La idea será la siguiente: para cada punto $X$ distinto al \textit{pivot}, armar todos los triángulos posibles con otros puntos buenos anteriores, que llamaremos $Y$. Los siguientes son los triángulos posibles desde el punto 4:
 
-\ig{Imagenes/ej3/Imagen_E.jpg}{Triángulos posibles desde el punto 4}
+\begin{figure}[H]\centering\includegraphics[scale=0.5]{Imagenes/ej3/Imagen_E.jpg}\caption{Triángulos posibles desde el punto 4}\end{figure}
 
 Si uno de estos triángulos tiene dentro un punto malo, lo descartamos. Si no es así, calculamos recursivamente los posibles triángulos desde $Y$ que además sean convexos respecto al triángulo \textit{pivot}-$X$-$Y$ y no tengan dentro puntos malos. Si seguimos tomando a $X$ como 4 y tomamos a $Y$ como 3, estos serían los posibles sub triángulos.
 
