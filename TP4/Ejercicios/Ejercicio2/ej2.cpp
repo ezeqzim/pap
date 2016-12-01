@@ -43,21 +43,17 @@ void calcularPs() {
     p[i] = (float)mins[i]/ (float)(n - i);
 }
 
-void armarChanchiMatriz2() {
-  double chanchivalor = 1;
-  for(int i = n - 1; i >= 0; --i) {
+void armarChanchiMatriz() {
+  chanchimatriz[n-1][n-1] = 1;
+  for(int i = n - 2; i >= 0; --i) {
     forr(j, i, n) {
       if (j == i)
         chanchimatriz[i][j] = 1 - p[i];
       else {
-        double proba = (p[j - 1] == 1 ? 1 : (1 - p[j - 1]));
-        chanchimatriz[i][j] = ((chanchimatriz[i][j - 1]) / proba) * p[j - 1];
-        if (j != n - 1)
-          chanchimatriz[i][j] *= (1 - p[j]);
+        chanchimatriz[i][j] = p[i] * chanchimatriz[i+1][j];
       }
     }
   }
-  chanchimatriz[n-1][n-1] = 1;
 }
 
 double obtenerEsperanza() {
@@ -74,14 +70,13 @@ int main(int argc, char const *argv[]) {
 
   inicializar();
   if (n == 1){
-    cout << 1 << endl;
+    cout << fixed << setprecision(6) << 1.0 << endl;
     return 0;
   }
   sort(arr.begin(), arr.end()); // Ordenar el array (NlogN)
   calcularMins(); // Calcular la cantidad de minimos en cada paso (hacer caso borde si el arreglo tiene un elem) (N)
   calcularPs();   // Calcular P_is para todos los i (N)
-  armarChanchiMatriz2(); // Armar chanchimatriz (N^3) :(      (quizas tengamos que hacer una tabla aditiva)
-  //resolverSistema();  // Resuelve el sistema M*E = E - 1
+  armarChanchiMatriz(); // Armar chanchimatriz (N^3) :(      (quizas tengamos que hacer una tabla aditiva)
   cout << fixed << setprecision(6) << obtenerEsperanza() << endl;
 
   return 0;
