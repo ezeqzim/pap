@@ -49,9 +49,8 @@ void armarChanchiMatriz() {
     forr(j, i, n) {
       if (j == i)
         chanchimatriz[i][j] = 1 - p[i];
-      else {
+      else
         chanchimatriz[i][j] = p[i] * chanchimatriz[i+1][j];
-      }
     }
   }
 }
@@ -69,7 +68,7 @@ double obtenerEsperanza() {
 int main(int argc, char const *argv[]) {
 
   inicializar();
-  if (n == 1){
+  if (n == 1) {
     cout << fixed << setprecision(6) << 1.0 << endl;
     return 0;
   }
