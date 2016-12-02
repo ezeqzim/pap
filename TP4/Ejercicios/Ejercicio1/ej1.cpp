@@ -9,7 +9,7 @@ using namespace std;
 struct Point {
   int x, y;
   Point() {
-	  this->x = this->y = 0;
+    this->x = this->y = 0;
   }
 
   Point(int x, int y) {
@@ -53,11 +53,8 @@ void extractBorders(int N) {
 }
 
 int crossProduct(Point &base, Point &p1, Point &p2){
-  int x1 = p1.x - base.x;
-  int y1 = p1.y - base.y;
-  int x2 = p2.x - base.x;
-  int y2 = p2.y - base.y;
-  return x1 * y2 - x2 * y1;
+  Point vec1(p1.x - base.x, p1.y - base.y), vec2(p2.x - base.x, p2.y - base.y);
+  return vec1.x * vec2.y - vec2.x * vec1.y;
 }
 
 pair<Point, Point> getAdyacent(Point point) {
@@ -83,11 +80,11 @@ void clockwisePath(int N) {
   Point actual = polygon[1];
 
   forr(i, 2, N) {
-	pair<Point, Point> adyacents = getAdyacent(actual);
-	Point next = adyacents.first == before ? adyacents.second : adyacents.first;
-	polygon[i] = next;
-	before = actual;
-	actual = next;
+    pair<Point, Point> adyacents = getAdyacent(actual);
+    Point next = adyacents.first == before ? adyacents.second : adyacents.first;
+    polygon[i] = next;
+    before = actual;
+    actual = next;
   }
 }
 

@@ -1,5 +1,4 @@
 #include "../stdc++.h"
-//#include <algorithm>
 
 typedef long long ll;
 #define forr(i, a, b) for(int i = (a); i < (b); ++i)
@@ -11,7 +10,7 @@ int n;
 vector<int> arr;
 vector<int> mins;
 vector<double> p;
-vector<vector<double> > chanchimatriz;
+vector<vector<double> > probabilidades;
 vector<double> numeroDePasos;
 
 void inicializar() {
@@ -20,7 +19,7 @@ void inicializar() {
   mins = vector<int>(n, 0);
   p = vector<double>(n, 0);
   numeroDePasos = vector<double>(n, 0);
-  chanchimatriz = vector<vector<double> >(n, vector<double>(n, 0));
+  probabilidades = vector<vector<double> >(n, vector<double>(n, 0));
   forn(i, n)
     cin >> arr[i];
 }
@@ -43,14 +42,14 @@ void calcularPs() {
     p[i] = (float)mins[i]/ (float)(n - i);
 }
 
-void armarChanchiMatriz() {
-  chanchimatriz[n-1][n-1] = 1;
+void generarProbabilidades() {
+  probabilidades[n-1][n-1] = 1;
   for(int i = n - 2; i >= 0; --i) {
     forr(j, i, n) {
       if (j == i)
-        chanchimatriz[i][j] = 1 - p[i];
+        probabilidades[i][j] = 1 - p[i];
       else
-        chanchimatriz[i][j] = p[i] * chanchimatriz[i+1][j];
+        probabilidades[i][j] = p[i] * probabilidades[i+1][j];
     }
   }
 }
@@ -59,7 +58,7 @@ double obtenerEsperanza() {
   for(int i = n - 2; i >= 0; --i) {
     double row = 0;
     forr(j, i + 1, n)
-      row += numeroDePasos[j]*chanchimatriz[i][j];
+      row += numeroDePasos[j]*probabilidades[i][j];
     numeroDePasos[i] = (row + 1) / p[i];
   }
   return numeroDePasos[0];
@@ -72,10 +71,10 @@ int main(int argc, char const *argv[]) {
     cout << fixed << setprecision(6) << 1.0 << endl;
     return 0;
   }
-  sort(arr.begin(), arr.end()); // Ordenar el array (NlogN)
-  calcularMins(); // Calcular la cantidad de minimos en cada paso (hacer caso borde si el arreglo tiene un elem) (N)
-  calcularPs();   // Calcular P_is para todos los i (N)
-  armarChanchiMatriz(); // Armar chanchimatriz (N^3) :(      (quizas tengamos que hacer una tabla aditiva)
+  sort(arr.begin(), arr.end());
+  calcularMins();
+  calcularPs();
+  generarProbabilidades();
   cout << fixed << setprecision(6) << obtenerEsperanza() << endl;
 
   return 0;

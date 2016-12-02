@@ -11,7 +11,7 @@ int cantCiclos;
 vector<int> permutacion;
 vector<int> ciclos;
 vector<int> cicloPorElem;
-ll MODULUS = 1000000007;
+ll MODULUS = 1e9 + 7;
 
 ll modexp(ll res, ll a, int b) {
   while(b > 0) {
