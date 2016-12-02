@@ -12,42 +12,66 @@ Dado un arreglo $A$ de $N$ números, se desea saber la cantidad de pasos esperad
 El problema consiste en encontrar la esperanza de la cantidad de permutaciones que deberán realizarse hasta ordenar el arreglo. Se pide implementar un algoritmo que encuentre este número con una complejidad del orden de \O{N^2}.
 
 \subsection{Desarrollo}
-Para resolver el problema, primero se define $\widehat{A}$ como el arreglo $A$ ordenado, y
-	 \[ P_i(X) = \text{ Probabilidad de que, estando en el paso \emph{i-ésimo}, después de una permutación, }i=X \]
- 	 \[ \text{Donde }P_i(X) = 0\text{ si }X < i\text{, }P_N(N) = 1\]
+Para resolver el problema, primero se definen:
+\begin{itemize}
+	\item $MIN_{i}$ como el elemento de mínimo valor de $A[i..N)$.
+	\item $CM_i$ como la cantidad de veces que $MIN_i$ aparece en $A[i..N)$.
+	\item $P_i(X)$ como la probabilidad de que, estando en el paso \emph{i-ésimo} (es decir, cuando $A[0..i)$ ya esta ordenado), después de una permutación, $i$ avance hasta que $i = X$.
+	\item $Q(i)$ como la probabilidad de tomar $MIN_i$ de $A[i..N)$. Notar que $Q(N) = 0$.
+\end{itemize}
 
-Dicha probabilidad es equivalente a encontrar los $X$ valores $A_1,...,A_x$, tales que
- \[ \widehat{A}[i..i+X] = [A_1,...,A_x] \]
+\noindent Consideremos que:
+\begin{itemize}
+	\item Como $i$ siempre avanza, la probabilidad de volver a un estado anterior es $0$.
+	\item Si el algoritmo se encuentra en el paso \emph{N-ésimo}, entonces $i$ no puede avanzar más. Luego, la probabilidad de que $i$ no avance es $1$.
+	\item La probabilidad de avanzar $i$ en $1$, es igual a la probabilidad de encontrar $MIN_i$ de entre todos los elementos que componen $A[i..N)$. Como $MIN_i$ se puede repetir en $A[i..N)$, la probabilidad de avanzar $i$ en $1$ es igual a la $Q(i)$ por la probabilidad de no tomar ningun $MIN_{i+1}$ (es decir, avanzo $i$ exactamente en $1$, $(1-Q(i+1)$).
+	\item La probabilidad de avanzar $i$ hasta un valor $X$ se define recursivamente, como la probabilidad de avanzar $i$ en $1$, por la probabilidad de avanzar desde $i+1$ hasta el valor $X$.
+\end{itemize}
 
-Por lo tanto
-\[ P_i(X) = \frac{\text{Cantidad de mínimos en A[i..N)}}{N-i} * P_{i+1}(X) \]
-\[ Y P_i(i+1) = \frac{\text{Cantidad de mínimos en A[i..N)}}{N-i}\]
+\noindent Consecuentemente, esto define a $P_i(X)$ de la siguiente forma:
+\[
+	P_i(X) = 
+		\begin{cases}
+			0 & \quad \text{Si }X < i \\
+			1 - Q(i) & \quad \text{Si }X = i \\
+			Q(i) * P_{i+1}(X) & \quad \text{En otro caso}
+		\end{cases}
+\]
 
-Luego, se define $M^{NxN}$ la matriz de probabilidades, donde $M_{i,j} = P_i(j)$.
-Dicha matriz cumple la propiedad de ser una matriz estocástica derecha (es decir, que sus filas estan conformadas por valores reales no negativos) y triangular superior.
+
+Luego, se define $M \in \mathbb{R}^{NxN}$ la matriz de probabilidades, donde $M_{i,j} = P_i(j)$.
+Dicha matriz cumple la propiedad de ser una matriz estocástica derecha (es decir, que sus filas estan conformadas por valores reales no negativos cuya suma es $1$) y triangular superior.\\
 También posee la propiedad de que $M_{i,i} = 1 - P_i(i+1)$ (es decir, la probabilidad de que la permutación no permite avanza el $i$).\\
 
 Entonces, se define la funcion $h(t)$ como la cantidad de pasos necesaria para llegar al estado final (es decir, al arreglo ordenado), desde la posición actual $t$ (es decir, el momento en el que $i = t$). Por lo tanto, $t = 1,...,N$, y
-\[ h(t) = 1 + \sum_{i = t}^{N} P_i(N)*h(i) \]
-\[ h(N) = 0 \]
+\[ 
+	h(t) = 
+	\begin{cases}
+		\displaystyle 1 + \sum_{i = t}^{N} P_i(N)*h(i) & \quad \text{Si }t < N \\
+		0 & \quad \text{En otro caso}
+	\end{cases}
+\]
 
-Para encontrar los valores de $h(t)$ para $t = 1,...,N$, se definen $E^N$ y $U^N$ como \[ E = (h(1),...,h(N))\] y \[U = (1,...,1) \], y basta con resolver el sistema $M*E + U = E$.
+\noindent Se definen $E \in \mathbb{R}^N$ y $U \in \mathbb{R}^N$ como 
+\[ E = (h(1),...,h(N))\text{ y }U = (1,...,1) \]
 
-Finalmente, el resultado del algoritmo es el valor $h(1)$.
+\noindent Para encontrar los valores de $h(t)$ para $t = 1,...,N$, solo basta resolver el sistema $M*E + U = E$.\\
+
+\noindent Finalmente, el resultado del algoritmo es el valor $h(1)$, es decir, $E_1$.
 
 \subsubsection{Complejidad}
 El algoritmo para resolver el problema consta de cuatro funciones importantes:
 \begin{itemize}
-	\item \textbf{calcularMins}: Función que calcula el vector $minimos$, donde $minimos[i] = $Cantidad de mínimos en $A[i..N)$. Esta función recorre el arreglo $A$ una única vez, y posee complejidad \O{N}.
-	\item \textbf{calcularPs}: Función que calcula el vector $probabilidades$, donde $probabilidades[i] = P_i(i+1)$. Esta función recorre el arreglo $A$ una única vez, y posee complejidad \O{N}.
+	\item \textbf{calcularMins}: Función que calcula el vector $minimos$, donde $minimos[i] = $ Cantidad de mínimos en $A[i..N)$. Esta función recorre el arreglo $A$ una única vez, y posee complejidad \O{N}.
+	\item \textbf{calcularPs}: Función que calcula el vector $PS$, donde $PS[i] = Q(i)$. Esta función recorre el arreglo $A$ una única vez, y posee complejidad \O{N}.
 	\item \textbf{generarProbabilidades}: Función que calcula la matriz $M$. \\
 	Dado que $M$ es triangular superior, se calcularon las posiciones $M_{i,j}$ donde $j \geq i$. \\
-	Sabiendo que $M_{i,j} = P_i(j)$, luego se puede reemplazar por \[ M_{i,j} = \frac{\text{Cantidad de mínimos en A[i..N)}}{N-i} * P_{i+1}(j) = \frac{\text{Cantidad de mínimos en A[i..N)}}{N-i} * M_{i+1,j} \]
+	Sabiendo que $M_{i,j} = P_i(j)$, luego se puede reemplazar por \[ M_{i,j} = Q(i) * P_{i+1}(j) = PS[i] * M_{i+1,j} \]
 	Por esta propiedad, es posible recorrer solo la porción triangular superior de $M$, y recorriendola desde la última fila y última columna, hasta llegar a la primer fila, se pueden calcular las posiciones usando los valores previamente calculados, como se vé en la fórmula.\\
 	Consecuentemente, la complejidad es \O{N^2}.
 	\item \textbf{obtenerEsperanza}: Función encargada de calcular el vector $E$. Al comienzo, $E$ es un vector de $0$'s. \\
 	Dado que se conoce el valor $h(N)$ y que $M$ es triangular superior, nuevamente la mejor estrategia es recorrer solo la porción triangular superior de $M$, recorriendola desde la última fila y última columna, hasta llegar a la primer fila.\\
-	Por cada fila, se calcula $E_i = 1 + \sum_{t = i}^{N} M_{i,t}*E_{t}$. Esto es equivalente a resolver el sistema de ecuaciones utilizando la técnica de \emph{Backwards Substitution}\textsuperscript{\cite{backsust}}.\\
+	Por cada fila, se calcula $\displaystyle E_i = 1 + \sum_{t = i}^{N} M_{i,t}*E_{t}$. Esto es equivalente a resolver el sistema de ecuaciones utilizando la técnica de \emph{Backwards Substitution}\textsuperscript{\cite{backsust}}.\\
 	Finalmente, la complejidad es \O{N^2}.
 \end{itemize}
 
