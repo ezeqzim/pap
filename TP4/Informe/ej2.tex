@@ -30,7 +30,7 @@ Para resolver el problema, primero se definen:
 
 \noindent Consecuentemente, esto define a $P_i(X)$ de la siguiente forma:
 \[
-	P_i(X) = 
+	P_i(X) =
 		\begin{cases}
 			0 & \quad \text{Si }X < i \\
 			1 - Q(i) & \quad \text{Si }X = i \\
@@ -44,15 +44,15 @@ Dicha matriz cumple la propiedad de ser una matriz estocástica derecha (es deci
 También posee la propiedad de que $M_{i,i} = 1 - P_i(i+1)$ (es decir, la probabilidad de que la permutación no permite avanza el $i$).\\
 
 Entonces, se define la funcion $h(t)$ como la cantidad de pasos necesaria para llegar al estado final (es decir, al arreglo ordenado), desde la posición actual $t$ (es decir, el momento en el que $i = t$). Por lo tanto, $t = 1,...,N$, y
-\[ 
-	h(t) = 
+\[
+	h(t) =
 	\begin{cases}
 		\displaystyle 1 + \sum_{i = t}^{N} P_i(N)*h(i) & \quad \text{Si }t < N \\
 		0 & \quad \text{En otro caso}
 	\end{cases}
 \]
 
-\noindent Se definen $E \in \mathbb{R}^N$ y $U \in \mathbb{R}^N$ como 
+\noindent Se definen $E \in \mathbb{R}^N$ y $U \in \mathbb{R}^N$ como
 \[ E = (h(1),...,h(N))\text{ y }U = (1,...,1) \]
 
 \noindent Para encontrar los valores de $h(t)$ para $t = 1,...,N$, solo basta resolver el sistema $M*E + U = E$.\\
@@ -78,4 +78,4 @@ El algoritmo para resolver el problema consta de cuatro funciones importantes:
 \noindent Por la suma de dichas operaciones y por propiedades de la \emph{Cota superior}, la complejidad total es \O{N^2}.
 
 \subsection{Puntaje}
-El peso otorgado a este ejercicio es:
+El peso otorgado a este ejercicio es: 10
