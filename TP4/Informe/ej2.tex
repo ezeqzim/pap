@@ -16,9 +16,9 @@ Para resolver el problema, primero se define $\widehat{A}$ como el arreglo $A$ o
 	 \[ P_i(X) = \text{ Probabilidad de que, estando en el paso \emph{i-ésimo}, después de una permutación, }i=X \]
  	 \[ \text{Donde }P_i(X) = 0\text{ si }X < i\text{, }P_N(N) = 1\]
 
-Dicha probabilidad es equivalente a encontrar los $X$ valores $A_1,...,A_x$, tales que 
+Dicha probabilidad es equivalente a encontrar los $X$ valores $A_1,...,A_x$, tales que
  \[ \widehat{A}[i..i+X] = [A_1,...,A_x] \]
- 
+
 Por lo tanto
 \[ P_i(X) = \frac{\text{Cantidad de mínimos en A[i..N)}}{N-i} * P_{i+1}(X) \]
 \[ Y P_i(i+1) = \frac{\text{Cantidad de mínimos en A[i..N)}}{N-i}\]
@@ -31,7 +31,7 @@ Entonces, se define la funcion $h(t)$ como la cantidad de pasos necesaria para l
 \[ h(t) = 1 + \sum_{i = t}^{N} P_i(N)*h(i) \]
 \[ h(N) = 0 \]
 
-Para encontrar los valores de $h(t)$ para $t = 1,...,N$, se definen $E^N$ y $U^N$ como \[ E = (h(1),...,h(N))$ y $U = (1,...,1) \], y basta con resolver el sistema $M*E + U = E$.
+Para encontrar los valores de $h(t)$ para $t = 1,...,N$, se definen $E^N$ y $U^N$ como \[ E = (h(1),...,h(N))\] y \[U = (1,...,1) \], y basta con resolver el sistema $M*E + U = E$.
 
 Finalmente, el resultado del algoritmo es el valor $h(1)$.
 
@@ -43,15 +43,15 @@ El algoritmo para resolver el problema consta de cuatro funciones importantes:
 	\item \textbf{generarProbabilidades}: Función que calcula la matriz $M$. \\
 	Dado que $M$ es triangular superior, se calcularon las posiciones $M_{i,j}$ donde $j \geq i$. \\
 	Sabiendo que $M_{i,j} = P_i(j)$, luego se puede reemplazar por \[ M_{i,j} = \frac{\text{Cantidad de mínimos en A[i..N)}}{N-i} * P_{i+1}(j) = \frac{\text{Cantidad de mínimos en A[i..N)}}{N-i} * M_{i+1,j} \]
-	Por esta propiedad, es posible recorrer solo la porción triangular superior de $M$, y recorriendola desde la ultima fila y ultima columna, hasta llegar a la primer fila, se pueden calcular las posiciones usando los valores previamente calculados, como se vé en la fórmula.\\
+	Por esta propiedad, es posible recorrer solo la porción triangular superior de $M$, y recorriendola desde la última fila y última columna, hasta llegar a la primer fila, se pueden calcular las posiciones usando los valores previamente calculados, como se vé en la fórmula.\\
 	Consecuentemente, la complejidad es \O{N^2}.
 	\item \textbf{obtenerEsperanza}: Función encargada de calcular el vector $E$. Al comienzo, $E$ es un vector de $0$'s. \\
-	Dado que se conoce el valor $h(N)$ y que $M$ es triangular superior, nuevamente la mejor estrategia es recorrer solo la porción triangular superior de $M$, recorriendola desde la ultima fila y ultima columna, hasta llegar a la primer fila.\\
+	Dado que se conoce el valor $h(N)$ y que $M$ es triangular superior, nuevamente la mejor estrategia es recorrer solo la porción triangular superior de $M$, recorriendola desde la última fila y última columna, hasta llegar a la primer fila.\\
 	Por cada fila, se calcula $E_i = 1 + \sum_{t = i}^{N} M_{i,t}*E_{t}$. Esto es equivalente a resolver el sistema de ecuaciones utilizando la técnica de \emph{Backwards Substitution}\textsuperscript{\cite{backsust}}.\\
 	Finalmente, la complejidad es \O{N^2}.
 \end{itemize}
 
-\noindent Por la suma de dichas operaciones y por propiedades de la \emph{Cota superior}, \la complejidad total es \O{N^2}.
+\noindent Por la suma de dichas operaciones y por propiedades de la \emph{Cota superior}, la complejidad total es \O{N^2}.
 
 \subsection{Puntaje}
 El peso otorgado a este ejercicio es:
