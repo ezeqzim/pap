@@ -1,11 +1,8 @@
 \begin{thebibliography}{1}
 
-\bibitem{knapp}
-{The Knapsack Problem}.
-\newblock \url{https://en.wikipedia.org/wiki/Knapsack_problem}.
-
-\bibitem{pushback}
-{push\_back}.
-\newblock \url{http://www.cplusplus.com/reference/vector/vector/push_back/}.
+\bibitem{backsust}
+{Backwards Substitution}.
+\newblock
+  \url{https://en.wikipedia.org/wiki/Triangular_matrix#Forward_and_back_substitution}.
 
 \end{thebibliography}

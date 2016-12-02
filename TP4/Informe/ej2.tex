@@ -1,24 +1,57 @@
 \section{Ejercicio 2}
 \subsection{El Problema}
 
-Se tiene un alrogitmo de ordenamiento. (INSERT PSEUDOCODIGO DEL ENUNCIADO AQUI)
+Dado un arreglo $A$ de $N$ números, se desea saber la cantidad de pasos esperada para ordenarlo, utilizando el siguiente algoritmo de ordenamiento:
+\begin{enumerate}
+	\item Se comienza con una variable $i = 0$ y el arreglo $A$ de tamaño $N$ como entrada.
+	\item Se permuta al azar el arreglo $A[i..N)$.
+	\item Mientras $i < N$ y $\min(A[i..N)) = A[i]$, incrementar $i$ en $1$.
+	\item Si $i < N$, volver al punto 2.
+\end{enumerate}
 
-El problema consiste en encontrar la esperanza de la cantidad de permutaciones que deberán realizarse. Se pide implementar un algoritmo que encuentre este número con una complejidad del orden de $O(N^2)$
+El problema consiste en encontrar la esperanza de la cantidad de permutaciones que deberán realizarse hasta ordenar el arreglo. Se pide implementar un algoritmo que encuentre este número con una complejidad del orden de \O{N^2}.
 
 \subsection{Desarrollo}
+Para resolver el problema, primero se define $\widehat{A}$ como el arreglo $A$ ordenado, y
+	 \[ P_i(X) = \text{ Probabilidad de que, estando en el paso \emph{i-ésimo}, después de una permutación, }i=X \]
+ 	 \[ \text{Donde }P_i(X) = 0\text{ si }X < i\text{, }P_N(N) = 1\]
 
-Se modeló el problema como una cadena de Markov, donde los estados posibles son los distintos valores de $i$, desde 0 hasta $N-1$. Cada transición $(j,w)$ tiene asociada una probabilidad, que es la probabilidad de, en un paso, pasar de $i=j$ a $i=w$.
+Dicha probabilidad es equivalente a encontrar los $X$ valores $A_1,...,A_x$, tales que 
+ \[ \widehat{A}[i..i+X] = [A_1,...,A_x] \]
+ 
+Por lo tanto
+\[ P_i(X) = \frac{\text{Cantidad de mínimos en A[i..N)}}{N-i} * P_{i+1}(X) \]
+\[ Y P_i(i+1) = \frac{\text{Cantidad de mínimos en A[i..N)}}{N-i}\]
 
-Para poder calcular dichas probabilidades es necesario saber cuál es la probabilidad de que, al permutar el subarreglo correspondiente, uno de los elementos mínimos quede al principio. Para poder calcular esto es necesario saber, dado un valor de $i$, cuántos elementos mínimos hay en el subarreglo $A[i..N]$. Se define entonces $Mins_i =$ \emph{Cantidad de elementos minimos en el subarreglo} $A[i..N]$.
+Luego, se define $M^{NxN}$ la matriz de probabilidades, donde $M_{i,j} = P_i(j)$.
+Dicha matriz cumple la propiedad de ser una matriz estocástica derecha (es decir, que sus filas estan conformadas por valores reales no negativos) y triangular superior.
+También posee la propiedad de que $M_{i,i} = 1 - P_i(i+1)$ (es decir, la probabilidad de que la permutación no permite avanza el $i$).\\
 
-Se define entonces $P_i$ como la probabilidad de que al permutar el subarreglo quede un mínimo al principio.
-$P_i = \frac{Mins_i}{N-i}$.
+Entonces, se define la funcion $h(t)$ como la cantidad de pasos necesaria para llegar al estado final (es decir, al arreglo ordenado), desde la posición actual $t$ (es decir, el momento en el que $i = t$). Por lo tanto, $t = 1,...,N$, y
+\[ h(t) = 1 + \sum_{i = t}^{N} P_i(N)*h(i) \]
+\[ h(N) = 0 \]
 
-De esta forma, se puede calcular la probabilidad de pasar del estado $i=j$ al estado $i=w$, de la siguiente manera. Llamaremos a dicha probabilidad $M_{j,w}$. $M_{j,w} = (\prod_{z=j}^{w-1} P_z) * (1 - P_w)$. Por ejemplo, si se quiere ver la probabilidad de pasar de tener $i=0$ a $i=2$, ésto es la probabilidad de tomar el mínimo la primera vez, multiplicada por la de tomar el mínimo la segunda vez, multiplicada por la de no tomar el mínimo la tercera.
+Para encontrar los valores de $h(t)$ para $t = 1,...,N$, se definen $E^N$ y $U^N$ como \[ E = (h(1),...,h(N))$ y $U = (1,...,1) \], y basta con resolver el sistema $M*E + U = E$.
 
-%ESTO NO VALE SI W=N-1, ACLARAR
+Finalmente, el resultado del algoritmo es el valor $h(1)$.
 
 \subsubsection{Complejidad}
+El algoritmo para resolver el problema consta de cuatro funciones importantes:
+\begin{itemize}
+	\item \textbf{calcularMins}: Función que calcula el vector $minimos$, donde $minimos[i] = $Cantidad de mínimos en $A[i..N)$. Esta función recorre el arreglo $A$ una única vez, y posee complejidad \O{N}.
+	\item \textbf{calcularPs}: Función que calcula el vector $probabilidades$, donde $probabilidades[i] = P_i(i+1)$. Esta función recorre el arreglo $A$ una única vez, y posee complejidad \O{N}.
+	\item \textbf{generarProbabilidades}: Función que calcula la matriz $M$. \\
+	Dado que $M$ es triangular superior, se calcularon las posiciones $M_{i,j}$ donde $j \geq i$. \\
+	Sabiendo que $M_{i,j} = P_i(j)$, luego se puede reemplazar por \[ M_{i,j} = \frac{\text{Cantidad de mínimos en A[i..N)}}{N-i} * P_{i+1}(j) = \frac{\text{Cantidad de mínimos en A[i..N)}}{N-i} * M_{i+1,j} \]
+	Por esta propiedad, es posible recorrer solo la porción triangular superior de $M$, y recorriendola desde la ultima fila y ultima columna, hasta llegar a la primer fila, se pueden calcular las posiciones usando los valores previamente calculados, como se vé en la fórmula.\\
+	Consecuentemente, la complejidad es \O{N^2}.
+	\item \textbf{obtenerEsperanza}: Función encargada de calcular el vector $E$. Al comienzo, $E$ es un vector de $0$'s. \\
+	Dado que se conoce el valor $h(N)$ y que $M$ es triangular superior, nuevamente la mejor estrategia es recorrer solo la porción triangular superior de $M$, recorriendola desde la ultima fila y ultima columna, hasta llegar a la primer fila.\\
+	Por cada fila, se calcula $E_i = 1 + \sum_{t = i}^{N} M_{i,t}*E_{t}$. Esto es equivalente a resolver el sistema de ecuaciones utilizando la técnica de \emph{Backwards Substitution}\textsuperscript{\cite{backsust}}.\\
+	Finalmente, la complejidad es \O{N^2}.
+\end{itemize}
+
+\noindent Por la suma de dichas operaciones y por propiedades de la \emph{Cota superior}, \la complejidad total es \O{N^2}.
 
 \subsection{Puntaje}
 El peso otorgado a este ejercicio es:
